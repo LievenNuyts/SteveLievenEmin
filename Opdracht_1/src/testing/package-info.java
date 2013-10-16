@@ -2,8 +2,8 @@
  * package for testing
  * 
  * @author Emin
- * @author Jo
- * @author Nicolas
+ * @author Lieven
+ * @author Steve
  *
  */
 package testing;
