@@ -11,7 +11,7 @@ import java.util.Scanner;
  * @version 1.0.0
  *
  */
-public class DatumGC {
+public class DateGC {
 	
 	private String[] monthNames = {"januari","februari","maart","april","mei","juni",
 			"juli","augustus","september","oktober","november","december"};
@@ -21,7 +21,7 @@ public class DatumGC {
 	/**
 	 * Default constuctor
 	 */
-	public DatumGC()throws IllegalArgumentException{
+	public DateGC()throws IllegalArgumentException{
 		gregCal = new GregorianCalendar();
 	}
 	
@@ -30,7 +30,7 @@ public class DatumGC {
 	 * 
 	 * @param date
 	 */
-	public DatumGC(Date date)throws IllegalArgumentException{
+	public DateGC(Date date)throws IllegalArgumentException{
 		gregCal = new GregorianCalendar();
 		gregCal.setTime(date);
 	}
@@ -42,7 +42,7 @@ public class DatumGC {
 	 * @param month
 	 * @param day
 	 */
-	public DatumGC(int year,int month,int day)throws IllegalArgumentException{
+	public DateGC(int year,int month,int day)throws IllegalArgumentException{
 		
 		gregCal = new GregorianCalendar(year,month-1,day);
 	}
@@ -52,7 +52,7 @@ public class DatumGC {
 	 * 
 	 * @param string
 	 */
-	public DatumGC(String string)throws IllegalArgumentException{
+	public DateGC(String string)throws IllegalArgumentException{
 		Scanner s = new Scanner(string);
 		s.useDelimiter("\\s*/\\s*");
 		int d = s.nextInt();
@@ -211,7 +211,7 @@ public class DatumGC {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		DatumGC other = (DatumGC) obj;
+		DateGC other = (DateGC) obj;
 		if (gregCal == null) {
 			if (other.gregCal != null)
 				return false;
