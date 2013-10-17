@@ -16,13 +16,13 @@ import utils.DateGC;
  * @version 16/10/2013
  *
  */
-public class Exercise implements Comparable<Exercise>{
+public abstract class Exercise implements Comparable<Exercise>{
 	
 	public enum ExerciseCategory {
-		REKENEN,
-		NEDERLANDSENAAM,
-		FRANSETAAL,
-		ALGEMENEKENNIS
+		AARDRIJKSKUNDE,
+		NEDERLANDS,
+		WETENSCHAPPEN,
+		WISKUNDE
 	}
 	
 	private String question;
@@ -46,7 +46,7 @@ public class Exercise implements Comparable<Exercise>{
 		this.setAnswerHints(new String[]{});
 		this.setMaxNumberOfAttempts(1);
 		this.setMaxAnswerTime(0);
-		this.setCategory(Exercise.ExerciseCategory.ALGEMENEKENNIS);
+		this.setCategory(Exercise.ExerciseCategory.AARDRIJKSKUNDE);
 		this.setAuthor(Teacher.BAKKER);
 		this.setQuizzes(new ArrayList<Quiz>());
 		this.setDateRegistration(new DateGC());
@@ -243,7 +243,7 @@ public class Exercise implements Comparable<Exercise>{
 	 * @return
 	 */
 	public boolean isCorrectAnswer(String answer){
-		if (this.correctAnswer == answer)
+		if (this.getCorrectAnswer() == answer)
 			return true;
 		return false;
 	}
@@ -262,30 +262,30 @@ public class Exercise implements Comparable<Exercise>{
 	
 	@Override
 	public String toString() {
-		return "Opdracht [question=" + question + ", correctAnswer="
-				+ correctAnswer + ", answerHints="
-				+ Arrays.toString(answerHints) + ", maxNumberOfAttempts="
-				+ maxNumberOfAttempts + ", maxAnswerTime=" + maxAnswerTime
-				+ ", category=" + category + ", author=" + author
-				+ ", quizzen=" + quizzes + ", dateRegistration="
-				+ dateRegistration + "]";
+		return "Opdracht [question=" + getQuestion() + ", correctAnswer="
+				+ getCorrectAnswer() + ", answerHints="
+				+ Arrays.toString(getAnswerHints()) + ", maxNumberOfAttempts="
+				+ getMaxNumberOfAttempts() + ", maxAnswerTime=" + getMaxAnswerTime()
+				+ ", category=" + getCategory() + ", author=" + getAuthor()
+				+ ", quizzen=" + getQuizzes() + ", dateRegistration="
+				+ getDateRegistration() + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Arrays.hashCode(answerHints);
-		result = prime * result + ((author == null) ? 0 : author.hashCode());
+		result = prime * result + Arrays.hashCode(getAnswerHints());
+		result = prime * result + ((getAuthor() == null) ? 0 : getAuthor().hashCode());
 		result = prime * result
-				+ ((category == null) ? 0 : category.hashCode());
+				+ ((getCategory() == null) ? 0 : getCategory().hashCode());
 		result = prime * result
-				+ ((correctAnswer == null) ? 0 : correctAnswer.hashCode());
-		result = prime * result + maxAnswerTime;
-		result = prime * result + maxNumberOfAttempts;
+				+ ((getCorrectAnswer() == null) ? 0 : getCorrectAnswer().hashCode());
+		result = prime * result + getMaxAnswerTime();
+		result = prime * result + getMaxNumberOfAttempts();
 		result = prime * result
-				+ ((question == null) ? 0 : question.hashCode());
-		result = prime * result + ((quizzes == null) ? 0 : quizzes.hashCode());
+				+ ((getQuestion() == null) ? 0 : getQuestion().hashCode());
+		result = prime * result + ((getQuizzes() == null) ? 0 : getQuizzes().hashCode());
 		return result;
 	}
 
@@ -298,30 +298,30 @@ public class Exercise implements Comparable<Exercise>{
 		if (getClass() != obj.getClass())
 			return false;
 		Exercise other = (Exercise) obj;
-		if (!Arrays.equals(answerHints, other.answerHints))
+		if (!Arrays.equals(getAnswerHints(), other.getAnswerHints()))
 			return false;
-		if (author != other.author)
+		if (getAuthor() != other.getAuthor())
 			return false;
-		if (category != other.category)
+		if (getCategory() != other.getCategory())
 			return false;
-		if (correctAnswer == null) {
-			if (other.correctAnswer != null)
+		if (getCorrectAnswer() == null) {
+			if (other.getCorrectAnswer() != null)
 				return false;
-		} else if (!correctAnswer.equals(other.correctAnswer))
+		} else if (!getCorrectAnswer().equals(other.getCorrectAnswer()))
 			return false;
-		if (maxAnswerTime != other.maxAnswerTime)
+		if (getMaxAnswerTime() != other.getMaxAnswerTime())
 			return false;
-		if (maxNumberOfAttempts != other.maxNumberOfAttempts)
+		if (getMaxNumberOfAttempts() != other.getMaxNumberOfAttempts())
 			return false;
-		if (question == null) {
-			if (other.question != null)
+		if (getQuestion() == null) {
+			if (other.getQuestion() != null)
 				return false;
-		} else if (!question.equals(other.question))
+		} else if (!getQuestion().equals(other.getQuestion()))
 			return false;
-		if (quizzes == null) {
-			if (other.quizzes != null)
+		if (getQuizzes() == null) {
+			if (other.getQuizzes() != null)
 				return false;
-		} else if (!quizzes.equals(other.quizzes))
+		} else if (!getQuizzes().equals(other.getQuizzes()))
 			return false;
 		return true;
 	}

@@ -3,11 +3,13 @@ package testing;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import utils.DateGC;
+import model.SimpleExercise;
 import model.Teacher;
 import model.Exercise;
 import model.Quiz;
@@ -18,31 +20,39 @@ import model.Quiz;
  * @version 9/10/2013
  *
  */
-public class ExerciseTest {
+public class SimpleExerciseTest {
 	
 	private Exercise exercise, exerciseEqual, exerciseNotEqual;
 	
 	@Before
 	public void setUp() throws Exception{
-		exercise = new Exercise("Hoofdstad van België?","Brussel",new String[]{"Stad","Centrum"},
-				1,30,Exercise.ExerciseCategory.ALGEMENEKENNIS,Teacher.BAKKER,new ArrayList<Quiz>(),new DateGC());
-		exerciseEqual = new Exercise("Hoofdstad van België?","Brussel",new String[]{"Stad","Centrum"},
-				1,30,Exercise.ExerciseCategory.ALGEMENEKENNIS,Teacher.BAKKER,new ArrayList<Quiz>(),new DateGC());
-		exerciseNotEqual = new Exercise("Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
-				2,40,Exercise.ExerciseCategory.ALGEMENEKENNIS,Teacher.BAKKER,new ArrayList<Quiz>(),new DateGC());
+		List<Quiz> quizzesList = new ArrayList<Quiz>();
+		quizzesList.add(new Quiz("whatabout",1,true,true));
+		
+		exercise = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"Stad","Centrum"},
+				1,30,Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,quizzesList,new DateGC(2013,10,1));
+		exerciseEqual = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"Stad","Centrum"},
+				1,30,Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,quizzesList,new DateGC(2013,10,1));
+		exerciseNotEqual = new SimpleExercise("Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
+				2,40,Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,quizzesList,new DateGC(2013,10,1));
 	}
 	
 	// Constructor
 	
 	@Test
 	public void test_Constructor_Object_Is_Created() {
+		List<Quiz> quizzesList = new ArrayList<Quiz>();
+		quizzesList.add(new Quiz("whatabout",1,true,true));
+		
 		assertEquals("Hoofdstad van België?",exercise.getQuestion());
 		assertEquals("Brussel",exercise.getCorrectAnswer());
 		assertArrayEquals(new String[]{"Stad","Centrum"},exercise.getAnswerHints());
 		assertEquals(1,exercise.getMaxNumberOfAttempts());
 		assertEquals(30,exercise.getMaxAnswerTime());
-		assertEquals(Exercise.ExerciseCategory.ALGEMENEKENNIS,exercise.getCategory());
+		assertEquals(Exercise.ExerciseCategory.AARDRIJKSKUNDE,exercise.getCategory());
 		assertEquals(Teacher.BAKKER,exercise.getAuthor());
+		assertEquals(quizzesList,exercise.getQuizzes());
+		assertEquals(new DateGC(2013,10,1),exercise.getDateRegistration());
 	}
 
 	// setQuestion
@@ -85,8 +95,8 @@ public class ExerciseTest {
 	
 	@Test
 	public void test_setCategorie_Valid_Value_Is_accepted() {
-		exercise.setCategory(Exercise.ExerciseCategory.FRANSETAAL);
-		assertEquals(Exercise.ExerciseCategory.FRANSETAAL,exercise.getCategory());
+		exercise.setCategory(Exercise.ExerciseCategory.WETENSCHAPPEN);
+		assertEquals(Exercise.ExerciseCategory.WETENSCHAPPEN,exercise.getCategory());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
