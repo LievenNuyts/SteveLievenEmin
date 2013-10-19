@@ -11,5 +11,5 @@ public interface Validatable {
 
 	public boolean isValide(String answer);
 	
-	public String getValidatedText();	
+	public String getValidateText();	
 }
