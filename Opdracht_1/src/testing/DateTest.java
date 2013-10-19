@@ -10,97 +10,97 @@ import org.junit.After;
 
 public class DateTest {
 
-	private Datum datum;
-	private int dag = 24;
-	private int maand = 12;
-	private int jaar = 2000;
+	private Datum date;
+	private int day = 24;
+	private int month = 12;
+	private int year = 2000;
 
 	
 //TESTS VOOR SET METHODE
 	
 	@Test
-	public void test_setDatum_geldige_waarde_wordt_aanvaard(){
+	public void test_setDatum_valid_value_accepted(){
 			
-		datum = new Datum(dag, maand, jaar);
-		assertTrue(datum != null);
+		date = new Datum(day, month, year);
+		assertTrue(date != null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_setDatum_tegrote_dagwaarde_wordt_niet_aanvaard(){
+	public void test_setDatum_tooLargeDayValue_notAccepted(){
 
-		dag = 32;
-		datum = new Datum(dag, maand, jaar);	
+		day = 32;
+		date = new Datum(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_setDatum_tekleine_dagwaarde_wordt_niet_aanvaard(){
+	public void test_setDatum_tooSmallDayValue_notAccepted(){
 
-		dag = 0;
-		datum = new Datum(dag, maand, jaar);	
+		day = 0;
+		date = new Datum(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_setDatum_tegrote_maandwaarde_wordt_niet_aanvaard(){
+	public void test_setDatum_tooLargeMonthValue_notAccepted(){
 
-		maand = 13;
-		datum = new Datum(dag, maand, jaar);	
+		month = 13;
+		date = new Datum(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_setDatum_tekleine_maandwaarde_wordt_niet_aanvaard(){
+	public void test_setDatum_tooSmallMonthValue_notAccepted(){
 
-		maand = 0;
-		datum = new Datum(dag, maand, jaar);	
+		month = 0;
+		date = new Datum(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_setDatum_tegrote_jaarwaarde_wordt_niet_aanvaard(){
+	public void test_setDatum_tooLargeYearValue_notAccepted(){
 
-		jaar = 40000;
-		datum = new Datum(dag, maand, jaar);	
+		year = 40000;
+		date = new Datum(day, month, year);		
 	}
 	
 	
 //TEST VOOR GET METHODES
 	
 	@Test
-	public void test_getDatumInAmerikaansFormaat_is_succesvol(){
+	public void test_getDateInAmericanFormat_successful(){
 		
-		datum = new Datum(dag, maand, jaar);
-		String amerikaans = Integer.toString(jaar) + "/" + Integer.toString(maand) + "/" + Integer.toString(dag);
-		assertEquals(amerikaans, datum.getDatumInAmerikaansFormaat());
+		date = new Datum(day, month, year);	
+		String american = Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day);
+		assertEquals(american, date.getDateInAmericanFormat());
 	}
 	
 	@Test
-	public void test_getDatumInEuropeesFormaat_is_succesvol(){
+	public void test_getDateInEuropeanFormat_successful(){
 		
-		datum = new Datum(dag, maand, jaar);
-		String europees = Integer.toString(dag) + "/" + Integer.toString(maand) + "/" + Integer.toString(jaar);
-		assertEquals(europees, datum.getDatumInEuropeesFormaat());
+		date = new Datum(day, month, year);	
+		String european = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
+		assertEquals(european, date.getDatumInEuropeesFormaat());
 	}
 	
 	
 //TEST VOOR TOSTRING METHODE
 	
 	@Test
-	public void test_ToStringMethode_geeft_correcte_weergave(){
+	public void test_ToStringMethod_has_correct_representation(){
 		
 		String valueToTest = "24 december 2000";	
-		assertEquals(valueToTest, datum.ToString());
+		assertEquals(valueToTest, date.ToString());
 	}
 
 	
 //TEST KLEINER DAN METHODE
 	
 	@Test
-	public void test_kleinerDan_geeft_positief_resultaat(){
+	public void test_smallerThan_has_positive_result(){
 		Datum testDatum = new Datum (23, 12, 2000);
-		datum = new Datum (dag, maand, jaar);	
+		date = new Datum (day, month, year);	
 		assertTrue(datum.kleinerDan(testDatum));
 	}
 	
 	@Test
-	public void test_kleinerDan_geeft_negatief_resultaat(){
+	public void test_smallerThan_has_negative_result(){
 		
 		Datum testDatum = new Datum (25, 12, 2000);
 		datum = new Datum (dag, maand, jaar);	
@@ -110,7 +110,7 @@ public class DateTest {
 //TEST VERSCHIL IN JAREN
 	
 	@Test
-	public void test_verschilInJaren_output_correct(){
+	public void test_differenceInYears_output_correct(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000	
 		Datum testDatum = new Datum (25, 12, 1998);
 		int controleGetal = 1;
@@ -120,7 +120,7 @@ public class DateTest {
 //TEST VERSCHIL IN MAANDEN
 	
 	@Test
-	public void test_verschilInMaanden_output_correct(){
+	public void test_differenceInMonths_output_correct(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000	
 		Datum testDatum = new Datum (25, 12, 1998);
 		int controleGetal = 23;		
@@ -131,7 +131,7 @@ public class DateTest {
 //TEST VERSCHIL IN DAGEN
 	
 	@Test
-	public void test_verschilInDagen_outputcorrect(){
+	public void test_differenceInDays_output_correct(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000	
 		Datum testDatum = new Datum (25, 12, 1998);
 		int controleGetal = 729;	
@@ -141,7 +141,7 @@ public class DateTest {
 //TEST VERANDERDATUM
 	
 	@Test
-	public void test_veranderDatum_outputCorrect_inputCorrect(){
+	public void test_changeDate_outputCorrect_inputCorrect(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000
 		datum.veranderDatum(3);	
 		assertEquals("27/12/2000", datum.getDatumInEuropessFormaat());
@@ -149,19 +149,19 @@ public class DateTest {
 	
 	
 	@Test (expected = IllegalArgumentException.class)
-	public void test_veranderDatum_Exception_als_inputIncorrect(){
+	public void test_changeDate_Exception_if_inputIncorrect(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000
 		//datum.veranderDatum(p);		
 	}
 	
 //TEST NIEUWE DATUM
 
-	public void test_DatumVeranderDatum_outputCorrect(){
+	public void test_dateChangeDate_outputCorrect(){
 		datum = new Datum (dag, maand, jaar); //  24/12/2000
-		Datum testDatum1 = datum;
-		Datum testDatum2 = datum.veranderDatum2(3);
+		Datum testDate1 = datum;
+		Datum testDate2 = datum.veranderDatum2(3);
 		
-		assertTrue(datum == testDatum1 && datum != testDatum2);
+		assertTrue(datum == testDate1 && datum != testDate2);
 	}
 	
 }
