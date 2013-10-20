@@ -160,7 +160,7 @@ public abstract class Exercise implements Comparable<Exercise>{
 	 */
 	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException{
 		if (correctAnswer == null)throw new IllegalArgumentException("Juiste antwoord is null!");
-		if (correctAnswer.isEmpty())throw new IllegalArgumentException("Gelieve een juiste antwoord in te vullen!");
+		if (correctAnswer.isEmpty())throw new IllegalArgumentException("Gelieve een antwoord in te vullen!");
 		this.correctAnswer = correctAnswer;
 	}
 
