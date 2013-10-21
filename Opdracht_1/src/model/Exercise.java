@@ -33,7 +33,7 @@ public abstract class Exercise implements Comparable<Exercise>{
 		@Override
 		public String toString() {
 		return name;
-	  }
+		}
 	}
 	
 	private String question;

@@ -25,4 +25,5 @@ public enum Teacher {
 	@Override
 	public String toString() {
 	return name;
+	}
 }
