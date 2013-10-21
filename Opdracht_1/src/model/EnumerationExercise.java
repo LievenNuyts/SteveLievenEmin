@@ -26,14 +26,15 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	}
 	
 	public EnumerationExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration) 
+		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration, boolean inCorrectOrder) 
 		   throws IllegalArgumentException {
 		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
 			  maxAnswerTime, category, author, quizzes, dateRegistration);
 		
 		//convert correct answer string to ArrayList of strings (removing the ";")
-		splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
-		numberOfElements = splitCorrectAnswer.size();
+		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
+		this.numberOfElements = splitCorrectAnswer.size();
+		this.inCorrectOrder = inCorrectOrder;
 	}
 	
 	/*
@@ -53,10 +54,12 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		return inCorrectOrder;
 	}
 	
+	public void setInCorrectOrder(boolean trueOrFalse){
+		this.inCorrectOrder = trueOrFalse;
+	}
+	
 	@Override
 	public boolean isCorrectAnswer(String answer) throws IllegalArgumentException{
-		
-		inCorrectOrder = this.inCorrectOrderCheck(answer);
 		
 		//convert student answer string to ArrayList of strings (removing the ";")
 		splitStudentAnswer = Arrays.asList(answer.split(";"));
@@ -84,7 +87,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	}
 	
 	
-	private boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
+	public boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
 			
 		int count = 0;
 				
