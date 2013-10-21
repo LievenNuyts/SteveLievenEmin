@@ -20,7 +20,10 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	private List<String> splitCorrectAnswer;
 	private List<String> splitStudentAnswer;
 	private int numberOfElements;
+	private boolean inCorrectOrder;
 	
+	public EnumerationExercise()throws IllegalArgumentException{	
+	}
 	
 	public EnumerationExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
 		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration) 
@@ -33,22 +36,27 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		numberOfElements = splitCorrectAnswer.size();
 	}
 	
-
+	/*
 	public List getSplitCorrectAnswer(){
 		return splitCorrectAnswer;
 	}
 	
-
 	public List getSplitStudentAnswer(){
 		return splitStudentAnswer;
-	}
+	}*/
 	
 	public int getNumberOfElements(){
 		return numberOfElements;
 	}
 	
+	public boolean getInCorrectOrder(){
+		return inCorrectOrder;
+	}
+	
 	@Override
 	public boolean isCorrectAnswer(String answer) throws IllegalArgumentException{
+		
+		inCorrectOrder = this.inCorrectOrderCheck(answer);
 		
 		//convert student answer string to ArrayList of strings (removing the ";")
 		splitStudentAnswer = Arrays.asList(answer.split(";"));
@@ -59,8 +67,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			
 			if(splitCorrectAnswer.contains(toTest)){
 				
-				//check if student added same element more than once in the answer
-				
+				//check if student added same element more than once in the answer			
 				boolean duplicateAnswer = Collections.frequency(splitStudentAnswer, toTest) > 1;
 				
 				if(!duplicateAnswer){
@@ -73,11 +80,11 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			return true;
 		}
 		
-		return false;
+		return false;	
 	}
 	
 	
-	public boolean inCorrectOrder(String answer) throws IllegalArgumentException{
+	private boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
 			
 		int count = 0;
 				
@@ -112,9 +119,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 				answerContainsInvalidChar(answer, "/") || answerContainsInvalidChar(answer, "\\")){
 			return false;
 		}
-		
-		
-		
+			
 		//if answer does not contain ";"
 		if(!answer.contains(";")){
 			
