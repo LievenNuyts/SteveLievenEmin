@@ -336,10 +336,4 @@ public abstract class Exercise implements Comparable<Exercise>{
 			return false;
 		return true;
 	}
-	
-	public static void main(String[] args) {
-		Exercise ex = new SimpleExercise();
-		
-		System.out.println(ex.toString());
-	}
 }
