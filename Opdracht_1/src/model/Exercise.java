@@ -19,10 +19,21 @@ import utils.DateGC;
 public abstract class Exercise implements Comparable<Exercise>{
 	
 	public enum ExerciseCategory {
-		AARDRIJKSKUNDE,
-		NEDERLANDS,
-		WETENSCHAPPEN,
-		WISKUNDE
+		AARDRIJKSKUNDE ("Aardrijkskunde"),
+		NEDERLANDS ("Nederlands"),
+		WETENSCHAPPEN ("Wetenschappen"),
+		WISKUNDE ("Wiskunde"); 
+		
+		private final String name;
+
+		ExerciseCategory(final String name) {
+		      this.name = name;
+		}
+
+		@Override
+		public String toString() {
+		return name;
+	  }
 	}
 	
 	private String question;
@@ -324,5 +335,11 @@ public abstract class Exercise implements Comparable<Exercise>{
 		} else if (!getQuizzes().equals(other.getQuizzes()))
 			return false;
 		return true;
+	}
+	
+	public static void main(String[] args) {
+		Exercise ex = new SimpleExercise();
+		
+		System.out.println(ex.toString());
 	}
 }
