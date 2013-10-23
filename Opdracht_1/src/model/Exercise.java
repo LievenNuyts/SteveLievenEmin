@@ -423,46 +423,4 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 			return false;
 		return true;
 	}
-	
-	public static void main(String[] args) {
-		try {
-			List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-			quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
-			
-			List<QuizExercise> quizExercisesList2 = new ArrayList<QuizExercise>();
-			quizExercisesList2.add(new QuizExercise(2, new Quiz(),  new SimpleExercise(2, "Hoofdstad van Japan?","Madrid",new String[]{"Stad","Centrum"},
-					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S')));
-			
-			ExerciseCatalog ec = new ExerciseCatalog();
-			ec.addExercise(new SimpleExercise());
-			
-			ExerciseCatalog ec2 = ec.clone();
-			ec2.updateExercise(new SimpleExercise(), new SimpleExercise(2, "Hoofdstad van Japan?","Madrid",new String[]{"Stad","Centrum"},
-					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
-			ec2.addExercise(new SimpleExercise(2, "Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
-					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
-			
-			//System.out.println(ec.toString() + "\n\n" + ec2.toString() );
-			
-			QuizExercise qe = new QuizExercise(3, new Quiz(), new SimpleExercise(2, "Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
-					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
-			
-			QuizExercise qe2 = qe.clone();
-			
-			qe2.setMaxScore(4);
-			qe2.setExercise(new SimpleExercise(2, "Hoofdstad van Belgie?","Madrid",new String[]{"Stad","Centrum"},
-					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList2, new DateGC(2013,11,1), 'S'));
-			
-			System.out.println(qe.toString() + "\n\n" + qe2.toString() );
-
-		
-			
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CloneNotSupportedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }
