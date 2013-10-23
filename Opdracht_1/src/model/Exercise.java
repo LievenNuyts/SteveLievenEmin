@@ -3,8 +3,11 @@
  */
 package model;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import utils.DateGC;
@@ -16,7 +19,7 @@ import utils.DateGC;
  * @version 16/10/2013
  *
  */
-public abstract class Exercise implements Comparable<Exercise>{
+public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	
 	public enum ExerciseCategory {
 		AARDRIJKSKUNDE ("Aardrijkskunde"),
@@ -32,10 +35,11 @@ public abstract class Exercise implements Comparable<Exercise>{
 
 		@Override
 		public String toString() {
-		return name;
+			return name;
 		}
 	}
 	
+	private int exerciseId;
 	private String question;
 	private String correctAnswer;
 	private String[] answerHints;
@@ -43,8 +47,9 @@ public abstract class Exercise implements Comparable<Exercise>{
 	private int maxAnswerTime;
 	private ExerciseCategory category;
 	private Teacher author;
-	private List<Quiz> quizzes;
+	private List<QuizExercise> quizExercises;
 	private DateGC dateRegistration;
+	private char discriminator;
 	
 	// Constructors
 	
@@ -52,6 +57,7 @@ public abstract class Exercise implements Comparable<Exercise>{
 	 * Default constructor
 	 */
 	public Exercise() throws IllegalArgumentException{
+		this.setExerciseId(1);
 		this.setQuestion("leeg");
 		this.setCorrectAnswer("leeg");
 		this.setAnswerHints(new String[]{});
@@ -59,8 +65,9 @@ public abstract class Exercise implements Comparable<Exercise>{
 		this.setMaxAnswerTime(0);
 		this.setCategory(Exercise.ExerciseCategory.AARDRIJKSKUNDE);
 		this.setAuthor(Teacher.BAKKER);
-		this.setQuizzes(new ArrayList<Quiz>());
+		this.setQuizExercises(new ArrayList<QuizExercise>());
 		this.setDateRegistration(new DateGC());
+		this.setDiscriminator('S');
 	}
 	
 	/**
@@ -72,9 +79,10 @@ public abstract class Exercise implements Comparable<Exercise>{
 	 * @param maxNumberOfAttempts
 	 * @param maxAnswerTime
 	 */
-	public Exercise(String question,String correctAnswer,String[] answerHints,
+	public Exercise(int exerciseId, String question,String correctAnswer,String[] answerHints,
 			int maxNumberOfAttempts,int maxAnswerTime,ExerciseCategory category,
-			Teacher author,List<Quiz> quizzes,DateGC dateRegistration) throws IllegalArgumentException{
+			Teacher author,List<QuizExercise> quizExercises,DateGC dateRegistration,char discriminator) throws IllegalArgumentException{
+		this.setExerciseId(exerciseId);
 		this.setQuestion(question);
 		this.setCorrectAnswer(correctAnswer);
 		this.setAnswerHints(answerHints);
@@ -82,11 +90,19 @@ public abstract class Exercise implements Comparable<Exercise>{
 		this.setMaxAnswerTime(maxAnswerTime);
 		this.setCategory(category);
 		this.setAuthor(author);
-		this.setQuizzes(quizzes);
+		this.setQuizExercises(quizExercises);
 		this.setDateRegistration(dateRegistration);
+		this.setDiscriminator(discriminator);
 	}
 
 	// Selectors
+
+	/**
+	 * @return
+	 */
+	public int getExerciseId() {
+		return exerciseId;
+	}
 	
 	/**
 	 * @return question
@@ -140,8 +156,8 @@ public abstract class Exercise implements Comparable<Exercise>{
 	/**
 	 * @return
 	 */
-	public List<Quiz> getQuizzes() {
-		return quizzes;
+	public List<QuizExercise> getQuizExercises() {
+		return quizExercises;
 	}
 
 	/**
@@ -151,7 +167,24 @@ public abstract class Exercise implements Comparable<Exercise>{
 		return dateRegistration;
 	}
 
+	/**
+	 * @return
+	 */
+	public char getDiscriminator() {
+		return discriminator;
+	}
+
 	// Modifiers
+
+	/**
+	 * Set exerciseId
+	 * 
+	 * @param exerciseId
+	 */
+	public void setExerciseId(int exerciseId) throws IllegalArgumentException{
+		if (exerciseId < 1) throw new IllegalArgumentException("Chekck exerciseId!");
+		this.exerciseId = exerciseId;
+	}
 	
 	/**
 	 * Set question
@@ -230,9 +263,9 @@ public abstract class Exercise implements Comparable<Exercise>{
 	 * 
 	 * @param quizzes
 	 */
-	public void setQuizzes(List<Quiz> quizzes) throws IllegalArgumentException{
-		if (quizzes == null)throw new IllegalArgumentException("Quizzen verzameling is null!");
-		this.quizzes = quizzes;
+	public void setQuizExercises(List<QuizExercise> quizExercises) throws IllegalArgumentException{
+		if (quizExercises == null)throw new IllegalArgumentException("Quizzen verzameling is null!");
+		this.quizExercises = quizExercises;
 	}
 
 	/**
@@ -241,8 +274,19 @@ public abstract class Exercise implements Comparable<Exercise>{
 	 * @param dateRegistration
 	 */
 	public void setDateRegistration(DateGC dateRegistration) throws IllegalArgumentException{
-		if (dateRegistration == null)throw new IllegalArgumentException("Datum is null");
+		if (dateRegistration == null)throw new IllegalArgumentException("Datum is null!");
 		this.dateRegistration = dateRegistration;
+	}
+
+	/**
+	 * Set discriminator
+	 * 
+	 * @param discriminator
+	 */
+	public void setDiscriminator(char discriminator) throws IllegalArgumentException{
+		if (discriminator != 'S' && discriminator != 'E' 
+				&& discriminator != 'M')throw new IllegalArgumentException("Discriminator is verkeed ingevuld!");
+		this.discriminator = discriminator;
 	}
 	
 	// Comparisons
@@ -269,17 +313,45 @@ public abstract class Exercise implements Comparable<Exercise>{
 		return this.getQuestion().compareTo(exercise.getQuestion());
 	}
 	
+	// Cloneable
+	
+	/**
+	 * Method to clone this object
+	 * 
+	 * @return
+	 */
+	@Override
+	public Exercise clone() throws CloneNotSupportedException{
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.set(getDateRegistration().getGregCal().get(Calendar.YEAR), 
+				getDateRegistration().getGregCal().get(Calendar.MONTH), 
+				getDateRegistration().getGregCal().get(Calendar.DATE));
+		
+		DateGC date = new DateGC();
+		date.setGregCal(gc);
+		
+		Exercise exercise = new SimpleExercise(getExerciseId(), getQuestion(), getCorrectAnswer(), 
+				getAnswerHints(), getMaxNumberOfAttempts(), getMaxAnswerTime(), getCategory(), 
+				getAuthor(), getQuizExercises(), date, getDiscriminator());
+		
+		return exercise;
+	}
+		
 	//Overrides
 	
 	@Override
 	public String toString() {
-		return "Opdracht [question=" + getQuestion() + ", correctAnswer="
-				+ getCorrectAnswer() + ", answerHints="
-				+ Arrays.toString(getAnswerHints()) + ", maxNumberOfAttempts="
-				+ getMaxNumberOfAttempts() + ", maxAnswerTime=" + getMaxAnswerTime()
-				+ ", category=" + getCategory() + ", author=" + getAuthor()
-				+ ", quizzen=" + getQuizzes() + ", dateRegistration="
-				+ getDateRegistration() + "]";
+		return "Exercise [getExerciseId()=" + getExerciseId()
+				+ ", getQuestion()=" + getQuestion() + ", getCorrectAnswer()="
+				+ getCorrectAnswer() + ", getAnswerHints()="
+				+ Arrays.toString(getAnswerHints())
+				+ ", getMaxNumberOfAttempts()=" + getMaxNumberOfAttempts()
+				+ ", getMaxAnswerTime()=" + getMaxAnswerTime()
+				+ ", getCategory()=" + getCategory() + ", getAuthor()="
+				+ getAuthor() + ", getQuizExercises()=" + getQuizExercises()
+				+ ", getDateRegistration()=" + getDateRegistration()
+				+ ", getDiscriminator()=" + getDiscriminator()
+				+ ", hashCode()=" + hashCode() + "]";
 	}
 
 	@Override
@@ -292,11 +364,17 @@ public abstract class Exercise implements Comparable<Exercise>{
 				+ ((getCategory() == null) ? 0 : getCategory().hashCode());
 		result = prime * result
 				+ ((getCorrectAnswer() == null) ? 0 : getCorrectAnswer().hashCode());
+		result = prime
+				* result
+				+ ((getDateRegistration() == null) ? 0 : getDateRegistration().hashCode());
+		result = prime * result + getDiscriminator();
+		result = prime * result + getExerciseId();
 		result = prime * result + getMaxAnswerTime();
 		result = prime * result + getMaxNumberOfAttempts();
 		result = prime * result
 				+ ((getQuestion() == null) ? 0 : getQuestion().hashCode());
-		result = prime * result + ((getQuizzes() == null) ? 0 : getQuizzes().hashCode());
+		result = prime * result
+				+ ((getQuizExercises() == null) ? 0 : getQuizExercises().hashCode());
 		return result;
 	}
 
@@ -320,6 +398,15 @@ public abstract class Exercise implements Comparable<Exercise>{
 				return false;
 		} else if (!getCorrectAnswer().equals(other.getCorrectAnswer()))
 			return false;
+		if (getDateRegistration() == null) {
+			if (other.getDateRegistration() != null)
+				return false;
+		} else if (!getDateRegistration().equals(other.getDateRegistration()))
+			return false;
+		if (getDiscriminator() != other.getDiscriminator())
+			return false;
+		if (getExerciseId() != other.getExerciseId())
+			return false;
 		if (getMaxAnswerTime() != other.getMaxAnswerTime())
 			return false;
 		if (getMaxNumberOfAttempts() != other.getMaxNumberOfAttempts())
@@ -329,11 +416,53 @@ public abstract class Exercise implements Comparable<Exercise>{
 				return false;
 		} else if (!getQuestion().equals(other.getQuestion()))
 			return false;
-		if (getQuizzes() == null) {
-			if (other.getQuizzes() != null)
+		if (getQuizExercises() == null) {
+			if (other.getQuizExercises() != null)
 				return false;
-		} else if (!getQuizzes().equals(other.getQuizzes()))
+		} else if (!getQuizExercises().equals(other.getQuizExercises()))
 			return false;
 		return true;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
+			quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
+			
+			List<QuizExercise> quizExercisesList2 = new ArrayList<QuizExercise>();
+			quizExercisesList2.add(new QuizExercise(2, new Quiz(),  new SimpleExercise(2, "Hoofdstad van Japan?","Madrid",new String[]{"Stad","Centrum"},
+					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S')));
+			
+			ExerciseCatalog ec = new ExerciseCatalog();
+			ec.addExercise(new SimpleExercise());
+			
+			ExerciseCatalog ec2 = ec.clone();
+			ec2.updateExercise(new SimpleExercise(), new SimpleExercise(2, "Hoofdstad van Japan?","Madrid",new String[]{"Stad","Centrum"},
+					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
+			ec2.addExercise(new SimpleExercise(2, "Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
+					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
+			
+			//System.out.println(ec.toString() + "\n\n" + ec2.toString() );
+			
+			QuizExercise qe = new QuizExercise(3, new Quiz(), new SimpleExercise(2, "Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
+					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S'));
+			
+			QuizExercise qe2 = qe.clone();
+			
+			qe2.setMaxScore(4);
+			qe2.setExercise(new SimpleExercise(2, "Hoofdstad van Belgie?","Madrid",new String[]{"Stad","Centrum"},
+					2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList2, new DateGC(2013,11,1), 'S'));
+			
+			System.out.println(qe.toString() + "\n\n" + qe2.toString() );
+
+		
+			
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

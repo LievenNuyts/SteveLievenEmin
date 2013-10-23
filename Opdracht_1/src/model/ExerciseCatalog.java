@@ -13,7 +13,7 @@ import java.util.List;
  * @version 10/10/2013
  *
  */
-public class ExerciseCatalog implements Comparable<ExerciseCatalog>{
+public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 	
 	private List<Exercise> exercises;
 	
@@ -21,6 +21,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>{
 	 * Default constructor
 	 * 
 	 * @throws IllegalArgumentException
+	 * @throws CloneNotSupportedException 
 	 */
 	public ExerciseCatalog() throws IllegalArgumentException{
 		this.setExercises(new ArrayList<Exercise>());
@@ -31,6 +32,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>{
 	 * 
 	 * @param opdrachten
 	 * @throws IllegalArgumentException
+	 * @throws CloneNotSupportedException 
 	 */
 	public ExerciseCatalog(List<Exercise> exercises) throws IllegalArgumentException{
 		this.setExercises(exercises);
@@ -52,6 +54,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>{
 	 * 
 	 * @param exercises
 	 * @throws IllegalArgumentException
+	 * @throws CloneNotSupportedException 
 	 */
 	public void setExercises(List<Exercise> exercises) throws IllegalArgumentException{
 		if (exercises == null)throw new IllegalArgumentException("Opdrachten verzameling is null");
@@ -107,6 +110,25 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>{
 	 */
 	public int compareTo(ExerciseCatalog exerciseCatalog){
 		return this.getExercises().size() - exerciseCatalog.getExercises().size();
+	}
+	
+	// Cloneable
+	
+	/**
+	 * Method to clone this object
+	 * 
+	 * @return
+	 */
+	@Override
+	public ExerciseCatalog clone() throws CloneNotSupportedException{
+		List<Exercise> ex = new ArrayList<Exercise>();
+		for (Exercise e : exercises) {
+			ex.add(e);
+		}
+		
+		ExerciseCatalog ec = new ExerciseCatalog(ex);
+		
+		return ec;
 	}
 	
 	// Overrides

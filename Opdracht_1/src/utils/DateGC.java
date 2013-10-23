@@ -8,21 +8,23 @@ import java.util.Scanner;
 /**
  * 
  * @author Emin
- * @version 1.0.0
+ * @version 22/10/2013
  *
  */
-public class DateGC {
+public class DateGC implements Cloneable{
 	
-	private String[] monthNames = {"januari","februari","maart","april","mei","juni",
-			"juli","augustus","september","oktober","november","december"};
+	private String[] monthNames = {"januari", "februari", "maart", "april", "mei", "juni",
+			"juli", "augustus", "september", "oktober", "november", "december"};
 	private GregorianCalendar gregCal;
     
 	// Constructors
 	/**
-	 * Default constuctor
+	 * Default constructor
 	 */
 	public DateGC()throws IllegalArgumentException{
-		gregCal = new GregorianCalendar();
+		GregorianCalendar gc = new GregorianCalendar();
+		this.setGregCal(new GregorianCalendar(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), 
+				gc.get(Calendar.DATE)));
 	}
 	
 	/**
@@ -31,8 +33,8 @@ public class DateGC {
 	 * @param date
 	 */
 	public DateGC(Date date)throws IllegalArgumentException{
-		gregCal = new GregorianCalendar();
-		gregCal.setTime(date);
+		this.setGregCal(new GregorianCalendar());
+		this.getGregCal().setTime(date);
 	}
     
 	/**
@@ -44,7 +46,7 @@ public class DateGC {
 	 */
 	public DateGC(int year,int month,int day)throws IllegalArgumentException{
 		
-		gregCal = new GregorianCalendar(year,month-1,day);
+		this.setGregCal(new GregorianCalendar(year,month-1,day));
 	}
 	
 	/**
@@ -65,10 +67,11 @@ public class DateGC {
 		if (mS.length() != 2)throw new IllegalArgumentException ("Maand is fout ingevuld");
 		if (String.valueOf(y).length() != 4)throw new IllegalArgumentException ("Jaar is fout ingevuld");
 		
-		gregCal = new GregorianCalendar(y,m-1,d);
+		setGregCal(new GregorianCalendar(y,m-1,d));
 	}
     
 	// Selectors
+	
 	/**
 	 * @return GregorianCalendar
 	 */
@@ -108,12 +111,6 @@ public class DateGC {
 		this.gregCal = gregCal;
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("%d %s %d",
-				gregCal.get(Calendar.DAY_OF_MONTH), monthNames[gregCal.get(Calendar.MONTH)],
-				gregCal.get(Calendar.YEAR));
-	}
 	/**
 	 * Determines whether a date is smaller than current date object
 	 * 
@@ -194,7 +191,35 @@ public class DateGC {
 		d.setTime(gregCal.getTimeInMillis() + (86400000L * days));
 		return d;
 	}
+	
+	// Cloneable
+	
+	/**
+	 * Method to clone this object
+	 * 
+	 * @return
+	 */
+	@Override
+	public DateGC clone() throws CloneNotSupportedException{
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.set(getGregCal().get(Calendar.YEAR), getGregCal().get(Calendar.MONTH), 
+				getGregCal().get(Calendar.DATE));
+		
+		DateGC date = new DateGC();
+		date.setGregCal(gc);
+		
+		return date;
+	}
 
+	// Overrides
+	
+	@Override
+	public String toString() {
+		return String.format("%d %s %d",
+				gregCal.get(Calendar.DAY_OF_MONTH), monthNames[gregCal.get(Calendar.MONTH)],
+				gregCal.get(Calendar.YEAR));
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

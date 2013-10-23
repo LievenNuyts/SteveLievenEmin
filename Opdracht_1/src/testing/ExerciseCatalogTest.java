@@ -8,11 +8,11 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.QuizExercise;
 import model.SimpleExercise;
 import model.Teacher;
 import model.Exercise;
 import model.ExerciseCatalog;
-import model.Quiz;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,15 +38,15 @@ public class ExerciseCatalogTest {
 		
 		exercises = new ArrayList<Exercise>();
 		
-		exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<Quiz>(),
-				new DateGC(2013,10,1));
-		exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<Quiz>(),
-				new DateGC(2013,10,1));
-		exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
-				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<Quiz>(),
-				new DateGC(2013,10,1));
+		exercise1 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+				new DateGC(2013,10,1), 'S');
+		exercise2 = new SimpleExercise(2, "Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+				new DateGC(2013,10,1), 'S');
+		exercise3 = new SimpleExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
+				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+				new DateGC(2013,10,1), 'S');
 		
 		exercises.add(exercise1);
 		
