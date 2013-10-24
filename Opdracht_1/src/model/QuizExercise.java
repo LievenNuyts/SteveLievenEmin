@@ -9,7 +9,7 @@ package model;
  * @version 16/10/2013
  *
  */
-public class QuizExercise implements Comparable<QuizExercise>{
+public class QuizExercise implements Comparable<QuizExercise>, Cloneable{
 	
 	private int maxScore;
 	private Quiz quiz;
@@ -100,6 +100,26 @@ public class QuizExercise implements Comparable<QuizExercise>{
 	public int compareTo(QuizExercise quizExercise) {
 		return this.getExercise().compareTo(quizExercise.getExercise())
 				+ this.getQuiz().compareTo(quizExercise.getQuiz());
+	}
+	
+	// Cloneable
+	
+	/**
+	 * Method to clone this object
+	 * 
+	 * @return
+	 */
+	@Override
+	public QuizExercise clone() throws CloneNotSupportedException{
+		Exercise ex = new SimpleExercise();
+		ex = exercise;
+		
+		Quiz q = new Quiz();
+		q = quiz;
+		
+		QuizExercise qz = new QuizExercise(maxScore, q, ex);
+		
+		return qz;
 	}
 	
 	// Overrides

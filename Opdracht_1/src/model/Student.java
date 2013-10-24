@@ -9,7 +9,7 @@ package model;
  * @version 20/10/2013
  *
  */
-public class Student implements Comparable<Student>{
+public class Student implements Comparable<Student>, Cloneable{
 	
 	private String studentName;
 	private int grade;
@@ -89,6 +89,18 @@ public class Student implements Comparable<Student>{
 		return this.getStudentName().compareTo(student.getStudentName());
 	}
 	
+	// Cloneable
+	
+	/**
+	 * Method to clone this object
+	 * 
+	 * @return
+	 */
+	@Override
+	public Student clone() throws CloneNotSupportedException{
+		return (Student)super.clone();
+	}
+		
 	// Overrides
 
 	@Override

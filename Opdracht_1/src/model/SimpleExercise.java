@@ -37,12 +37,11 @@ public class SimpleExercise extends Exercise {
 	 * @param dateRegistration
 	 * @throws IllegalArgumentException
 	 */
-	public SimpleExercise(String question, String correctAnswer,
+	public SimpleExercise(int excerciseId, String question, String correctAnswer,
 			String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-			ExerciseCategory category, Teacher author, List<Quiz> quizzes,
-			DateGC dateRegistration) throws IllegalArgumentException {
-		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
-				maxAnswerTime, category, author, quizzes, dateRegistration);
+			ExerciseCategory category, Teacher author, List<QuizExercise> quizExercises,
+			DateGC dateRegistration, char discriminator) throws IllegalArgumentException {
+		super(excerciseId, question, correctAnswer, answerHints, maxNumberOfAttempts,
+				maxAnswerTime, category, author, quizExercises, dateRegistration, discriminator);
 	}
-
 }

@@ -20,31 +20,42 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	private List<String> splitCorrectAnswer;
 	private List<String> splitStudentAnswer;
 	private int numberOfElements;
+	private boolean inCorrectOrder;
 	
+	public EnumerationExercise()throws IllegalArgumentException{	
+	}
 	
 	public EnumerationExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration) 
+		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration, boolean inCorrectOrder) 
 		   throws IllegalArgumentException {
 		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
 			  maxAnswerTime, category, author, quizzes, dateRegistration);
 		
 		//convert correct answer string to ArrayList of strings (removing the ";")
-		splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
-		numberOfElements = splitCorrectAnswer.size();
+		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
+		this.numberOfElements = splitCorrectAnswer.size();
+		this.inCorrectOrder = inCorrectOrder;
 	}
 	
-
+	/*
 	public List getSplitCorrectAnswer(){
 		return splitCorrectAnswer;
 	}
 	
-
 	public List getSplitStudentAnswer(){
 		return splitStudentAnswer;
-	}
+	}*/
 	
 	public int getNumberOfElements(){
 		return numberOfElements;
+	}
+	
+	public boolean getInCorrectOrder(){
+		return inCorrectOrder;
+	}
+	
+	public void setInCorrectOrder(boolean trueOrFalse){
+		this.inCorrectOrder = trueOrFalse;
 	}
 	
 	@Override
@@ -59,8 +70,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			
 			if(splitCorrectAnswer.contains(toTest)){
 				
-				//check if student added same element more than once in the answer
-				
+				//check if student added same element more than once in the answer			
 				boolean duplicateAnswer = Collections.frequency(splitStudentAnswer, toTest) > 1;
 				
 				if(!duplicateAnswer){
@@ -73,11 +83,11 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			return true;
 		}
 		
-		return false;
+		return false;	
 	}
 	
 	
-	public boolean inCorrectOrder(String answer) throws IllegalArgumentException{
+	public boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
 			
 		int count = 0;
 				
@@ -112,9 +122,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 				answerContainsInvalidChar(answer, "/") || answerContainsInvalidChar(answer, "\\")){
 			return false;
 		}
-		
-		
-		
+			
 		//if answer does not contain ";"
 		if(!answer.contains(";")){
 			

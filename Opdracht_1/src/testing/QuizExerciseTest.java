@@ -32,12 +32,12 @@ public class QuizExerciseTest {
 	
 	@Before
 	public void Setup() throws Exception{
-		exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<Quiz>(),
-				new DateGC(2013,10,1));
-		exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<Quiz>(),
-				new DateGC(2013,10,1));
+		exercise1 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+				new DateGC(2013,10,1), 'S');
+		exercise2 = new SimpleExercise(2,"Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+				Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+				new DateGC(2013,10,1), 'S');
 		
 		quiz1 = new Quiz("Namen",3,false,false);
 		quiz2 = new Quiz("Landen",4,false,false);
