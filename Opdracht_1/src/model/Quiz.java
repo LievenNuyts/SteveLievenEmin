@@ -1,5 +1,11 @@
 package model;
 
+import java.util.ArrayList;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+import model.Teacher;
+import utils.DateQuiz;
 /**
  * 
  * @author Steve
@@ -7,31 +13,55 @@ package model;
  *
  */
 
-	enum QuizStatus {
-	//statussen
+enum QuizStatus {
+
+	underConstruction(1), 
+	completed(2), 
+	ready(3),
+	lastChance(4), 
+	closed(5);
+
+	private final int StatusID;
+
+	QuizStatus(int StatusID) { 
+		this.StatusID = StatusID; 
 	}
+	public int getValue() { 
+		return StatusID; 
+	}
+
+}
 
 public class Quiz implements Comparable<Quiz>{
 	
-	String onderwerp = "";
+	String subject = "";
 	int leerJaren = 0;
-
-	boolean isUniekeDeelname;
+	QuizStatus status;
+	Teacher teacher;
+	DateQuiz date;
+	boolean isUniqueParticipation;
 	boolean isTest;
+	private ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>();
 	
+	
+	//default constructor
 	
 	public Quiz()throws IllegalArgumentException
 	{
-		onderwerp = "subject";	
+		subject = "subject";	
 	}
 	
-	public Quiz(String onderwerp, int leerJaren, boolean uniekeDeelname, boolean isTest)throws IllegalArgumentException
+	//constructor with 4 parameters
+	
+	public Quiz(String subject, int leerJaren, boolean uniqueParticipation, boolean isTest)throws IllegalArgumentException
 	{
-		this.onderwerp = onderwerp;
+		this.subject = subject;
 		this.leerJaren = leerJaren;
-		this.isUniekeDeelname = uniekeDeelname;
+		this.isUniqueParticipation = uniqueParticipation;
 		this.isTest = isTest;
 	}
+	
+	//@overrides
 	
 	@Override
 	public int compareTo(Quiz o) {
@@ -44,10 +74,10 @@ public class Quiz implements Comparable<Quiz>{
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (isTest ? 1231 : 1237);
-		result = prime * result + (isUniekeDeelname ? 1231 : 1237);
+		result = prime * result + (isUniqueParticipation ? 1231 : 1237);
 		result = prime * result + leerJaren;
 		result = prime * result
-				+ ((onderwerp == null) ? 0 : onderwerp.hashCode());
+				+ ((subject == null) ? 0 : subject.hashCode());
 		return result;
 	}
 
@@ -62,38 +92,148 @@ public class Quiz implements Comparable<Quiz>{
 		Quiz other = (Quiz) obj;
 		if (isTest != other.isTest)
 			return false;
-		if (isUniekeDeelname != other.isUniekeDeelname)
+		if (isUniqueParticipation != other.isUniqueParticipation)
 			return false;
 		if (leerJaren != other.leerJaren)
 			return false;
-		if (onderwerp == null) {
-			if (other.onderwerp != null)
+		if (subject == null) {
+			if (other.subject != null)
 				return false;
-		} else if (!onderwerp.equals(other.onderwerp))
+		} else if (!subject.equals(other.subject))
 			return false;
 		return true;
 	}
 
 	@Override
-	public String toString() {
-		return "Quiz [onderwerp=" + onderwerp + ", leerJaren=" + leerJaren
-				+ ", isUniekeDeelname=" + isUniekeDeelname + ", isTest="
-				+ isTest + "]";
+    public String toString() {
+            String quizText = "";
+            if (isTest) {
+            	quizText = "\nThis is a test.";
+            } 
+            else {
+            	quizText = "\nThis is not a test.";
+            }
+            
+            if (isUniqueParticipation) {
+            	quizText += "\nUnique participation.";
+            } 
+            else {
+                quizText += "\nNo unique participation.";
+            }
+            
+            quizText += "\nStatus: ";
+            
+            String quizSummary = "";
+            quizSummary += "\nQuiz : " + subject
+            				+ "\nYears: " + leerJaren
+                            + "\nDate: " + date.getDatumInEuropeesFormaat()
+                            + "\nCreated by: " + teacher 
+                            + "\n" + quizText 
+                            + "\nStatus: " + status;
+            
+            return quizSummary;
+    }
+	
+	//get & set
+
+	public String getOnderwerp() {
+		return subject;
+	}
+
+	public void setOnderwerp(String subject) {
+		this.subject = subject;
+	}
+
+	public int getLeerJaren() {
+		return leerJaren;
+	}
+
+	public void setLeerJaren(int leerJaren) {
+		this.leerJaren = leerJaren;
+	}
+
+	public QuizStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(QuizStatus status) {
+		this.status = status;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public DateQuiz getDate() {
+		return date;
+	}
+
+	public void setDate(DateQuiz date) {
+		this.date = date;
+	}
+
+	public boolean isUniqueParticipation() {
+		return isUniqueParticipation;
+	}
+
+	public void setUniqueParticipation(boolean isUniqueParticipation) {
+		this.isUniqueParticipation = isUniqueParticipation;
+	}
+
+	public boolean isTest() {
+		return isTest;
+	}
+
+	public void setTest(boolean isTest) {
+		this.isTest = isTest;
+	}
+
+	public ArrayList<QuizExercise> getQuizExercises() {
+		return quizExercises;
+	}
+
+	public void setQuizExercises(ArrayList<QuizExercise> quizExercises) {
+		this.quizExercises = quizExercises;
 	}
 	
-	/*public static void main(String[] args) {
+	//methods
+
+	public void addQuizExercise(QuizExercise quizExercise) throws Exception {
+
+		try
+		{
+			for(int i = 0; i < this.quizExercises.size(); i++) 
+			{
+				if (quizExercises.get(i).equals(quizExercise)) 
+				{
+					throw new Exception("Exercise already exists.");
+				}
+			}
+			quizExercises.add(quizExercise);
+		}
+		catch (Exception ex){ throw new Exception(ex.getMessage());
+		}
+	}
+
+
+	public void deleteQuizExercise(QuizExercise quizExercise) throws Exception {
 		
-		Quiz quiz = new Quiz("Craziness", 2, false, true);
-		quiz.isTest = false;
-		quiz.isUniekeDeelname = true;
-		quiz.leerJaren = 2;
-		quiz.onderwerp = "Craziness";
-		
-		System.out.println(quiz);
-
-	}*/
-
-	
-	
-
+		try
+		{	
+			for(int i = 0; i < this.quizExercises.size(); i++)
+			{
+				if (quizExercises.get(i).equals(quizExercise)) 
+				{
+					throw new Exception("No such exercise.");
+				}
+			}
+			quizExercises.remove(quizExercise);
+		}
+		catch (Exception ex){ throw new Exception(ex.getMessage());
+		}
+	}
 }
