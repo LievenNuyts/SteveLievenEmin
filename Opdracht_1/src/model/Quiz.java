@@ -136,11 +136,11 @@ public class Quiz implements Comparable<Quiz>{
 	
 	//get & set
 
-	public String getOnderwerp() {
+	public String getSubject() {
 		return subject;
 	}
 
-	public void setOnderwerp(String subject) {
+	public void setSubject(String subject) {
 		this.subject = subject;
 	}
 
