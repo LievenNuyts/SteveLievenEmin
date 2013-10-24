@@ -1,16 +1,10 @@
 package model;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
-import utils.DateGC;
 import utils.DateQuiz;
-import model.Teacher;
-import model.ExerciseCatalog;
-import model.Exercise.ExerciseCategory;
 
 /**
  * 
@@ -19,15 +13,17 @@ import model.Exercise.ExerciseCategory;
  *
  */
 
-public class MultipleChoiceExercise extends Exercise {
+public class MultipleChoiceExercise  {
         
         String multipleChoice;
         
         //Constructor with multiple parameters
 
         public MultipleChoiceExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-     		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration, boolean inCorrectOrder) {
-                super(question, correctAnswer, answerHints, maxNumberOfAttempts, maxAnswerTime, category, author);
+     		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateQuiz dateRegistration, boolean inCorrectOrder) 
+     				   throws IllegalArgumentException {
+    		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
+    				  maxAnswerTime, category, author, quizzes, dateRegistration);
                 this.multipleChoice = multipleChoice; 
         }        
 
@@ -40,32 +36,14 @@ public class MultipleChoiceExercise extends Exercise {
         }
 
         public Map<Integer, String>  getLijstMeerkeuze(){
-                String[] velden = this.meerkeuze.split(";");
-                Map <Integer, String> lijstMeerkeuze = new HashMap <Integer, String>();
+                String[] fields = this.multipleChoice.split(";");
+                Map <Integer, String> list = new HashMap <Integer, String>();
                 int i = 0;
-                for (String multipleChoice : velden) {
+                for (String multipleChoice : fields) {
                         i++;
-                        lijstMeerkeuze.put(i, meerkeuze);
+                        list.put(i, multipleChoice);
                 }
-                return lijstMeerkeuze;
-        }
-
-        @Override
-        public boolean isValide(String answer) {
-                StringTokenizer binnenkomend = new StringTokenizer(answer, ";");
-                StringTokenizer origineel = new StringTokenizer(this.getAnswer(), ";");
-                if (binnenkomend.countTokens() == origineel.countTokens()){
-                        return true;
-                }else{
-                        getValideerTekst();
-                        return false;
-                }
-        }
-
-        
-        @Override
-        public String getValideerTekst() {
-                return "Kies één van de getallen die in de opgave staan";
+                return list;
         }
 
 }
