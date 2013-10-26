@@ -21,7 +21,7 @@ public class DateTest {
 
 	private DateQuiz date;
 	private int day = 24;
-	private int month = 11;
+	private int month = 5;
 	private int year = 2000;
 
 	
@@ -77,7 +77,7 @@ public class DateTest {
 		
 		date = new DateQuiz(day, month, year);	
 		String american = Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day);
-		assertEquals(american, date.getDatumInAmerikaansFormaat());
+		assertEquals(american, date.getDatumInAmerikaansFormaat(date));
 	}
 	
 	@Test
@@ -85,7 +85,7 @@ public class DateTest {
 		
 		date = new DateQuiz(day, month, year);	
 		String european = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
-		assertEquals(european, date.getDatumInEuropeesFormaat());
+		assertEquals(european, date.getDatumInEuropeesFormaat(date));
 	}
 	
 	
@@ -94,8 +94,9 @@ public class DateTest {
 	@Test
 	public void test_ToStringMethod_has_correct_representation(){
 		
-		String valueToTest = "24 december 2000";	
-		assertEquals(valueToTest, date.toString());
+		date = new DateQuiz(day, month, year);	
+		String valueToTest = "24 mei 2000";	
+		assertEquals(valueToTest, date.toString2());
 	}
 
 	
@@ -105,7 +106,7 @@ public class DateTest {
 	public void test_smallerThan_has_positive_result(){
 		DateQuiz testDatum = new DateQuiz (23, 12, 2000);
 		date = new DateQuiz (day, month, year);	
-		assertTrue(date.kleinerDan(testDatum));
+		assertTrue(date.smallerThan(testDatum));
 	}
 	
 	@Test
@@ -113,7 +114,7 @@ public class DateTest {
 		
 		DateQuiz testDatum = new DateQuiz (25, 12, 2000);
 		date = new DateQuiz (day, month, year);	
-		assertTrue(date.kleinerDan(testDatum));
+		assertTrue(date.smallerThan(testDatum));
 	}
 	
 //TEST VERSCHIL IN JAREN

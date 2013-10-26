@@ -13,7 +13,7 @@ import utils.DateQuiz;
  *
  */
 
-public class MultipleChoiceExercise  {
+public class MultipleChoiceExercise extends Exercise {
         
         String multipleChoice;
         
@@ -24,6 +24,7 @@ public class MultipleChoiceExercise  {
      				   throws IllegalArgumentException {
     		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
     				  maxAnswerTime, category, author, quizzes, dateRegistration);
+    		
                 this.multipleChoice = multipleChoice; 
         }        
 
