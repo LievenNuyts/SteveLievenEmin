@@ -1,11 +1,9 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import model.Exercise.ExerciseCategory;
 import utils.DateGC;
 
 public class EnumerationExercise extends Exercise implements Validatable{
@@ -13,7 +11,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	/**
 	 *  
 	 * @author Lieven
-	 * @version 19/10/2013
+	 * @version 27/10/2013
 	 *
 	 */
 	
@@ -22,14 +20,16 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	private int numberOfElements;
 	private boolean inCorrectOrder;
 	
-	public EnumerationExercise()throws IllegalArgumentException{	
-	}
+	public EnumerationExercise()throws IllegalArgumentException{}
 	
-	public EnumerationExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateGC dateRegistration, boolean inCorrectOrder) 
-		   throws IllegalArgumentException {
-		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
-			  maxAnswerTime, category, author, quizzes, dateRegistration);
+	public EnumerationExercise(int excerciseId, String question, String correctAnswer, 
+			String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
+		   ExerciseCategory category, Teacher author, List<QuizExercise> quizExercises, 
+		   DateGC dateRegistration, char discriminator, boolean inCorrectOrder) 
+		   throws IllegalArgumentException{
+		
+		super(excerciseId, question, correctAnswer, answerHints, maxNumberOfAttempts,
+			  maxAnswerTime, category, author, quizExercises, dateRegistration, discriminator);
 		
 		//convert correct answer string to ArrayList of strings (removing the ";")
 		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
@@ -37,29 +37,49 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		this.inCorrectOrder = inCorrectOrder;
 	}
 	
-	/*
-	public List getSplitCorrectAnswer(){
-		return splitCorrectAnswer;
-	}
-	
-	public List getSplitStudentAnswer(){
-		return splitStudentAnswer;
-	}*/
-	
-	public int getNumberOfElements(){
-		return numberOfElements;
-	}
+	//GETTERS AND SETTERS
 	
 	public boolean getInCorrectOrder(){
 		return inCorrectOrder;
 	}
 	
-	public void setInCorrectOrder(boolean trueOrFalse){
-		this.inCorrectOrder = trueOrFalse;
+	public void setInCorrectOrder(boolean inCorrectOrder){
+		this.inCorrectOrder = inCorrectOrder;
 	}
+	
+	//for testing purposes
+	public int getNumberOfElements(){
+		return this.numberOfElements;
+	}
+	
+	//for testing purposes
+	public List<String> getSplitCorrectAnswer(){
+		return this.splitCorrectAnswer;
+	}
+	
+	
+	@Override
+	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException{
+		if (correctAnswer == null){
+			throw new IllegalArgumentException("Juiste antwoord is null!");
+		}
+		if (correctAnswer.isEmpty()){
+			throw new IllegalArgumentException("Gelieve een antwoord in te vullen!");
+		}
+		
+		this.correctAnswer = correctAnswer;
+		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
+		this.numberOfElements = splitCorrectAnswer.size();	
+	}
+	
+	
 	
 	@Override
 	public boolean isCorrectAnswer(String answer) throws IllegalArgumentException{
+		
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
 		
 		//convert student answer string to ArrayList of strings (removing the ";")
 		splitStudentAnswer = Arrays.asList(answer.split(";"));
@@ -89,27 +109,21 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	public boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
 			
-		int count = 0;
-				
-		//convert student answer string to ArrayList of strings (removing the ";")
-		splitStudentAnswer = Arrays.asList(answer.split(";"));
-				
-		if(splitCorrectAnswer.size() == splitStudentAnswer.size()){
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
+		
+		if(this.isCorrectAnswer(answer) == true){
 					
-			for(int i = 0; i < splitCorrectAnswer.size(); i++){
-						
-				if(splitStudentAnswer.get(i) == splitCorrectAnswer.get(i)){
-							
-					count++;
-				}
-			}
-					
-			if(count == numberOfElements){			
+			//convert student answer string to ArrayList of strings (removing the ";")
+			splitStudentAnswer = Arrays.asList(answer.split(";"));			
+				
+			if(splitStudentAnswer.equals(splitCorrectAnswer)){
 				return true;
 			}
 		}
-							
-		return false;	
+		
+		return false;
 	}
 
 	
@@ -164,4 +178,67 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		return "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven.";
 	}
 	
+	
+	@Override
+	public String toString() {
+		return "Exercise [getExerciseId()=" + getExerciseId()
+				+ ", getQuestion()=" + getQuestion() 
+				+ ", getCorrectAnswer()=" + getCorrectAnswer() 
+				+ ", getAnswerHints()=" + Arrays.toString(getAnswerHints())
+				+ ", getMaxNumberOfAttempts()=" + getMaxNumberOfAttempts()
+				+ ", getMaxAnswerTime()=" + getMaxAnswerTime()
+				+ ", getCategory()=" + getCategory() 
+				+ ", getAuthor()=" + getAuthor() 
+				+ ", getQuizExercises()=" + getQuizExercises()
+				+ ", getDateRegistration()=" + getDateRegistration()
+				+ ", getDiscriminator()=" + getDiscriminator()
+				+ ", hashCode()=" + hashCode() 
+				+ ", inCorrectOrder()=" + getInCorrectOrder()
+				+ "]";
+	}
+
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + (inCorrectOrder ? 1231 : 1237);
+		result = prime * result + numberOfElements;
+		result = prime
+				* result
+				+ ((splitCorrectAnswer == null) ? 0 : splitCorrectAnswer
+						.hashCode());
+		result = prime
+				* result
+				+ ((splitStudentAnswer == null) ? 0 : splitStudentAnswer
+						.hashCode());
+		return result;
+	}
+
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EnumerationExercise other = (EnumerationExercise) obj;
+		if (inCorrectOrder != other.inCorrectOrder)
+			return false;
+		if (numberOfElements != other.numberOfElements)
+			return false;
+		if (splitCorrectAnswer == null) {
+			if (other.splitCorrectAnswer != null)
+				return false;
+		} else if (!splitCorrectAnswer.equals(other.splitCorrectAnswer))
+			return false;
+		if (splitStudentAnswer == null) {
+			if (other.splitStudentAnswer != null)
+				return false;
+		} else if (!splitStudentAnswer.equals(other.splitStudentAnswer))
+			return false;
+		return true;
+	}
 }
