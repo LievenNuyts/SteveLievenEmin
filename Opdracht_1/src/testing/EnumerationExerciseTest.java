@@ -16,6 +16,7 @@ import java.util.List;
 import model.EnumerationExercise;
 import model.Exercise;
 import model.Quiz;
+import model.QuizExercise;
 import model.SimpleExercise;
 import model.Teacher;
 
@@ -40,11 +41,13 @@ public class EnumerationExerciseTest {
 	
 	@Before
 	public void setUp() throws Exception{
-		List<Quiz> quizzesList = new ArrayList<Quiz>();
-		quizzesList.add(new Quiz("whatabout",1,true,true));
+		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
+		quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
 		
-		exercise = new EnumerationExercise("Geef een opsomming van de dagen van de week.","maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",new String[]{"-dag","7"},
-				1,30,Exercise.ExerciseCategory.NEDERLANDS,Teacher.BAKKER,quizzesList,new DateGC(2013,10,20));
+		exercise = new EnumerationExercise(3, "Geef een opsomming van de dagen van de week.",
+				"maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",new String[]{"-dag","7"},
+				1,30,Exercise.ExerciseCategory.NEDERLANDS,Teacher.BAKKER,quizExercisesList,
+				new DateGC(2013,10,20), 'E', true);
 		
 		testSplitCorrectAnswer = Arrays.asList("maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag","zondag");
 		
@@ -59,8 +62,8 @@ public class EnumerationExerciseTest {
 	
 	@Test
 	public void test_Constructor_Object_Is_Created() {
-		List<Quiz> quizzesList = new ArrayList<Quiz>();
-		quizzesList.add(new Quiz("whatabout",1,true,true));
+		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
+		quizExercisesList.add(new QuizExercise(2, new Quiz(), new EnumerationExercise()));
 		
 		assertEquals("Geef een opsomming van de dagen van de week.",exercise.getQuestion());
 		assertEquals("maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",exercise.getCorrectAnswer());
@@ -69,11 +72,14 @@ public class EnumerationExerciseTest {
 		assertEquals(30,exercise.getMaxAnswerTime());
 		assertEquals(Exercise.ExerciseCategory.NEDERLANDS,exercise.getCategory());
 		assertEquals(Teacher.BAKKER,exercise.getAuthor());
-		assertEquals(quizzesList,exercise.getQuizzes());
+		assertEquals(quizExercisesList,exercise.getQuizExercises());
 		assertEquals(new DateGC(2013,10,20),exercise.getDateRegistration());
 		
 		assertEquals(7, exercise.getNumberOfElements());
-		assertEquals(testSplitCorrectAnswer, exercise.getSplitCorrectAnswer());		
+		assertEquals(testSplitCorrectAnswer, exercise.getSplitCorrectAnswer());
+		
+		assertEquals('E', exercise.getDiscriminator());
+		assertEquals(true, exercise.getInCorrectOrder());
 	}
 
 	//tests for isCorrectAnswer(String answer)
@@ -100,22 +106,22 @@ public class EnumerationExerciseTest {
 	//tests for isCorrectOrder(String answer)
 	@Test
 	public void test_isCorrectOrder_correctAnswer_returnsTrue(){
-		assertTrue(exercise.inCorrectOrder(this.correctAnswer));
+		assertTrue(exercise.inCorrectOrderCheck(this.correctAnswer));
 	}
 	
 	@Test
 	public void test_isCorrectOrder_inCorrectAnswer_returnsFalse(){
-		assertTrue(exercise.inCorrectOrder(this.inCorrectAnswer));
+		assertTrue(exercise.inCorrectOrderCheck(this.inCorrectAnswer));
 	}
 		
 	@Test
 	public void test_isCorrectOrder_reverseOrderAnswer_returnsFalse(){
-		assertTrue(exercise.inCorrectOrder(this.reverseOrderAnswer));
+		assertTrue(exercise.inCorrectOrderCheck(this.reverseOrderAnswer));
 	}
 		
 	@Test (expected = IllegalArgumentException.class)
 	public void test_isCorrectOrder_invalidInput_throwsException(){
-		assertTrue(exercise.inCorrectOrder(null));
+		assertTrue(exercise.inCorrectOrderCheck(null));
 	}
 	
 	//test for isValide(String answer)

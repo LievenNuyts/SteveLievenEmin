@@ -1,5 +1,7 @@
 package model;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -47,6 +49,16 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	public void setInCorrectOrder(boolean inCorrectOrder){
 		this.inCorrectOrder = inCorrectOrder;
+	}
+	
+	//for testing purposes
+	public int getNumberOfElements(){
+		return this.numberOfElements;
+	}
+	
+	//for testing purposes
+	public List<String> getSplitCorrectAnswer(){
+		return this.splitCorrectAnswer;
 	}
 	
 	
