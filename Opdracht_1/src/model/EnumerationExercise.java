@@ -113,27 +113,17 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			throw new IllegalArgumentException("Geen antwoord gegeven!");
 		}
 		
-		int count = 0;
-				
-		//convert student answer string to ArrayList of strings (removing the ";")
-		splitStudentAnswer = Arrays.asList(answer.split(";"));
-				
-		if(splitCorrectAnswer.size() == splitStudentAnswer.size()){
-			
-			for(int i = 0; i < splitCorrectAnswer.size(); i++){
-						
-				if(splitStudentAnswer.get(i).toString() == splitCorrectAnswer.get(i).toString()){
-							
-					++count;
-				}
-			}
+		if(this.isCorrectAnswer(answer) == true){
 					
-			if(count == numberOfElements){			
+			//convert student answer string to ArrayList of strings (removing the ";")
+			splitStudentAnswer = Arrays.asList(answer.split(";"));			
+				
+			if(splitStudentAnswer.equals(splitCorrectAnswer)){
 				return true;
 			}
 		}
-							
-		return false;	
+		
+		return false;
 	}
 
 	
