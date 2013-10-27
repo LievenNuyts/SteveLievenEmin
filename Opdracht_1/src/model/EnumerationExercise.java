@@ -1,13 +1,9 @@
 package model;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import model.Exercise.ExerciseCategory;
 import utils.DateGC;
 
 public class EnumerationExercise extends Exercise implements Validatable{
@@ -81,6 +77,10 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	@Override
 	public boolean isCorrectAnswer(String answer) throws IllegalArgumentException{
 		
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
+		
 		//convert student answer string to ArrayList of strings (removing the ";")
 		splitStudentAnswer = Arrays.asList(answer.split(";"));
 		
@@ -109,18 +109,22 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	public boolean inCorrectOrderCheck(String answer) throws IllegalArgumentException{
 			
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
+		
 		int count = 0;
 				
 		//convert student answer string to ArrayList of strings (removing the ";")
 		splitStudentAnswer = Arrays.asList(answer.split(";"));
 				
 		if(splitCorrectAnswer.size() == splitStudentAnswer.size()){
-					
+			
 			for(int i = 0; i < splitCorrectAnswer.size(); i++){
 						
-				if(splitStudentAnswer.get(i) == splitCorrectAnswer.get(i)){
+				if(splitStudentAnswer.get(i).toString() == splitCorrectAnswer.get(i).toString()){
 							
-					count++;
+					++count;
 				}
 			}
 					

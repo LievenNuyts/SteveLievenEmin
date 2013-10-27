@@ -36,13 +36,14 @@ public class EnumerationExerciseTest {
 	private String inCorrectAnswer;
 	private String reverseOrderAnswer;
 	private String onlyOneAnswer;
+	@SuppressWarnings("unused")
 	private String duplicatesAnswer;
 	private String badFormattedAnswer;
 	
 	@Before
 	public void setUp() throws Exception{
 		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-		quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
+		quizExercisesList.add(new QuizExercise(2, new Quiz(), new EnumerationExercise()));
 		
 		exercise = new EnumerationExercise(3, "Geef een opsomming van de dagen van de week.",
 				"maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",new String[]{"-dag","7"},
@@ -90,7 +91,7 @@ public class EnumerationExerciseTest {
 	
 	@Test
 	public void test_isCorrectAnswer_inCorrectAnswer_returnsFalse(){
-		assertTrue(exercise.isCorrectAnswer(this.inCorrectAnswer));
+		assertFalse(exercise.isCorrectAnswer(this.inCorrectAnswer));
 	}
 	
 	@Test
@@ -100,7 +101,7 @@ public class EnumerationExerciseTest {
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_isCorrectAnswer_invalidInput_throwsException(){
-		assertTrue(exercise.isCorrectAnswer(null));
+		exercise.isCorrectAnswer(null);
 	}
 	
 	//tests for isCorrectOrder(String answer)
@@ -111,17 +112,17 @@ public class EnumerationExerciseTest {
 	
 	@Test
 	public void test_isCorrectOrder_inCorrectAnswer_returnsFalse(){
-		assertTrue(exercise.inCorrectOrderCheck(this.inCorrectAnswer));
+		assertFalse(exercise.inCorrectOrderCheck(this.inCorrectAnswer));
 	}
 		
 	@Test
 	public void test_isCorrectOrder_reverseOrderAnswer_returnsFalse(){
-		assertTrue(exercise.inCorrectOrderCheck(this.reverseOrderAnswer));
+		assertFalse(exercise.inCorrectOrderCheck(this.reverseOrderAnswer));
 	}
 		
-	@Test (expected = IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void test_isCorrectOrder_invalidInput_throwsException(){
-		assertTrue(exercise.inCorrectOrderCheck(null));
+		exercise.inCorrectOrderCheck(null);
 	}
 	
 	//test for isValide(String answer)
@@ -134,7 +135,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	public void test_isValide_inValidAnswer_returnsFalse(){
-		assertTrue(exercise.isValide(this.badFormattedAnswer));
+		assertFalse(exercise.isValide(this.badFormattedAnswer));
 	}
 	
 	public void test_isValide_singleAnswer_returnsTrue(){
