@@ -121,8 +121,8 @@ public class DateTest {
 	
 	@Test
 	public void test_differenceInYears_output_correct(){
-		date = new DateQuiz (day, month, year); //  24/12/2000	
-		DateQuiz testDatum = new DateQuiz (25, 12, 1998);
+		date = new DateQuiz (day, month, year); //  24/05/2000	
+		DateQuiz testDatum = new DateQuiz (25, 5, 1998);
 		int controleGetal = 1;
 		assertEquals(controleGetal, date.verschilInJaren(testDatum));
 	}

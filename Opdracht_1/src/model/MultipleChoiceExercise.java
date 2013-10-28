@@ -32,18 +32,22 @@ public class MultipleChoiceExercise extends Exercise {
                 this.multipleChoice = multipleChoice;
         }
         
-        public String getmultipleChoice() {
+        public String getMultipleChoice() {
                 return multipleChoice;
         }
 
-        public Map<Integer, String>  getLijstMeerkeuze(){
+        public Map<Integer, String>  getListMultipleChoice(){
                 String[] fields = this.multipleChoice.split(";");
+                
                 Map <Integer, String> list = new HashMap <Integer, String>();
+                
                 int i = 0;
+                
                 for (String multipleChoice : fields) {
                         i++;
                         list.put(i, multipleChoice);
                 }
+                
                 return list;
         }
 

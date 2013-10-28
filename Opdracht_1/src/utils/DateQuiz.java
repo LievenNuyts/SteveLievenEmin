@@ -195,34 +195,85 @@ public class DateQuiz implements Comparable<DateQuiz>{
 	public int verschilInJaren (DateQuiz d) throws Exception {
 		try {
 			int years = 0;
-			int monthX = this.month + this.day;
-			int monthY = d.month + d.day;
+			int dMonth = this.month + this.day;
+			int thisMonth = d.month + d.day;
 
 			if(d.smallerThan(this)){
 				years = this.year - d.year;
-				if (monthX < monthY && this.year != d.year){
+				if (dMonth < thisMonth && this.year != d.year){
+					years -= 1;
+				}
+			}
+			else{
+				years = d.year - this.year;
+				if ((thisMonth < dMonth && this.year != d.year) || (this.year!=d.year && this.month == d.month && d.day <this.day)){
 					years -= 1;
 				}
 			}
 			return years;
 
 
-		} catch (Exception e) {
-			// TODO: handle exception
+		} catch (Exception e) { 
+			throw new Exception(e.getMessage()); //d > this
 		}
-		//bepaalt het verschil in volledige jaren tussen datum d en huidig datumobject  (vb 01032007 en 03012009 -> 1 jaar)
-		return 0;
 	}
+		//bepaalt het verschil in volledige jaren tussen datum d en huidig datumobject  (vb 01032007 en 03012009 -> 1 jaar)
+
 	
-	public int verschilInMaanden (DateQuiz d) {
-		//: bepaalt het verschil in volledige maanden tussen datum d en huidig datumobject (vb 01032007 en 03012009 -> 22 maanden)
-		return 0;
+	public int verschilInMaanden (DateQuiz d) throws Exception {
+		try {
+            int months = 0;
+            int thisMonth = this.year * 12 + this.month;
+            int dMonth = d.year * 12 + d.month;
+            
+            if (thisMonth < dMonth) {
+            	months = dMonth - thisMonth;
+            }
+            else if (dMonth < thisMonth) {
+            	months = thisMonth - dMonth;
+            }
+            else {
+            	months = 0;
+            }
+            
+            return months;        
+		} catch (Exception e) { 
+			throw new Exception(e.getMessage()); //d > this
+		}
 	}
 	
 	public int verschilInDagen (DateQuiz d) {
-		//: bepaalt het verschil in dagen tussen datum d en huidig datumobject 
-		return 0;
-	}
+		int days = 0;
+        DateQuiz date1 = new DateQuiz();
+        DateQuiz date2 = new DateQuiz();
+        if(this.smallerThan(d)){
+                date1= this;
+                date2 = d;
+        }
+        else{
+                date1= d;
+                date2= this;
+        }
+        
+        while(!date1.equals(date2)){
+                days++;
+                if(date1.day == dagenPerMaand[date1.month]){
+                        date1.day=1;
+                        if(date1.month==12){
+                                date1.month=1;
+                                date1.year++;
+                        }
+                        else{
+                                date1.month++;
+                        }
+                }
+                else{
+                        date1.day++;
+                }
+        }
+        return days;
+}
+
 	
 	
 	public void veranderDatum (int aantalDagen) {
