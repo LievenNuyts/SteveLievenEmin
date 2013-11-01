@@ -3,8 +3,14 @@
  */
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import utils.DateGC;
 
 /**
  * 
@@ -72,6 +78,8 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		for (Exercise opdrachtCheck : exercises) {
 			if (opdrachtCheck.equals(exercise))throw new IllegalArgumentException("Opdracht bestaat al!");
 		}
+		
+		//exercise.setExerciseId();
 		exercises.add(exercise);
 	}
 	
@@ -98,6 +106,103 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		if (newExercise == null)throw new IllegalArgumentException("newOpdracht is null!");
 		int index = exercises.lastIndexOf(oldExercise);
 		exercises.set(index, newExercise);
+	}
+	
+	public void writeExercisesToFile(){
+		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
+		
+		try {
+			PrintWriter writer = new PrintWriter(file);
+			for (int i = 0;i < exercises.size();i++){
+				Exercise exercise = exercises.get(i);
+				String line = 
+						exercise.toString();
+				writer.println(line +"\n");
+			}
+			if (writer !=null)
+				writer.close();
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
+	public void readExercisesFromFile(){
+		  String output ="";
+		  File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
+		  try{
+			Scanner scanner = new Scanner(file);
+			while (scanner.hasNext()){
+		      
+			}
+			if (scanner!=null){
+			  scanner.close();
+			}
+			System.out.println(output);
+		  }
+		  catch(FileNotFoundException ex){
+		    System.out.println("Bestand niet gevonden!");
+		  }
+		  catch(Exception ex){
+		    System.out.println(ex.getMessage());
+		  }
+		}
+	
+	@SuppressWarnings("resource")
+	public static void main(String[] args) {
+		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
+		try {
+			
+			Exercise exercise12 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+					new DateGC(2013,10,1), 'S');
+			Exercise exercise22 = new SimpleExercise(2,"Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+					new DateGC(2013,10,1), 'S');
+			
+			Quiz quiz1 = new Quiz("Namen",3,false,false);
+			Quiz quiz2 = new Quiz("Landen",4,false,false);
+			
+			QuizExercise quizExercise = new QuizExercise(5,quiz1,exercise12);
+			QuizExercise quizExerciseEqual = new QuizExercise(5,quiz1,exercise12);
+			QuizExercise quizExerciseNotEqual = new QuizExercise(10,quiz2,exercise22);
+			
+			List<QuizExercise> qe = new ArrayList<QuizExercise>();
+			qe.add(quizExercise);
+			qe.add(quizExerciseNotEqual);
+			
+			Exercise exercise1 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
+					new DateGC(2013,10,1), 'S');
+			Exercise exercise2 = new SimpleExercise(2, "Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
+					new DateGC(2013,10,1), 'S');
+			Exercise exercise3 = new SimpleExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
+					new DateGC(2013,10,1), 'S'); 
+			
+			ExerciseCatalog ec = new ExerciseCatalog();
+			ec.addExercise(exercise1);
+			ec.addExercise(exercise2);
+			ec.addExercise(exercise3);
+			
+			ec.writeExercisesToFile();
+			
+		     Scanner s = new Scanner(file);
+		     s.skip("Exercise [getExerciseId()="); //!!!!!!!!!! [
+		     
+		     System.out.println(s.next());
+		     s.close();
+			
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	// Comparisons

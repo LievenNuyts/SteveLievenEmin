@@ -2,8 +2,8 @@
  * package for controllers
  * 
  * @author Emin
- * @author Jo
- * @author Nicolas
+ * @author Steve
+ * @author Lieven
  *
  */
 package controller;

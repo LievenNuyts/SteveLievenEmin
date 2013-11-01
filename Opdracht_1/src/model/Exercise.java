@@ -71,6 +71,29 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	}
 	
 	/**
+	 * Constructor with 7 params
+	 * 
+	 * @param question
+	 * @param correctAnswer
+	 * @param answerHints
+	 * @param maxNumberOfAttempts
+	 * @param maxAnswerTime
+	 */
+	public Exercise(String question,String correctAnswer,String[] answerHints,
+			int maxNumberOfAttempts,int maxAnswerTime,ExerciseCategory category,
+			Teacher author,DateGC dateRegistration,char discriminator) throws IllegalArgumentException{
+		this.setQuestion(question);
+		this.setCorrectAnswer(correctAnswer);
+		this.setAnswerHints(answerHints);
+		this.setMaxNumberOfAttempts(maxNumberOfAttempts);
+		this.setMaxAnswerTime(maxAnswerTime);
+		this.setCategory(category);
+		this.setAuthor(author);
+		this.setDateRegistration(dateRegistration);
+		this.setDiscriminator(discriminator);
+	}
+	
+	/**
 	 * Constructor with 9 params
 	 * 
 	 * @param question
