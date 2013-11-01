@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import utils.DateGC;
 
@@ -18,6 +19,12 @@ import utils.DateGC;
 public class MultipleChoiceExercise extends Exercise implements Validatable {
         
         String multipleChoice;
+        
+        //default constructor
+        
+        public MultipleChoiceExercise()throws IllegalArgumentException{
+        	
+        }
         
         //Constructor with multiple parameters
 
@@ -79,15 +86,13 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
     		if(answer == null){
     			throw new IllegalArgumentException("Geen antwoord gegeven!");
     		}
+    			
+    		if(answer.equals(correctAnswer)){
+    			return true;
+    		}
+    			
     		return false;
     	}
-    	
-    	@Override
-    	public boolean isValide(String answer) throws IllegalArgumentException{
-
-    			return false;
-    	}
-    	
     	
     	@Override
     	public String getValidateText() {
@@ -113,11 +118,44 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
     				+ ", MultipleChoice()=" + getMultipleChoice()
     				+ "]";
     	}
-
     	
+    	@Override
+        public boolean isValide(String answer) {
+                StringTokenizer given = new StringTokenizer(answer, ";");
+                StringTokenizer original = new StringTokenizer(this.getCorrectAnswer(), ";");
+                if (given.countTokens() == original.countTokens()){
+                        return true;
+                }else{
+                        getValidateText();
+                        return false;
+                }
+        }
 
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = super.hashCode();
+			result = prime
+					* result
+					+ ((multipleChoice == null) ? 0 : multipleChoice.hashCode());
+			return result;
+		}
 
-    	
-    	
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (!super.equals(obj))
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			MultipleChoiceExercise other = (MultipleChoiceExercise) obj;
+			if (multipleChoice == null) {
+				if (other.multipleChoice != null)
+					return false;
+			} else if (!multipleChoice.equals(other.multipleChoice))
+				return false;
+			return true;
+		}
 
 }

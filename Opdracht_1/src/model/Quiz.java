@@ -68,8 +68,7 @@ public class Quiz implements Comparable<Quiz>{
 	
 	@Override
 	public int compareTo(Quiz o) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getSubject().compareTo(o.getSubject());
 	}
 
 	@Override

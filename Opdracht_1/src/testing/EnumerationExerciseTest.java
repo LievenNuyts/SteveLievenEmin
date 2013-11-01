@@ -4,7 +4,7 @@ package testing;
  *  
  * @author Lieven
  * @version 19/10/2013
- *
+ * 
  */
 
 import static org.junit.Assert.*;
