@@ -41,7 +41,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	
 	private int exerciseId;
 	private String question;
-	private String correctAnswer;
+	protected String correctAnswer;
 	private String[] answerHints;
 	private int maxNumberOfAttempts;
 	private int maxAnswerTime;
@@ -308,7 +308,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	 */
 	public void setDiscriminator(char discriminator) throws IllegalArgumentException{
 		if (discriminator != 'S' && discriminator != 'E' 
-				&& discriminator != 'M')throw new IllegalArgumentException("Discriminator is verkeed ingevuld!");
+				&& discriminator != 'M')throw new IllegalArgumentException("Discriminator is verkeerd ingevuld!");
 		this.discriminator = discriminator;
 	}
 	

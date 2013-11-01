@@ -1,18 +1,27 @@
-package utils;
+package testing;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.After;
 
+import utils.DateQuiz;
+
+/**
+ * 
+ * @author Lieven
+ * @author Steve
+ *
+ */
 
 public class DateTest {
 
-	private Datum date;
+	private DateQuiz date;
 	private int day = 24;
-	private int month = 12;
+	private int month = 5;
 	private int year = 2000;
 
 	
@@ -21,43 +30,43 @@ public class DateTest {
 	@Test
 	public void test_setDatum_valid_value_accepted(){
 			
-		date = new Datum(day, month, year);
+		date = new DateQuiz(day, month, year);
 		assertTrue(date != null);
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDatum_tooLargeDayValue_notAccepted(){
 
-		day = 32;
-		date = new Datum(day, month, year);	
+		day = 54;
+		date = new DateQuiz(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDatum_tooSmallDayValue_notAccepted(){
 
 		day = 0;
-		date = new Datum(day, month, year);	
+		date = new DateQuiz(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDatum_tooLargeMonthValue_notAccepted(){
 
 		month = 13;
-		date = new Datum(day, month, year);	
+		date = new DateQuiz(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDatum_tooSmallMonthValue_notAccepted(){
 
 		month = 0;
-		date = new Datum(day, month, year);	
+		date = new DateQuiz(day, month, year);	
 	}
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_setDatum_tooLargeYearValue_notAccepted(){
 
 		year = 40000;
-		date = new Datum(day, month, year);		
+		date = new DateQuiz(day, month, year);		
 	}
 	
 	
@@ -66,17 +75,17 @@ public class DateTest {
 	@Test
 	public void test_getDateInAmericanFormat_successful(){
 		
-		date = new Datum(day, month, year);	
+		date = new DateQuiz(day, month, year);	
 		String american = Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day);
-		assertEquals(american, date.getDateInAmericanFormat());
+		assertEquals(american, date.getDatumInAmerikaansFormaat(date));
 	}
 	
 	@Test
 	public void test_getDateInEuropeanFormat_successful(){
 		
-		date = new Datum(day, month, year);	
+		date = new DateQuiz(day, month, year);	
 		String european = Integer.toString(day) + "/" + Integer.toString(month) + "/" + Integer.toString(year);
-		assertEquals(european, date.getDatumInEuropeesFormaat());
+		assertEquals(european, date.getDatumInEuropeesFormaat(date));
 	}
 	
 	
@@ -85,8 +94,9 @@ public class DateTest {
 	@Test
 	public void test_ToStringMethod_has_correct_representation(){
 		
-		String valueToTest = "24 december 2000";	
-		assertEquals(valueToTest, date.ToString());
+		date = new DateQuiz(day, month, year);	
+		String valueToTest = "24 mei 2000";	
+		assertEquals(valueToTest, date.toString2());
 	}
 
 	
@@ -94,37 +104,37 @@ public class DateTest {
 	
 	@Test
 	public void test_smallerThan_has_positive_result(){
-		Datum testDatum = new Datum (23, 12, 2000);
-		date = new Datum (day, month, year);	
-		assertTrue(datum.kleinerDan(testDatum));
+		DateQuiz testDatum = new DateQuiz (23, 12, 2000);
+		date = new DateQuiz (day, month, year);	
+		assertTrue(date.smallerThan(testDatum));
 	}
 	
 	@Test
 	public void test_smallerThan_has_negative_result(){
 		
-		Datum testDatum = new Datum (25, 12, 2000);
-		datum = new Datum (dag, maand, jaar);	
-		assertTrue(datum.kleinerDan(testDatum));
+		DateQuiz testDatum = new DateQuiz (25, 12, 2000);
+		date = new DateQuiz (day, month, year);	
+		assertTrue(date.smallerThan(testDatum));
 	}
 	
 //TEST VERSCHIL IN JAREN
 	
 	@Test
 	public void test_differenceInYears_output_correct(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000	
-		Datum testDatum = new Datum (25, 12, 1998);
+		date = new DateQuiz (day, month, year); //  24/05/2000	
+		DateQuiz testDatum = new DateQuiz (25, 5, 1998);
 		int controleGetal = 1;
-		assertEquals(controleGetal, datum.verschilInJaren(testDatum));
+		assertEquals(controleGetal, date.verschilInJaren(testDatum));
 	}
 		
 //TEST VERSCHIL IN MAANDEN
 	
 	@Test
 	public void test_differenceInMonths_output_correct(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000	
-		Datum testDatum = new Datum (25, 12, 1998);
+		date = new DateQuiz (day, month, year); //  24/12/2000	
+		DateQuiz testDatum = new DateQuiz (25, 12, 1998);
 		int controleGetal = 23;		
-		assertEquals(controleGetal, datum.verschilInMaanden(testDatum));
+		assertEquals(controleGetal, date.verschilInMaanden(testDatum));
 	}
 	
 	
@@ -132,36 +142,36 @@ public class DateTest {
 	
 	@Test
 	public void test_differenceInDays_output_correct(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000	
-		Datum testDatum = new Datum (25, 12, 1998);
+		date = new DateQuiz (day, month, year); //  24/12/2000	
+		DateQuiz testDatum = new DateQuiz (25, 12, 1998);
 		int controleGetal = 729;	
-		assertEquals(controleGetal, datum.verschilInDagen(testDatum));
+		assertEquals(controleGetal, date.verschilInDagen(testDatum));
 	}
 
 //TEST VERANDERDATUM
 	
 	@Test
 	public void test_changeDate_outputCorrect_inputCorrect(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000
-		datum.veranderDatum(3);	
-		assertEquals("27/12/2000", datum.getDatumInEuropessFormaat());
+		date = new DateQuiz (day, month, year); //  24/12/2000
+		date.veranderDatum(3);	
+		assertEquals("27/12/2000", date.getDatumInEuropeesFormaat());
 	}
 	
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_changeDate_Exception_if_inputIncorrect(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000
+		date = new DateQuiz (day, month, year); //  24/12/2000
 		//datum.veranderDatum(p);		
 	}
 	
 //TEST NIEUWE DATUM
 
 	public void test_dateChangeDate_outputCorrect(){
-		datum = new Datum (dag, maand, jaar); //  24/12/2000
-		Datum testDate1 = datum;
-		Datum testDate2 = datum.veranderDatum2(3);
+		date = new DateQuiz (day, month, year); //  24/12/2000
+		DateQuiz testDate1 = date;
+		DateQuiz testDate2 = date.veranderDatum2(3);
 		
-		assertTrue(datum == testDate1 && datum != testDate2);
+		assertTrue(date == testDate1 && date != testDate2);
 	}
 	
 }
