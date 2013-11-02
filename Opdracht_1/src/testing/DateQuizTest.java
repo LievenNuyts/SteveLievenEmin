@@ -66,8 +66,8 @@ public class DateQuizTest {
 	//setDay(int)
 	@Test
 	public void test_setDay_valid_Value_Accepted(){
-		date.setDay(validDay);
-		assertEquals(validDay, date.getDay());
+		date.setDay(10);
+		assertEquals(10, date.getDay());
 	}
 		
 	@Test(expected = IllegalArgumentException.class)
@@ -83,8 +83,8 @@ public class DateQuizTest {
 	//setMonth(int)
 	@Test
 	public void test_setMonth_valid_Value_Accepted(){
-		date.setMonth(validMonth);
-		assertEquals(validMonth, date.getMonth());
+		date.setMonth(10);
+		assertEquals(10, date.getMonth());
 	}
 		
 	@Test(expected = IllegalArgumentException.class)
@@ -100,8 +100,9 @@ public class DateQuizTest {
 	//setYear(int)
 	@Test
 	public void test_setYear_valid_Value_Accepted(){
-		date.setYear(validYear);
-		assertEquals(validYear, date.getYear());
+		date.setYear(2000);
+		assertEquals(2000, date.getYear());
+		date.setDatum(equalDate); //reset to original date
 	}
 			
 	@Test(expected = IllegalArgumentException.class)
