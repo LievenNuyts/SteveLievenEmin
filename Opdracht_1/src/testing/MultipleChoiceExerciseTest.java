@@ -1,23 +1,21 @@
 package testing;
 
 /**
- *  
- * @author Lieven
- * @version 19/10/2013
+ * 
+ * @author Steve
+ * @version 1/11/2013
  * 
  */
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import model.EnumerationExercise;
 import model.Exercise;
+import model.MultipleChoiceExercise;
 import model.Quiz;
 import model.QuizExercise;
-import model.SimpleExercise;
 import model.Teacher;
 
 import org.junit.Before;
@@ -25,82 +23,57 @@ import org.junit.Test;
 
 import utils.DateGC;
 
+public class MultipleChoiceExerciseTest {
 
-public class EnumerationExerciseTest {
-
-	
-	private EnumerationExercise exercise, exerciseEqual, exerciseNotEqual;
-	private List<String> testSplitCorrectAnswer;
+	private MultipleChoiceExercise exercise;
 	
 	private String correctAnswer;
-	private String inCorrectAnswer;
-	private String reverseOrderAnswer;
-	private String onlyOneAnswer;
-	@SuppressWarnings("unused")
-	private String duplicatesAnswer;
-	private String badFormattedAnswer;
+	private String incorrectAnswer;
+	private String multipleChoice;
+
 	
 	@Before
 	public void setUp() throws Exception{
 		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-		quizExercisesList.add(new QuizExercise(2, new Quiz(), new EnumerationExercise()));
+		quizExercisesList.add(new QuizExercise(2, new Quiz(), new MultipleChoiceExercise()));
 		
-		//initializeren van de te testen enumExercises
-		exercise = new EnumerationExercise(3, "Geef een opsomming van de dagen van de week.",
-				"maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",new String[]{"-dag","7"},
-				1,30,Exercise.ExerciseCategory.NEDERLANDS,Teacher.BAKKER,quizExercisesList,
-				new DateGC(2013,10,20), 'E', true);
+		exercise = new MultipleChoiceExercise(4, "Which day follows friday?","Saturday", new String[]{"First day of the weekend.","Named after Saturn."},
+				1, 30, Exercise.ExerciseCategory.NEDERLANDS, Teacher.BAKKER, quizExercisesList,
+				new DateGC(2013,10,20), 'E', "1.2.3.4");
 		
-		exerciseEqual = new EnumerationExercise(3, "Geef een opsomming van de dagen van de week.",
-				"maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",new String[]{"-dag","7"},
-				1,30,Exercise.ExerciseCategory.NEDERLANDS,Teacher.BAKKER,quizExercisesList,
-				new DateGC(2013,10,20), 'E', true);
 		
-		exerciseNotEqual = new EnumerationExercise(2, "Geef de maanden in een jaar.",
-				"januari;februari;maart;april;mei;juni;juli;augustus;september;oktober;november;december",new String[]{"-dag","7"},
-				1,30,Exercise.ExerciseCategory.NEDERLANDS,Teacher.BAKKER,quizExercisesList,
-				new DateGC(2013,10,20), 'E', false);
-		
-		testSplitCorrectAnswer = Arrays.asList("maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag","zondag");
-		
-		//initializeren verschillende antwoorden
-		correctAnswer = "maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag";
-		inCorrectAnswer = "maandag;king kong;woensdag;vader Abraham;vrijdag;zaterdag;zondag";
-		reverseOrderAnswer = "dinsdag;maandag;woensdag;donderdag;vrijdag;zondag;zaterdag";
-		onlyOneAnswer = "dinsdag";
-		duplicatesAnswer = "maandag;maandag;woensdag;donderdag;donderdag;zaterdag;zondag";
-		badFormattedAnswer = "maandag,dinsdag,woensdag,donderdag,vrijdag,zaterdag,zondag";
+		correctAnswer = "Saturday";
+		incorrectAnswer = "Monday";
+		multipleChoice = "1.2.3.4";
 	}
 	
 	
 	@Test
 	public void test_Constructor_Object_Is_Created() {
 		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-		quizExercisesList.add(new QuizExercise(2, new Quiz(), new EnumerationExercise()));
+		quizExercisesList.add(new QuizExercise(2, new Quiz(), new MultipleChoiceExercise()));
 		
-		assertEquals("Geef een opsomming van de dagen van de week.",exercise.getQuestion());
-		assertEquals("maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag",exercise.getCorrectAnswer());
-		assertArrayEquals(new String[]{"-dag","7"},exercise.getAnswerHints());
-		assertEquals(1,exercise.getMaxNumberOfAttempts());
-		assertEquals(30,exercise.getMaxAnswerTime());
-		assertEquals(Exercise.ExerciseCategory.NEDERLANDS,exercise.getCategory());
-		assertEquals(Teacher.BAKKER,exercise.getAuthor());
-		assertEquals(quizExercisesList,exercise.getQuizExercises());
-		assertEquals(new DateGC(2013,10,20),exercise.getDateRegistration());
-		
-		assertEquals(7, exercise.getNumberOfElements());
-		assertEquals(testSplitCorrectAnswer, exercise.getSplitCorrectAnswer());
-		
+		assertEquals("Which day follows friday?", exercise.getQuestion());
+		assertEquals("Saturday",exercise.getCorrectAnswer());
+		assertArrayEquals(new String[]{"First day of the weekend.","Named after Saturn."}, exercise.getAnswerHints());
+		assertEquals(1, exercise.getMaxNumberOfAttempts());
+		assertEquals(30, exercise.getMaxAnswerTime());
+		assertEquals(Exercise.ExerciseCategory.NEDERLANDS, exercise.getCategory());
+		assertEquals(Teacher.BAKKER, exercise.getAuthor());
+		assertEquals(quizExercisesList, exercise.getQuizExercises());
+		assertEquals(new DateGC(2013,10,20), exercise.getDateRegistration());
 		assertEquals('E', exercise.getDiscriminator());
-		assertEquals(true, exercise.getInCorrectOrder());
+		assertEquals(multipleChoice, exercise.getMultipleChoice());
 	}
 
-	//TESTS FOR SETTERS
-	// setExerciseId
+	//Setters
+	
+	//setExercise ID
+	
 	@Test
 	public void test_setExerciseId_Valid_Value_Is_Accepted() {
-		exercise.setExerciseId(3);
-		assertEquals(3, exercise.getExerciseId());
+		exercise.setExerciseId(5);
+		assertEquals(5, exercise.getExerciseId());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -114,6 +87,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	// setQuestion
+	
 	@Test
 	public void test_setQuestion_Valid_Value_Is_Accepted() {
 		exercise.setQuestion("Hoofdstad van Nederland?");
@@ -131,6 +105,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	// setCorrectAnswer
+	
 	@Test
 	public void test_setCorrectAnswer_Valid_Value_Is_Accepted() {
 		exercise.setCorrectAnswer("Amsterdam");
@@ -148,6 +123,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	// setCategorie
+	
 	@Test
 	public void test_setCategorie_Valid_Value_Is_accepted() {
 		exercise.setCategory(Exercise.ExerciseCategory.WETENSCHAPPEN);
@@ -161,6 +137,7 @@ public class EnumerationExerciseTest {
 	
 	
 	// setAuteur
+	
 	@Test
 	public void test_setAuthor_Valid_Value_Is_Accepted() {
 		exercise.setAuthor(Teacher.JACOBS);
@@ -173,6 +150,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	//setAnswerHints
+	
 	@Test
 	public void test_setAnswerHints_Valid_Value_Is_Accepted() {
 		exercise.setAnswerHints(new String[]{"Groot, Parlement"});
@@ -185,6 +163,7 @@ public class EnumerationExerciseTest {
 	}
 	
 	//setQuizen
+	
 	@Test
 	public void test_setQuizExercises_Valid_Value_Is_Accepted() {
 		exercise.setQuizExercises(new ArrayList<QuizExercise>());
@@ -258,38 +237,13 @@ public class EnumerationExerciseTest {
 	
 	@Test
 	public void test_isCorrectAnswer_inCorrectAnswer_returnsFalse(){
-		assertFalse(exercise.isCorrectAnswer(this.inCorrectAnswer));
+		assertFalse(exercise.isCorrectAnswer(this.incorrectAnswer));
 	}
-	
-	@Test
-	public void test_isCorrectAnswer_reverseOrderAnswer_returnsTrue(){
-		assertTrue(exercise.isCorrectAnswer(this.reverseOrderAnswer));
-	}
+
 	
 	@Test (expected = IllegalArgumentException.class)
 	public void test_isCorrectAnswer_invalidInput_throwsException(){
 		exercise.isCorrectAnswer(null);
-	}
-	
-	//tests for isCorrectOrder(String answer)
-	@Test
-	public void test_isCorrectOrder_correctAnswer_returnsTrue(){
-		assertTrue(exercise.inCorrectOrderCheck(this.correctAnswer));
-	}
-	
-	@Test
-	public void test_isCorrectOrder_inCorrectAnswer_returnsFalse(){
-		assertFalse(exercise.inCorrectOrderCheck(this.inCorrectAnswer));
-	}
-		
-	@Test
-	public void test_isCorrectOrder_reverseOrderAnswer_returnsFalse(){
-		assertFalse(exercise.inCorrectOrderCheck(this.reverseOrderAnswer));
-	}
-		
-	@Test(expected = IllegalArgumentException.class)
-	public void test_isCorrectOrder_invalidInput_throwsException(){
-		exercise.inCorrectOrderCheck(null);
 	}
 	
 	//test for isValide(String answer)
@@ -298,43 +252,6 @@ public class EnumerationExerciseTest {
 	}
 	
 	public void test_isValide_validInCorrectAnswer_returnsTrue(){
-		assertTrue(exercise.isValide(this.inCorrectAnswer));
+		assertTrue(exercise.isValide(this.incorrectAnswer));
 	}
-	
-	public void test_isValide_inValidAnswer_returnsFalse(){
-		assertFalse(exercise.isValide(this.badFormattedAnswer));
-	}
-	
-	public void test_isValide_singleAnswer_returnsTrue(){
-		assertTrue(exercise.isValide(this.onlyOneAnswer));
-	}	
-	
-	//test for equals
-	
-	@Test
-	public void test_Equals_True_If_Exercises_Equal() {
-		assertTrue(exerciseEqual.equals(exercise));
-		assertTrue(exercise.equals(exerciseEqual));
-	}
-	
-	@Test
-	public void test_Equals_False_If_Exercises_Not_Equal() {
-		assertFalse(exerciseEqual.equals(exerciseNotEqual));
-	}
-	
-	
-	//test for hashcode
-	
-	@Test
-	public void test_Equals_True_If_HashCodes_Equal() {
-		assertTrue(exercise.hashCode() == exerciseEqual.hashCode());
-	}
-	
-	@Test
-	public void test_Equals_False_If_HashCodes_Not_Equal() {
-		assertFalse(exerciseEqual.hashCode() == exerciseNotEqual.hashCode());
-	}
-	
-	
-	//test for clone
 }

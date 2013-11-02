@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import model.Teacher;
 import utils.DateQuiz;
 /**
@@ -48,7 +46,12 @@ public class Quiz implements Comparable<Quiz>{
 	
 	public Quiz()throws IllegalArgumentException
 	{
-		subject = "subject";	
+		this.subject = "subject";	
+	}
+	
+	public Quiz(String subject)throws IllegalArgumentException
+	{
+		this.subject =  subject;
 	}
 	
 	//constructor with 4 parameters
@@ -65,8 +68,7 @@ public class Quiz implements Comparable<Quiz>{
 	
 	@Override
 	public int compareTo(Quiz o) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getSubject().compareTo(o.getSubject());
 	}
 
 	@Override
@@ -126,7 +128,7 @@ public class Quiz implements Comparable<Quiz>{
             String quizSummary = "";
             quizSummary += "\nQuiz : " + subject
             				+ "\nYears: " + leerJaren
-                            + "\nDate: " + date.getDatumInEuropeesFormaat()
+                            + "\nDate: " + date.getDatumInEuropeesFormaat(date)
                             + "\nCreated by: " + teacher 
                             + "\n" + quizText 
                             + "\nStatus: " + status;

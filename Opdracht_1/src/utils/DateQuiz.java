@@ -175,7 +175,7 @@ public class DateQuiz implements Comparable<DateQuiz>{
 				dateQuiz.getDay(),dateQuiz.getMonth(),dateQuiz.getYear());
 	}
 	
-	
+	/**
 	public DateQuiz verschilInTijd (DateQuiz datum){
 	int days = Math.abs(this.getDateInDays() - datum.getDateInDays());
 	return new DateQuiz(days);
@@ -184,6 +184,7 @@ public class DateQuiz implements Comparable<DateQuiz>{
 	private int getDateInDays(){
 		return 0;
 	}
+	*/
 
 	public boolean smallerThan (DateQuiz datum){
 		//bepaalt of een 'Datum datum' object kleiner is dan huidig datumobject
@@ -202,20 +203,20 @@ public class DateQuiz implements Comparable<DateQuiz>{
 			if(d.smallerThan(this)){
 				years = this.year - d.year;
 				if (dMonth < thisMonth && this.year != d.year){
-					years -= 1;
+					years--;
 				}
 			}
 			else{
 				years = d.year - this.year;
 				if ((thisMonth < dMonth && this.year != d.year) || (this.year!=d.year && this.month == d.month && d.day <this.day)){
-					years -= 1;
+					years--;
 				}
 			}
 			return years;
 
 
 		} catch (Exception e) { 
-			throw new Exception(e.getMessage()); //d > this
+			throw new Exception("Error! " + e.getMessage()); //
 		}
 	}
 		//bepaalt het verschil in volledige jaren tussen datum d en huidig datumobject  (vb 01032007 en 03012009 -> 1 jaar)
@@ -275,19 +276,88 @@ public class DateQuiz implements Comparable<DateQuiz>{
         return days;
 }
 
+	//verhoogt of verlaagt de datum met een aantal dagen
 	
-	
-	public void veranderDatum (int aantalDagen) {
-		//: verhoogt of verlaagt de datum met een aantal dagen
+	public void veranderDatum (int nDays) {
+		while(nDays > 0){
+
+            if(this.day == dagenPerMaand[month]){
+                    this.day = 1;
+                    if(this.month == 12){
+                            this.month = 1;
+                            this.year++;
+                    }
+                    else{
+                            this.month++;
+                    }
+            }
+            else{
+                    this.day++;
+            }
+            nDays--;
     }
-    public DateQuiz veranderDatum2 (int aantalDagen) {
-    	DateQuiz datum = new DateQuiz();
-		//: geeft een niew Datum object terug dat gelijk is aan het originele datum object verhoogt of verlaagt met een aantal dagen.
-		return datum;
+    while(nDays < 0){
+            if(this.day == 1){
+                    if(this.month == 1){
+                            this.year--;
+                            this.month = 12;
+                    }
+                    else{
+                            this.month--;
+                    }
+                    day = dagenPerMaand[month];
+            }
+            else{
+                    this.day--;
+            }
+            nDays++;
+    }
+
+
+    }
+	
+	//geeft een niew Datum object terug dat gelijk is aan het originele datum object verhoogt of verlaagt met een aantal dagen
+	
+    public DateQuiz veranderDatum2 (int nDays) {
+    	DateQuiz date = this;
+        while(nDays > 0){
+
+                if(date.day == dagenPerMaand[date.month]){
+                	date.day = 1;
+                        if(date.month == 12){
+                        	date.month = 1;
+                        	date.year++;
+                        }
+                        else{
+                        	date.month++;
+                        }
+                }
+                else{
+                	date.day++;
+                }
+                nDays--;
+        }
+        while(nDays < 0){
+                if(date.day == 1){
+                        if(date.month == 1){
+                        	date.year--;
+                        	date.month = 12;
+                        }
+                        else{
+                        	date.month--;
+                        }
+                        day = dagenPerMaand[date.month];
+                }
+                else{
+                	date.day--;
+                }
+                nDays++;
+        }
+                return date;
 	}
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		try 
 		{
 			//datum met integers
@@ -303,7 +373,7 @@ public class DateQuiz implements Comparable<DateQuiz>{
 			System.out.println(d3.toString2());
 			
 			//datum op basis van string
-			DateQuiz d4 = new DateQuiz("3/02/2000");
+			DateQuiz d4 = new DateQuiz("5/02/2000");
 			System.out.println(d4);
 			
 			DateQuiz d5 = new DateQuiz("21/02/2010");
@@ -320,6 +390,13 @@ public class DateQuiz implements Comparable<DateQuiz>{
 			DateQuiz date = new DateQuiz(day, month, year);
 			System.out.println(date);
 			System.out.println(date.getDatumInAmerikaansFormaat(date));
+			
+			int verschil = d4.verschilInJaren(d5);
+			System.out.println(verschil);
+			
+			System.out.println(d4);
+			d4.veranderDatum(5);
+			System.out.println(d4);
 			
 		}
 		catch (IllegalArgumentException ex){System.out.println(ex.getMessage());}
