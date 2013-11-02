@@ -1,7 +1,9 @@
 package model;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import utils.DateGC;
@@ -18,7 +20,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	private List<String> splitCorrectAnswer;
 	private List<String> splitStudentAnswer;
 	private int numberOfElements;
-	private boolean inCorrectOrder;
+	private boolean inCorrectOrder; //true if answer needs to be in the correct order
 	
 	public EnumerationExercise()throws IllegalArgumentException{}
 	
@@ -56,22 +58,6 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	public List<String> getSplitCorrectAnswer(){
 		return this.splitCorrectAnswer;
 	}
-	
-	
-	@Override
-	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException{
-		if (correctAnswer == null){
-			throw new IllegalArgumentException("Juiste antwoord is null!");
-		}
-		if (correctAnswer.isEmpty()){
-			throw new IllegalArgumentException("Gelieve een antwoord in te vullen!");
-		}
-		
-		this.correctAnswer = correctAnswer;
-		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
-		this.numberOfElements = splitCorrectAnswer.size();	
-	}
-	
 	
 	
 	@Override
@@ -196,6 +182,8 @@ public class EnumerationExercise extends Exercise implements Validatable{
 				+ ", inCorrectOrder()=" + getInCorrectOrder()
 				+ "]";
 	}
+	
+	
 
 	
 	@Override
@@ -240,5 +228,23 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		} else if (!splitStudentAnswer.equals(other.splitStudentAnswer))
 			return false;
 		return true;
+	}
+	
+	
+	@Override
+	public Exercise clone() throws CloneNotSupportedException{
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.set(getDateRegistration().getGregCal().get(Calendar.YEAR), 
+				getDateRegistration().getGregCal().get(Calendar.MONTH), 
+				getDateRegistration().getGregCal().get(Calendar.DATE));
+		
+		DateGC date = new DateGC();
+		date.setGregCal(gc);
+		
+		EnumerationExercise exercise = new EnumerationExercise(getExerciseId(), getQuestion(), getCorrectAnswer(), 
+				getAnswerHints(), getMaxNumberOfAttempts(), getMaxAnswerTime(), getCategory(), 
+				getAuthor(), getQuizExercises(), date, getDiscriminator(), getInCorrectOrder());
+		
+		return exercise;
 	}
 }
