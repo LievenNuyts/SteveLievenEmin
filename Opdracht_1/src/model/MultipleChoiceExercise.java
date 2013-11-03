@@ -1,10 +1,12 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.util.Scanner;
 
 import utils.DateGC;
 
@@ -12,7 +14,7 @@ import utils.DateGC;
 /**
  * 
  * @author Steve
- * @version 25/10
+ * @version 25/10/2013
  *
  */
 
@@ -65,6 +67,24 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
                 
                 return list;
         }
+        
+        /**
+        public HashMap<String, ArrayList<String>> getListMultipleChoice2(){
+        	HashMap<String,ArrayList<String>> myHashMap = new HashMap<String,ArrayList<String>>();
+            ArrayList<String> correctAnswer = new ArrayList<String>(); // will keeps the correct answer of each question
+            Scanner scan = new Scanner();
+			while(scan.hasNext()){
+                String question = scan.nextLine();
+                String line = scan.nextLine();
+                ArrayList<String> answers = new ArrayList<String>();
+                while(line.length()!=0){ // if length == 0 that means we found space!
+                    answers.add(line);
+                    line = scan.nextLine();
+                }
+                myHashMap.put(question,answers);  // we put all the question with the answers in HashMap
+            }
+        }
+        */
         
         @Override
     	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException{
