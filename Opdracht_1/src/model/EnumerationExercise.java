@@ -120,25 +120,32 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			throw new IllegalArgumentException("Geen antwoord gegeven!");
 		}
 		
+		//if number of elements in correct answer and studentanswer is not the same
+				if(this.numberOfElements != this.elementCounter(answer)){return false;}
+		
 		//check for invalid characters
 		if(answerContainsInvalidChar(answer, "_") || answerContainsInvalidChar(answer, ",") || 
 				answerContainsInvalidChar(answer, ".") || answerContainsInvalidChar(answer, "-") || 
 				answerContainsInvalidChar(answer, "/") || answerContainsInvalidChar(answer, "\\")){
 			return false;
 		}
-			
-		//if answer does not contain ";"
-		if(!answer.contains(";")){
-			
-			//check for single element correct answer
-			if(splitCorrectAnswer.contains(answer)){
-				return true;
-			}
 				
-			return false;
+		return true;
+	}
+	
+	//method to determine how many elements were given in an answer
+	private int elementCounter(String answer){
+		
+		int counter = 0;
+		
+		for(int i = 0; i < answer.length() ; i++){
+				
+				if( answer.charAt(i) == ';' ) {
+			        counter++;
+			    } 
 		}
 		
-		return true;
+		return counter + 1; //+1 because number of elements will be one more than number of ';'
 	}
 	
 	//method returns true if answer contains a char that is not in of the elements
@@ -164,16 +171,16 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	@Override
 	public String getValidateText() {
+	
+		String correctOrderOrNot = "in de juiste volgorde en";
+		String element = "elementen";
 		
-		String correctOrderOrNot = "in de juiste volgorde ";
+		if(this.inCorrectOrder == false){correctOrderOrNot = "";}
 		
-		if(this.inCorrectOrder == false){
-			correctOrderOrNot = "";
-		}
+		if(this.numberOfElements == 1){element = "element";}
 		
-		
-		return "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven. "
-				+ "Dit antwoord bevat x elementen.";
+		return String.format("Gelieve de antwoorden %s gescheiden door een ; in te geven. \nDit antwoord bevat %d %s.", 
+				correctOrderOrNot, this.numberOfElements, element);
 	}
 	
 	
