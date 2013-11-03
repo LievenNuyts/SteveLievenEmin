@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import model.Teacher;
+import utils.DateGC;
 import utils.DateQuiz;
 /**
  * 
@@ -34,13 +35,13 @@ enum QuizStatus {
 
 public class Quiz implements Comparable<Quiz>{
 	
-	String subject = "";
-	int leerJaren = 0;
-	QuizStatus status;
-	Teacher teacher;
-	DateQuiz date;
-	boolean isUniqueParticipation;
-	boolean isTest;
+	private String subject = "";
+	private int leerJaren = 0;
+	private QuizStatus status;
+	private Teacher teacher;
+	private DateGC date;
+	private boolean isUniqueParticipation;
+	private boolean isTest;
 	private ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>();
 	
 	
@@ -126,7 +127,7 @@ public class Quiz implements Comparable<Quiz>{
             String quizSummary = "";
             quizSummary += "\nQuiz : " + subject
             				+ "\nYears: " + leerJaren
-                            + "\nDate: " + date.getDatumInEuropeesFormaat()
+//                            + "\nDate: " + date.getDateInEuropeanFormat()
                             + "\nCreated by: " + teacher 
                             + "\n" + quizText 
                             + "\nStatus: " + status;
@@ -168,11 +169,11 @@ public class Quiz implements Comparable<Quiz>{
 		this.teacher = teacher;
 	}
 
-	public DateQuiz getDate() {
+	public DateGC getDate() {
 		return date;
 	}
 
-	public void setDate(DateQuiz date) {
+	public void setDate(DateGC date) {
 		this.date = date;
 	}
 

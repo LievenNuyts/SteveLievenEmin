@@ -6,10 +6,13 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import model.Exercise.ExerciseCategory;
 import utils.DateGC;
 
 /**
@@ -75,11 +78,19 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 	 */
 	public void addExercise(Exercise exercise) throws IllegalArgumentException{
 		if (exercise == null)throw new IllegalArgumentException("Opdracht is null!");
-		for (Exercise opdrachtCheck : exercises) {
-			if (opdrachtCheck.equals(exercise))throw new IllegalArgumentException("Opdracht bestaat al!");
+		for (Exercise eCheck : exercises) {
+			if (eCheck.equals(exercise))throw new IllegalArgumentException("Opdracht bestaat al!");
+		}
+		// Set exerciseId
+		if (exercises.size() >0)
+		{
+			Exercise tempEx = exercises.get(exercises.size()-1);
+			exercise.setExerciseId(tempEx.getExerciseId()+2);
+		}
+		else{
+			exercise.setExerciseId(1);
 		}
 		
-		//exercise.setExerciseId();
 		exercises.add(exercise);
 	}
 	
@@ -108,62 +119,193 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		exercises.set(index, newExercise);
 	}
 	
+	/**
+	 * Create a new file named exercises.txt and adds all exercises from exercises list
+	 */
 	public void writeExercisesToFile(){
+		// Create new file
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		
 		try {
+			// Create new writer
 			PrintWriter writer = new PrintWriter(file);
+			
+			// Loop through exercises
 			for (int i = 0;i < exercises.size();i++){
 				Exercise exercise = exercises.get(i);
+				
+				// Line that will be saved in the file per(per exercises)
 				String line = 
-						exercise.toString();
-				writer.println(line +"\n");
+						exercise.getDiscriminator() + " ; " + exercise.getQuestion() +
+						" ; " + exercise.getCorrectAnswer() + " ; " + Arrays.toString(exercise.getAnswerHints()) + " ; " + exercise.getAuthor() +
+						" ; " + exercise.getCategory() + " ; " + exercise.getMaxAnswerTime() + " ; " + exercise.getMaxNumberOfAttempts() +
+						" ; " + exercise.getDateRegistration();
+				
+				// Check type of exercises with discriminator
+				switch (exercise.getDiscriminator()){
+					case 'S':
+						writer.println(line);
+						break;
+					case 'E':
+						EnumerationExercise eExercise = (EnumerationExercise)exercise;
+						line += " ; " + eExercise.getInCorrectOrder();
+						writer.println(line);
+						break;
+					case 'M':
+						MultipleChoiceExercise mExercise = (MultipleChoiceExercise)exercise;
+						line += " ; " + mExercise.getMultipleChoice();
+						writer.println(line);
+						break;
+					}
+				
+				// Reset line
+				line ="";
 			}
+			
+			// Clone writer
 			if (writer !=null)
 				writer.close();
-		} catch (Exception e) {
+			
+		} catch (FileNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	
+	/**
+	 * Read exercises from file and put them in exercises list
+	 */
 	public void readExercisesFromFile(){
-		  String output ="";
-		  File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
-		  try{
+		// Get exercises.txt file
+		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
+	 
+		try{
+			// Scan through file
 			Scanner scanner = new Scanner(file);
-			while (scanner.hasNext()){
-		      
+			
+			List<String> tempExercises = new ArrayList<String>();
+			
+			// Add each line as String object to tempExercises list
+			while (scanner.hasNextLine()){
+			  tempExercises.add(scanner.nextLine());
 			}
+
 			if (scanner!=null){
 			  scanner.close();
 			}
-			System.out.println(output);
+			
+			// Counter to assign exerciseId
+			int count = 1;
+			
+			// Loop through each String object in tempExercises
+			for (int i = 0; i <= tempExercises.size(); i++) {
+				Scanner scanner2 = new Scanner(tempExercises.get(i));
+				scanner2.useDelimiter("\\s*;\\s*");
+				
+				String descriminator = scanner2.next();
+				
+				// Create corresponding exercise based on discriminator
+				Exercise ex = (descriminator.equals("S")) ? new SimpleExercise() :
+					(descriminator.equals("M")) ? new MultipleChoiceExercise() : new EnumerationExercise();
+				
+				// Add parameters
+				ex.setExerciseId(count);
+				ex.setDiscriminator(descriminator.charAt(0));
+				ex.setQuestion(scanner2.next());
+				ex.setCorrectAnswer(scanner2.next());
+				
+				// Add anwserHints from scanner2.next to tempS
+				String tempS = scanner2.next();
+				// Remove square brackets
+				tempS = tempS.replaceAll("\\[", "").replaceAll("\\]","");
+				// Scan through
+				Scanner scanner3 = new Scanner(tempS);
+			    scanner3.useDelimiter("\\s*,\\s*");
+				// Temporary answerHints list 
+				List<String> tempHints = new ArrayList<String>();
+				// Add each String to temporary answerHints list
+				while (scanner3.hasNext()){
+					tempHints.add(scanner3.next());
+				}
+				if (scanner3!=null){
+					scanner3.close();
+				}
+				// Add result to answerHints parameter
+				ex.setAnswerHints(tempHints.toArray(new String[tempHints.size()]));
+				
+				ex.setAuthor(Teacher.valueOf(scanner2.next().toUpperCase()));
+				ex.setCategory(ExerciseCategory.valueOf(scanner2.next().toUpperCase()));
+				ex.setMaxAnswerTime(scanner2.nextInt());
+				ex.setMaxNumberOfAttempts(scanner2.nextInt());
+				
+				String[] monthNames = {"januari", "februari", "maart", "april", "mei", "juni",
+						"juli", "augustus", "september", "oktober", "november", "december"};
+				// Scan through scanner2.next() which is date
+				Scanner scannerDate = new Scanner(scanner2.next());
+				int counter = 0;
+				int day = scannerDate.nextInt();
+				String monthS = scannerDate.next();
+				int month = 0;
+				// Loop through month list
+				for (String temp : monthNames){
+					counter++;
+					if (monthS.equals(temp)){
+						month = counter;
+					}
+				}
+				int year = scannerDate.nextInt();
+				if (scannerDate!=null){
+					scannerDate.close();
+				}
+				// Add result to dateRegistration parameter
+				ex.setDateRegistration(new DateGC(year, month, day));
+				
+				// Add to exercises based on corresponding subclass
+				if (descriminator.equals("S")){
+					SimpleExercise exS = (SimpleExercise)ex;
+					exercises.add(exS);
+				}
+				if (descriminator.equals("M")){
+					MultipleChoiceExercise exM = (MultipleChoiceExercise)ex;
+					exM.setMultipleChoice(scanner2.next());
+					exercises.add(exM);
+				}
+				if (descriminator.equals("E")){
+					EnumerationExercise exE = (EnumerationExercise)ex;
+					exE.setInCorrectOrder(false);
+					exercises.add(exE);
+				}
+				System.out.println(scanner2.next());
+				if (scanner2!=null){
+					scanner2.close();
+				}
+				count++;
+				System.out.println(ex.toString());
+			}
 		  }
 		  catch(FileNotFoundException ex){
-		    System.out.println("Bestand niet gevonden!");
+			  System.out.println("Bestand niet gevonden!");
 		  }
 		  catch(Exception ex){
-		    System.out.println(ex.getMessage());
+			  System.out.println(ex.getMessage());
 		  }
-		}
+	}
 	
 	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		try {
 			
-			Exercise exercise12 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+			Exercise exercise12 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
-			Exercise exercise22 = new SimpleExercise(2,"Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+			Exercise exercise22 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
 			
 			Quiz quiz1 = new Quiz("Namen",3,false,false);
 			Quiz quiz2 = new Quiz("Landen",4,false,false);
 			
 			QuizExercise quizExercise = new QuizExercise(5,quiz1,exercise12);
-			QuizExercise quizExerciseEqual = new QuizExercise(5,quiz1,exercise12);
 			QuizExercise quizExerciseNotEqual = new QuizExercise(10,quiz2,exercise22);
 			
 			List<QuizExercise> qe = new ArrayList<QuizExercise>();
@@ -179,29 +321,25 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			Exercise exercise3 = new SimpleExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
 					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
 					new DateGC(2013,10,1), 'S'); 
+			Exercise exercise4 = new MultipleChoiceExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
+					new DateGC(2013,10,1), 'M', "keuze1, keuze2, keuze3"); 
 			
 			ExerciseCatalog ec = new ExerciseCatalog();
 			ec.addExercise(exercise1);
 			ec.addExercise(exercise2);
 			ec.addExercise(exercise3);
+			ec.addExercise(exercise4);
 			
 			ec.writeExercisesToFile();
+			ec.readExercisesFromFile();
 			
-		     Scanner s = new Scanner(file);
-		     s.skip("Exercise [getExerciseId()="); //!!!!!!!!!! [
-		     
-		     System.out.println(s.next());
-		     s.close();
+			//System.out.println(ec.exercises.get(2));
 			
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		
 	}
 	

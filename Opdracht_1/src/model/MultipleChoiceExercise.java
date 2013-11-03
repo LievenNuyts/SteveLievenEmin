@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import model.Exercise.ExerciseCategory;
+import utils.DateGC;
 import utils.DateQuiz;
 
 /**
@@ -17,13 +19,19 @@ public class MultipleChoiceExercise extends Exercise {
         
         String multipleChoice;
         
+        //Default constructor
+    	public MultipleChoiceExercise() throws IllegalArgumentException {
+    	}
+        
         //Constructor with multiple parameters
 
-        public MultipleChoiceExercise(String question, String correctAnswer, String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
-     		   ExerciseCategory category, Teacher author, List<Quiz> quizzes, DateQuiz dateRegistration, boolean inCorrectOrder) 
+        public MultipleChoiceExercise(int excerciseId, String question, String correctAnswer,
+    			String[] answerHints, int maxNumberOfAttempts, int maxAnswerTime,
+    			ExerciseCategory category, Teacher author, List<QuizExercise> quizExercises,
+    			DateGC dateRegistration, char discriminator, String multipleChoice) 
      				   throws IllegalArgumentException {
-    		super(question, correctAnswer, answerHints, maxNumberOfAttempts,
-    				  maxAnswerTime, category, author, quizzes, dateRegistration);
+        	super(excerciseId, question, correctAnswer, answerHints, maxNumberOfAttempts,
+    				maxAnswerTime, category, author, quizExercises, dateRegistration, discriminator);
     		
                 this.multipleChoice = multipleChoice; 
         }        

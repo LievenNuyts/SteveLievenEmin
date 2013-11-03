@@ -71,7 +71,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	}
 	
 	/**
-	 * Constructor with 7 params
+	 * Constructor with 9 params
 	 * 
 	 * @param question
 	 * @param correctAnswer
@@ -91,10 +91,13 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 		this.setAuthor(author);
 		this.setDateRegistration(dateRegistration);
 		this.setDiscriminator(discriminator);
+		
+		this.setExerciseId(1);
+		this.setQuizExercises(new ArrayList<QuizExercise>());
 	}
 	
 	/**
-	 * Constructor with 9 params
+	 * Constructor with 11 params
 	 * 
 	 * @param question
 	 * @param correctAnswer
@@ -310,6 +313,31 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 		if (discriminator != 'S' && discriminator != 'E' 
 				&& discriminator != 'M')throw new IllegalArgumentException("Discriminator is verkeerd ingevuld!");
 		this.discriminator = discriminator;
+	}
+	
+	/**
+	 * Add quizExercise to list
+	 * 
+	 * @param quizExercise
+	 * @throws IllegalArgumentException
+	 */
+	public void addExercise(QuizExercise quizExercise) throws IllegalArgumentException{
+		if (quizExercise == null)throw new IllegalArgumentException("quizExercise is null!");
+		for (QuizExercise qE: quizExercises) {
+			if (qE.equals(quizExercise))throw new IllegalArgumentException("quizExercise bestaat al!");
+		}
+		quizExercises.add(quizExercise);
+	}
+	
+	/**
+	 * Remove quizExercise from list
+	 * 
+	 * @param quizExercise
+	 * @throws IllegalArgumentException
+	 */
+	public void removeExercise(QuizExercise quizExercise) throws IllegalArgumentException{
+		if (quizExercise == null)throw new IllegalArgumentException("Opdracht is null!");
+		quizExercises.remove(quizExercise);
 	}
 	
 	// Comparisons
