@@ -2,8 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
-
 import model.Teacher;
 import utils.DateGC;
 import utils.DateQuiz;
@@ -39,7 +37,7 @@ public class Quiz implements Comparable<Quiz>{
 	private int leerJaren = 0;
 	private QuizStatus status;
 	private Teacher teacher;
-	private DateGC date;
+	private DateQuiz date;
 	private boolean isUniqueParticipation;
 	private boolean isTest;
 	private ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>();
@@ -49,7 +47,12 @@ public class Quiz implements Comparable<Quiz>{
 	
 	public Quiz()throws IllegalArgumentException
 	{
-		subject = "subject";	
+		this.subject = "subject";	
+	}
+	
+	public Quiz(String subject)throws IllegalArgumentException
+	{
+		this.subject =  subject;
 	}
 	
 	//constructor with 4 parameters
@@ -66,8 +69,7 @@ public class Quiz implements Comparable<Quiz>{
 	
 	@Override
 	public int compareTo(Quiz o) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.getSubject().compareTo(o.getSubject());
 	}
 
 	@Override
@@ -127,7 +129,7 @@ public class Quiz implements Comparable<Quiz>{
             String quizSummary = "";
             quizSummary += "\nQuiz : " + subject
             				+ "\nYears: " + leerJaren
-//                            + "\nDate: " + date.getDateInEuropeanFormat()
+                            + "\nDate: " + date.getDateInEuropeanFormat()
                             + "\nCreated by: " + teacher 
                             + "\n" + quizText 
                             + "\nStatus: " + status;
@@ -169,11 +171,11 @@ public class Quiz implements Comparable<Quiz>{
 		this.teacher = teacher;
 	}
 
-	public DateGC getDate() {
+	public DateQuiz getDate() {
 		return date;
 	}
 
-	public void setDate(DateGC date) {
+	public void setDate(DateQuiz date) {
 		this.date = date;
 	}
 

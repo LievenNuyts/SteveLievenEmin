@@ -21,7 +21,7 @@ public class QuizCatalog {
                 try{
                         
                         for(int i = 0; i < this.quizCatalogs.size(); i++){
-                                if((this.quizCatalogs.get(i).getSubject()).equals(quiz.getSubject())){ throw new Exception("Existing quiz");
+                                if((this.quizCatalogs.get(i).getSubject()).equals(quiz.getSubject())){ throw new Exception("Existing quiz!");
                                 }
                         }
                         quizCatalogs.add(quiz);

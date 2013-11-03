@@ -41,7 +41,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	
 	private int exerciseId;
 	private String question;
-	protected String correctAnswer;
+	private String correctAnswer;
 	private String[] answerHints;
 	private int maxNumberOfAttempts;
 	private int maxAnswerTime;
