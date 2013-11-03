@@ -170,9 +170,9 @@ public class DateQuiz implements Comparable<DateQuiz>{
 	}
 	
 	public boolean setDatum(int dag, int maand, int jaar)throws IllegalArgumentException {
-		setDay(dag);
-		setMonth(maand);
 		setYear(jaar);
+		setMonth(maand);
+		setDay(dag);
 		return true;
 }
 		
@@ -412,7 +412,7 @@ public class DateQuiz implements Comparable<DateQuiz>{
 			System.out.println(d1);
 			d1.changeDate(3);
 			System.out.println(d1);
-			DateQuiz d2 = new DateQuiz(28,2,2005);
+			DateQuiz d2 = new DateQuiz(28,2,2006);
 			System.out.println(d2);
 			d2.changeDate(3);
 			System.out.println(d2);
