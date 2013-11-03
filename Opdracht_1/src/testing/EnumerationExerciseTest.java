@@ -347,7 +347,5 @@ public class EnumerationExerciseTest {
 		
 		assertEquals(textToCheck, exercise.getValidateText());
 	}
-		
-	//test for clone
-	
+
 }
