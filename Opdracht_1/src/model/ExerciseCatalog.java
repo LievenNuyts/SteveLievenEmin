@@ -274,12 +274,11 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					exE.setInCorrectOrder(false);
 					exercises.add(exE);
 				}
-				System.out.println(scanner2.next());
 				if (scanner2!=null){
 					scanner2.close();
 				}
 				count++;
-				System.out.println(ex.toString());
+				//System.out.println(ex.toString());
 			}
 		  }
 		  catch(FileNotFoundException ex){
@@ -295,41 +294,22 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		try {
 			
-			Exercise exercise12 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+			
+			
+			Exercise exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
 					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
-			Exercise exercise22 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+			Exercise exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
 					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
-			
-			Quiz quiz1 = new Quiz("Namen",3,false,false);
-			Quiz quiz2 = new Quiz("Landen",4,false,false);
-			
-			QuizExercise quizExercise = new QuizExercise(5,quiz1,exercise12);
-			QuizExercise quizExerciseNotEqual = new QuizExercise(10,quiz2,exercise22);
-			
-			List<QuizExercise> qe = new ArrayList<QuizExercise>();
-			qe.add(quizExercise);
-			qe.add(quizExerciseNotEqual);
-			
-			Exercise exercise1 = new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
+			Exercise exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
-			Exercise exercise2 = new SimpleExercise(2, "Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
-					new DateGC(2013,10,1), 'S');
-			Exercise exercise3 = new SimpleExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
-					new DateGC(2013,10,1), 'S'); 
-			Exercise exercise4 = new MultipleChoiceExercise(3, "Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,qe,
-					new DateGC(2013,10,1), 'M', "keuze1, keuze2, keuze3"); 
 			
 			ExerciseCatalog ec = new ExerciseCatalog();
 			ec.addExercise(exercise1);
 			ec.addExercise(exercise2);
 			ec.addExercise(exercise3);
-			ec.addExercise(exercise4);
 			
 			ec.writeExercisesToFile();
 			ec.readExercisesFromFile();
