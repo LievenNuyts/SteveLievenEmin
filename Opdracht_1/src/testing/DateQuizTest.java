@@ -22,7 +22,6 @@ public class DateQuizTest {
 	final private int validDay = 1;
 	final private int aboveMaxDay = 32;
 	final private int belowMinDay = 0;
-	final private int thirtyOneDay = 31;
 	
 	final private int validMonth = 8;
 	final private int aboveMaxMonth = 13;
@@ -251,12 +250,12 @@ public class DateQuizTest {
 	
 	@Test
 	public void test_getDateInAmericanFormat_Returns_Correct_Value(){
-		assertEquals(validAmerican,date.getDatumInAmerikaansFormaat(date));
+		assertEquals(validAmerican,date.getDateInAmericanFormat());
 	}
 	
 	@Test
 	public void test_getDateInEuropeanFormat_Returns_Correct_Value(){
-		assertEquals(validEuropean,date.getDatumInEuropeesFormaat(date));
+		assertEquals(validEuropean,date.getDateInEuropeanFormat());
 	}
 	
 	
@@ -285,54 +284,54 @@ public class DateQuizTest {
 	//Difference for test calculated via http://www.kalender-365.nl/bereken/periode-tussen-twee-datums.html
 	@Test
 	public void test_DifferenceInYears_ValidEarlierDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(-1, date.verschilInJaren(earlierDate));
+		assertEquals(-1, date.differenceInYears(earlierDate));
 	}
 	
 	@Test
 	public void test_DifferenceInYears_ValidLaterDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(1, date.verschilInJaren(earlierDate));
+		assertEquals(1, date.differenceInYears(earlierDate));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_DifferenceInYears_InvalidInput_Throws_Exception() throws Exception{
-			date.verschilInJaren(nullDate);
+			date.differenceInYears(nullDate);
 	}
 	
 	@Test
 	public void test_DifferenceInMonths_ValidEarlierDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(-13, date.verschilInMaanden(earlierDate));
+		assertEquals(-13, date.differenceInMonths(earlierDate));
 	}
 	
 	@Test
 	public void test_DifferenceInMonths_ValidLaterDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(13, date.verschilInMaanden(laterDate));
+		assertEquals(13, date.differenceInMonths(laterDate));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_DifferenceInMonths_InvalidInput_Throws_Exception() throws Exception{
-		date.verschilInMaanden(nullDate);
+		date.differenceInMonths(nullDate);
 	}
 	
 	@Test
 	public void test_DifferenceInDays_ValidEarlierDateInput_Returns_Correct_Value(){
-		assertEquals(-396, date.verschilInDagen(earlierDate));
+		assertEquals(-396, date.differenceInDays(earlierDate));
 	}
 	
 	@Test
 	public void test_DifferenceInDays_ValidLaterDateInput_Returns_Correct_Value(){
-		assertEquals(396, date.verschilInDagen(laterDate));
+		assertEquals(396, date.differenceInDays(laterDate));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_DifferenceInDays_InvalidInput_Throws_Exception(){
-		date.verschilInDagen(nullDate);
+		date.differenceInDays(nullDate);
 	}
 	
 	//tests for changeDate(integer days)
 	
 	@Test
 	public void test_changeDate_validPositiveInteger_calculates_correct_Values(){
-		date.veranderDatum(458); //01/08/2013 --> 02/11/2014
+		date.changeDate(458); //01/08/2013 --> 02/11/2014
 		assertEquals(2, date.getDay());
 		assertEquals(11,date.getMonth());
 		assertEquals(2014,date.getYear());
@@ -341,7 +340,7 @@ public class DateQuizTest {
 	@Test
 	public void test_changeDate_validNegativeInteger_calculates_correct_Values(){
 		date.setDatum(equalDate); //terug naar initiele waarde	
-		date.veranderDatum(-272); //01/08/2013 --> 02/11/2012
+		date.changeDate(-272); //01/08/2013 --> 02/11/2012
 		assertEquals(2, date.getDay());
 		assertEquals(11,date.getMonth());
 		assertEquals(2012,date.getYear());
@@ -350,7 +349,7 @@ public class DateQuizTest {
 	@Test
 	public void test_changeDate_validPositiveInteger_returns_correct_DateObject(){
 		date.setDatum(equalDate); //terug naar initiele waarde
-		DateQuiz newDate = date.veranderDatum2(458); //01/08/2013 --> 02/11/2014
+		DateQuiz newDate = date.changeDate2(458); //01/08/2013 --> 02/11/2014
 		assertEquals(2, newDate.getDay());
 		assertEquals(11, newDate.getMonth());
 		assertEquals(2014, newDate.getYear());
@@ -359,7 +358,7 @@ public class DateQuizTest {
 	@Test
 	public void test_changeDate_validNegativeInteger_returns_correct_DateObject(){
 		date.setDatum(equalDate); //terug naar initiele waarde
-		DateQuiz newDate = date.veranderDatum2(-272); //01/08/2013 --> 02/11/2012
+		DateQuiz newDate = date.changeDate2(-272); //01/08/2013 --> 02/11/2012
 		assertEquals(2, newDate.getDay());
 		assertEquals(11, newDate.getMonth());
 		assertEquals(2012, newDate.getYear());
@@ -388,9 +387,5 @@ public class DateQuizTest {
 	@Test
 	public void test_Equals_differentDate_returns_False(){
 		assertFalse(date.equals(laterDate));
-	}
-	
-	
-	
-	
+	}	
 }
