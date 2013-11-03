@@ -46,7 +46,7 @@ public class DateQuizTest {
 		laterDate = new DateQuiz(1,9,2014);
 	}
 	
-	//Tests for getters
+	//TESTS FOR GETTERS
 	@Test
 	public void test_getDay_returns_correct_Value(){
 		assertEquals(validDay, date.getDay());
@@ -116,7 +116,7 @@ public class DateQuizTest {
 	}
 		
 	
-	//Tests for class constructors
+	//TESTS FOR CLASS CONSTRUCTORS
 	@Test
 	public void test_ConstructorDateObject_Object_Is_Created(){
 		
@@ -142,6 +142,33 @@ public class DateQuizTest {
 		assertEquals(validMonth, newDate.getMonth());
 		assertEquals(validYear, newDate.getYear());
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_ConstructorThreeInteger_February30th_throws_Exception(){	
+		DateQuiz newDate = new DateQuiz(30, 02, 2013);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_ConstructorThreeInteger_April31st_throws_Exception(){	
+		DateQuiz newDate = new DateQuiz(31, 04, 2013);
+	}
+	
+	@Test
+	public void test_ConstructorThreeInteger_LeapYear_does_not_throw_Exception(){
+		
+		int leapDay = 29;
+		int leapMonth = 2;
+		int leapYear = 2012;
+		int i;
+		
+		//three leap year tests
+		for(i = 0; i <3; i++){
+		
+			DateQuiz newDate = new DateQuiz(leapDay, leapMonth, leapYear);
+			leapYear += 4;
+		}
+	}
+	
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_ConstructorThreeInteger_NullInteger_Throws_Exception(){

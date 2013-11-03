@@ -36,7 +36,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		//convert correct answer string to ArrayList of strings (removing the ";")
 		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
 		this.numberOfElements = splitCorrectAnswer.size();
-		this.inCorrectOrder = inCorrectOrder;
+		this.setInCorrectOrder(inCorrectOrder);
 	}
 	
 	//GETTERS AND SETTERS
@@ -115,7 +115,11 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	@Override
 	public boolean isValide(String answer) throws IllegalArgumentException{
-				
+		
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
+		
 		//check for invalid characters
 		if(answerContainsInvalidChar(answer, "_") || answerContainsInvalidChar(answer, ",") || 
 				answerContainsInvalidChar(answer, ".") || answerContainsInvalidChar(answer, "-") || 
@@ -161,7 +165,15 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	@Override
 	public String getValidateText() {
 		
-		return "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven.";
+		String correctOrderOrNot = "in de juiste volgorde ";
+		
+		if(this.inCorrectOrder == false){
+			correctOrderOrNot = "";
+		}
+		
+		
+		return "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven. "
+				+ "Dit antwoord bevat x elementen.";
 	}
 	
 	
@@ -232,7 +244,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	
 	@Override
-	public Exercise clone() throws CloneNotSupportedException{
+	public EnumerationExercise clone() throws CloneNotSupportedException{
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.set(getDateRegistration().getGregCal().get(Calendar.YEAR), 
 				getDateRegistration().getGregCal().get(Calendar.MONTH), 
