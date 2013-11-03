@@ -36,7 +36,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 		//convert correct answer string to ArrayList of strings (removing the ";")
 		this.splitCorrectAnswer = Arrays.asList(this.getCorrectAnswer().split(";"));
 		this.numberOfElements = splitCorrectAnswer.size();
-		this.inCorrectOrder = inCorrectOrder;
+		this.setInCorrectOrder(inCorrectOrder);
 	}
 	
 	//GETTERS AND SETTERS
@@ -115,26 +115,37 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	@Override
 	public boolean isValide(String answer) throws IllegalArgumentException{
-				
+		
+		if(answer == null){
+			throw new IllegalArgumentException("Geen antwoord gegeven!");
+		}
+		
+		//if number of elements in correct answer and studentanswer is not the same
+				if(this.numberOfElements != this.elementCounter(answer)){return false;}
+		
 		//check for invalid characters
 		if(answerContainsInvalidChar(answer, "_") || answerContainsInvalidChar(answer, ",") || 
 				answerContainsInvalidChar(answer, ".") || answerContainsInvalidChar(answer, "-") || 
 				answerContainsInvalidChar(answer, "/") || answerContainsInvalidChar(answer, "\\")){
 			return false;
 		}
-			
-		//if answer does not contain ";"
-		if(!answer.contains(";")){
-			
-			//check for single element correct answer
-			if(splitCorrectAnswer.contains(answer)){
-				return true;
-			}
 				
-			return false;
+		return true;
+	}
+	
+	//method to determine how many elements were given in an answer
+	private int elementCounter(String answer){
+		
+		int counter = 0;
+		
+		for(int i = 0; i < answer.length() ; i++){
+				
+				if( answer.charAt(i) == ';' ) {
+			        counter++;
+			    } 
 		}
 		
-		return true;
+		return counter + 1; //+1 because number of elements will be one more than number of ';'
 	}
 	
 	//method returns true if answer contains a char that is not in of the elements
@@ -160,8 +171,16 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	@Override
 	public String getValidateText() {
+	
+		String correctOrderOrNot = "in de juiste volgorde en";
+		String element = "elementen";
 		
-		return "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven.";
+		if(this.inCorrectOrder == false){correctOrderOrNot = "";}
+		
+		if(this.numberOfElements == 1){element = "element";}
+		
+		return String.format("Gelieve de antwoorden %s gescheiden door een ; in te geven. \nDit antwoord bevat %d %s.", 
+				correctOrderOrNot, this.numberOfElements, element);
 	}
 	
 	
@@ -232,7 +251,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	
 	@Override
-	public Exercise clone() throws CloneNotSupportedException{
+	public EnumerationExercise clone() throws CloneNotSupportedException{
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.set(getDateRegistration().getGregCal().get(Calendar.YEAR), 
 				getDateRegistration().getGregCal().get(Calendar.MONTH), 

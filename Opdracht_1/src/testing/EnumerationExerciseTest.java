@@ -293,20 +293,24 @@ public class EnumerationExerciseTest {
 	}
 	
 	//test for isValide(String answer)
+	@Test
 	public void test_isValide_validCorrectAnswer_returnsTrue(){
 		assertTrue(exercise.isValide(this.correctAnswer));
 	}
 	
+	@Test
 	public void test_isValide_validInCorrectAnswer_returnsTrue(){
 		assertTrue(exercise.isValide(this.inCorrectAnswer));
 	}
 	
+	@Test
 	public void test_isValide_inValidAnswer_returnsFalse(){
 		assertFalse(exercise.isValide(this.badFormattedAnswer));
 	}
 	
-	public void test_isValide_singleAnswer_returnsTrue(){
-		assertTrue(exercise.isValide(this.onlyOneAnswer));
+	@Test
+	public void test_isValide_singleAnswer_returnsFalse(){
+		assertFalse(exercise.isValide(this.onlyOneAnswer));
 	}	
 	
 	//test for equals
@@ -324,7 +328,6 @@ public class EnumerationExerciseTest {
 	
 	
 	//test for hashcode
-	
 	@Test
 	public void test_Equals_True_If_HashCodes_Equal() {
 		assertTrue(exercise.hashCode() == exerciseEqual.hashCode());
@@ -336,5 +339,15 @@ public class EnumerationExerciseTest {
 	}
 	
 	
+	//Test for getValidateText()
+	@Test
+	public void test_getValidateText_returns_correct_String(){
+		
+		String textToCheck = "Gelieve de antwoorden in de juiste volgorde en gescheiden door een ; in te geven. \nDit antwoord bevat 7 elementen.";
+		
+		assertEquals(textToCheck, exercise.getValidateText());
+	}
+		
 	//test for clone
+	
 }
