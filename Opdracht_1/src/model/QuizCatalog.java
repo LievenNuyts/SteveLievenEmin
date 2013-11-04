@@ -1,6 +1,16 @@
 package model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+
+import model.Exercise.ExerciseCategory;
+import utils.DateGC;
+import utils.DateQuiz;
 
 
 /**
@@ -94,6 +104,109 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 		public int compareTo(QuizCatalog o) {
 			// TODO Auto-generated method stub
 			return 0;
+		}
+		
+		/**
+		 * Create a new file named quizzes.txt and adds all quizzes from quizCatalogs list
+		 */
+		public void writeQuizzesToFile(){
+			// Create new file
+			File file = new File("src" + File.separator + "files" + File.separator + "quizzes.txt");
+			
+			try {
+				// Create new writer
+				PrintWriter writer = new PrintWriter(file);
+				
+				// Loop through exercises
+				for (int i = 0;i < quizCatalogs.size();i++){
+					Quiz quiz = quizCatalogs.get(i);
+					
+					// Line that will be saved in the file per(per exercises)
+					String line = 
+							quiz.getSubject() + " ; " + quiz.getLeerJaren() +
+							" ; " + quiz.getTeacher() + " ; " + quiz.getStatus() + " ; " +
+							" ; " + quiz.isTest() + " ; " + quiz.isUniqueParticipation() +
+							" ; " + quiz.getDate().getYear() + "/" + quiz.getDate().getMonth() + 
+							"/" + quiz.getDate().getDay();
+					
+					writer.println(line);
+				}
+				
+				// Clone writer
+				if (writer !=null)
+					writer.close();
+				
+			} catch (FileNotFoundException e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		
+		/**
+		 * Read quizzes from file and put them in quizCatalogs list
+		 */
+		public void readQuizzesFromFile(){
+			// Get exercises.txt file
+			File file = new File("src" + File.separator + "files" + File.separator + "quizzes.txt");
+		 
+			try{
+				// Scan through file
+				Scanner scanner = new Scanner(file);
+				
+				List<String> tempQuizzes = new ArrayList<String>();
+				
+				// Add each line as String object to tempQuizzes list
+				while (scanner.hasNextLine()){
+					tempQuizzes.add(scanner.nextLine());
+				}
+
+				if (scanner!=null){
+				  scanner.close();
+				}
+				
+				// Counter to assign quizId
+				int count = 1;
+				
+				// Loop through each String object in tempQuizzes
+				for (int i = 0; i <= tempQuizzes.size(); i++) {
+					Scanner scanner2 = new Scanner(tempQuizzes.get(i));
+					scanner2.useDelimiter("\\s*;\\s*");
+					
+					Quiz qz = new Quiz();
+					
+					// Add parameters
+					qz.setQuizId(count);
+					qz.setSubject(scanner2.next());
+					qz.setLeerJaren(scanner2.nextInt());
+					qz.setTeacher(Teacher.valueOf(scanner2.next().toUpperCase()));
+					qz.setStatus(QuizStatus.valueOf(scanner2.next().toUpperCase()));
+					qz.setTest(scanner2.nextBoolean());
+					qz.setUniqueParticipation(scanner.nextBoolean());
+					
+					
+					// Scan through scanner2.next() which is date
+					Scanner scannerDate = new Scanner(scanner2.next());
+					scanner2.useDelimiter("\\s*/\\s*");
+					int day = scannerDate.nextInt();
+					int month = scannerDate.nextInt();
+					int year = scannerDate.nextInt();
+					if (scannerDate!=null){
+						scannerDate.close();
+					}
+					// Add result to dateRegistration parameter
+					qz.setDate(new DateQuiz(day, month, year));
+					
+					if (scanner2!=null){
+						scanner2.close();
+					}
+					count++;
+				}
+			  }
+			  catch(FileNotFoundException ex){
+				  System.out.println("Bestand niet gevonden!");
+			  }
+			  catch(Exception ex){
+				  System.out.println(ex.getMessage());
+			  }
 		}
         
 }
