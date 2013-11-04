@@ -35,7 +35,7 @@ public class DateQuizTest {
 	final private String validAmerican = "08/01/2013";
 	final private String invalidDateString = "01/08/'13";
 	
-	private int nullValueInteger; //never initialised
+	private int nullValueInteger; //never initialised, simple 0
 	
 	@Before
 	public void setUp() throws Exception{
