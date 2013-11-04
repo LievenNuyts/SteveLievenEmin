@@ -33,36 +33,62 @@ enum QuizStatus {
 
 public class Quiz implements Comparable<Quiz>{
 	
-	private String subject = "";
-	private int leerJaren = 0;
+	private int quizId;
+	private String subject; // subject = ""
+	private int leerJaren; // leerJaren = 0
 	private QuizStatus status;
 	private Teacher teacher;
 	private DateQuiz date;
 	private boolean isUniqueParticipation;
 	private boolean isTest;
-	private ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>();
+	private ArrayList<QuizExercise> quizExercises; // ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>()
 	
 	
 	//default constructor
 	
 	public Quiz()throws IllegalArgumentException
 	{
-		this.subject = "subject";	
+		this.setQuizId(1);
+		this.setSubject("subject");
+		this.setLeerJaren(1);
+		this.setStatus(QuizStatus.ready);
+		this.setTeacher(Teacher.JACOBS);
+		this.setDate(new DateQuiz());
+		this.setUniqueParticipation(false);
+		this.setTest(false);
+		this.setQuizExercises(new ArrayList<QuizExercise>());
 	}
 	
 	public Quiz(String subject)throws IllegalArgumentException
 	{
-		this.subject =  subject;
+		this.setSubject(subject);
+		
+		// Default
+		this.setQuizId(1);
+		this.setLeerJaren(1);
+		this.setStatus(QuizStatus.ready);
+		this.setTeacher(Teacher.JACOBS);
+		this.setDate(new DateQuiz());
+		this.setUniqueParticipation(false);
+		this.setTest(false);
+		this.setQuizExercises(new ArrayList<QuizExercise>());
 	}
 	
 	//constructor with 4 parameters
 	
 	public Quiz(String subject, int leerJaren, boolean uniqueParticipation, boolean isTest)throws IllegalArgumentException
 	{
-		this.subject = subject;
-		this.leerJaren = leerJaren;
-		this.isUniqueParticipation = uniqueParticipation;
-		this.isTest = isTest;
+		this.setSubject(subject);
+		this.setLeerJaren(leerJaren);
+		this.setUniqueParticipation(uniqueParticipation);
+		this.setTest(isTest);
+		
+		// Default
+		this.setQuizId(1);
+		this.setStatus(QuizStatus.ready);
+		this.setTeacher(Teacher.JACOBS);
+		this.setDate(new DateQuiz());
+		this.setQuizExercises(new ArrayList<QuizExercise>());
 	}
 	
 	//@overrides
@@ -138,6 +164,14 @@ public class Quiz implements Comparable<Quiz>{
     }
 	
 	//get & set
+	
+	public int getQuizId() {
+		return quizId;
+	}
+
+	public void setQuizId(int quizId) {
+		this.quizId = quizId;
+	}
 
 	public String getSubject() {
 		return subject;
