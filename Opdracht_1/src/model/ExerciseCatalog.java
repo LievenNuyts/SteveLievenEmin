@@ -299,38 +299,99 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		  }
 	}
 	
-	@SuppressWarnings("resource")
-	public static void main(String[] args) {
+	public void createQuizExercises(List<Exercise> exercises, List<Quiz> quizzes) throws Exception{
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
+		
+		// Scan through file
+		Scanner scanner = new Scanner(file);
+		
+		List<String> tempExercises = new ArrayList<String>();
+		
+		// Add each line as String object to tempExercises list
+		while (scanner.hasNextLine()){
+		  tempExercises.add(scanner.nextLine());
+		}
+
+		if (scanner!=null){
+		  scanner.close();
+		}
+		// Loop through each String object in tempExercises
+		for (int i = 0; i < tempExercises.size(); i++) {
+			Scanner scanner2 = new Scanner(tempExercises.get(i));
+			scanner2.useDelimiter("\\S*;\\S*");
+			
+			
+			for (int j = 0; j < 9; j++) {
+				String skip = scanner2.next();
+	
+				//System.out.println(skip);
+			}
+			
+			while (scanner2.hasNext()){
+				Scanner scanner3 = new Scanner(scanner2.next());
+				scanner3.useDelimiter("\\S*,\\S*");
+				
+				int tempScore = scanner3.nextInt();
+				//System.out.println(scanner3.next());
+				int tempQuizId = scanner3.nextInt();
+				int tempExerciseID= scanner3.nextInt();
+				QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+				
+				quizzes.get(tempQuizId - 1).addQuizExercise(qe);
+				exercises.get(tempExerciseID - 1).addExercise(qe);
+				
+				if (scanner2!=null){
+					scanner3.close();
+				}
+			}
+			
+			
+			if (scanner2!=null){
+				scanner2.close();
+			}
+		}
+	}
+	
+	@SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception {
+//		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		try {
-			
-			Quiz quiz1 = new Quiz();
-			Quiz quiz2 = new Quiz("testsubject");
-			
-			Exercise exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-					new DateGC(2013,10,1), 'S');
-			Exercise exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-					new DateGC(2013,10,1), 'S');
-			Exercise exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-					new DateGC(2013,10,1), 'S');
-			
-			QuizExercise qe = new QuizExercise(1, quiz1, exercise1);
-			QuizExercise qe2 = new QuizExercise(2, quiz2, exercise1);
-			
-			exercise1.addExercise(qe);
-			exercise1.addExercise(qe2);
-			
-			
+//			
+//			Quiz quiz1 = new Quiz();
+//			Quiz quiz2 = new Quiz("testsubject");
+//			
+//			Exercise exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
+//					new DateGC(2013,10,1), 'S');
+//			Exercise exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
+//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
+//					new DateGC(2013,10,1), 'S');
+//			Exercise exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
+//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
+//					new DateGC(2013,10,1), 'S');
+//			
+//			QuizExercise qe = new QuizExercise(1, quiz1, exercise1);
+//			QuizExercise qe2 = new QuizExercise(2, quiz2, exercise1);
+//			
+//			exercise1.addExercise(qe);
+//			exercise1.addExercise(qe2);
+//			
+//			
 			ExerciseCatalog ec = new ExerciseCatalog();
-			ec.addExercise(exercise1);
-			ec.addExercise(exercise2);
-			ec.addExercise(exercise3);
-			
-			ec.writeExercisesToFile();
+			QuizCatalog qc = new QuizCatalog();
+//			ec.addExercise(exercise1);
+//			ec.addExercise(exercise2);
+//			ec.addExercise(exercise3);
+//			
+//			ec.writeExercisesToFile();
 			ec.readExercisesFromFile();
+			qc.readQuizzesFromFile();
+			
+			ec.createQuizExercises(ec.getExercises(), qc.getQuizCatalogs());
+			
+			ec.exercises.get(0).toString();
+			
+			
 			
 			//System.out.println(ec.exercises.get(2));
 			
