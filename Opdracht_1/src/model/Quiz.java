@@ -14,11 +14,11 @@ import utils.DateQuiz;
 
 enum QuizStatus {
 
-	underConstruction(1), 
-	completed(2), 
-	ready(3),
-	lastChance(4), 
-	closed(5);
+	UNDERCONSTRUCION(1), 
+	COMPLETED(2), 
+	READY(3),
+	LASTCHANCE(4), 
+	CLOSED(5);
 
 	private final int StatusID;
 
@@ -51,7 +51,7 @@ public class Quiz implements Comparable<Quiz>{
 		this.setQuizId(1);
 		this.setSubject("subject");
 		this.setLeerJaren(1);
-		this.setStatus(QuizStatus.ready);
+		this.setStatus(QuizStatus.READY);
 		this.setTeacher(Teacher.JACOBS);
 		this.setDate(new DateQuiz());
 		this.setUniqueParticipation(false);
@@ -66,7 +66,7 @@ public class Quiz implements Comparable<Quiz>{
 		// Default
 		this.setQuizId(1);
 		this.setLeerJaren(1);
-		this.setStatus(QuizStatus.ready);
+		this.setStatus(QuizStatus.READY);
 		this.setTeacher(Teacher.JACOBS);
 		this.setDate(new DateQuiz());
 		this.setUniqueParticipation(false);
@@ -85,7 +85,7 @@ public class Quiz implements Comparable<Quiz>{
 		
 		// Default
 		this.setQuizId(1);
-		this.setStatus(QuizStatus.ready);
+		this.setStatus(QuizStatus.READY);
 		this.setTeacher(Teacher.JACOBS);
 		this.setDate(new DateQuiz());
 		this.setQuizExercises(new ArrayList<QuizExercise>());

@@ -124,10 +124,18 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 					// Line that will be saved in the file per(per exercises)
 					String line = 
 							quiz.getSubject() + " ; " + quiz.getLeerJaren() +
-							" ; " + quiz.getTeacher() + " ; " + quiz.getStatus() + " ; " +
+							" ; " + quiz.getTeacher() + " ; " + quiz.getStatus() +
 							" ; " + quiz.isTest() + " ; " + quiz.isUniqueParticipation() +
-							" ; " + quiz.getDate().getYear() + "/" + quiz.getDate().getMonth() + 
-							"/" + quiz.getDate().getDay();
+							" ; " + quiz.getDate().getYear() + " / " + quiz.getDate().getMonth() + 
+							" / " + quiz.getDate().getDay() + " ; ";
+					
+					if (quiz.getQuizExercises() != null){
+						for (int j = 0; j < quiz.getQuizExercises().size(); j++) {
+							line += quiz.getQuizExercises().get(j).getMaxScore() +
+									" , " + quiz.getQuizExercises().get(j).getQuiz().getQuizId() +
+									" , " + quiz.getQuizExercises().get(j).getExercise().getExerciseId() + " ; ";
+						}
+					}
 					
 					writer.println(line);
 				}
@@ -167,7 +175,7 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 				int count = 1;
 				
 				// Loop through each String object in tempQuizzes
-				for (int i = 0; i <= tempQuizzes.size(); i++) {
+				for (int i = 0; i < tempQuizzes.size(); i++) {
 					Scanner scanner2 = new Scanner(tempQuizzes.get(i));
 					scanner2.useDelimiter("\\s*;\\s*");
 					
@@ -180,15 +188,16 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 					qz.setTeacher(Teacher.valueOf(scanner2.next().toUpperCase()));
 					qz.setStatus(QuizStatus.valueOf(scanner2.next().toUpperCase()));
 					qz.setTest(scanner2.nextBoolean());
-					qz.setUniqueParticipation(scanner.nextBoolean());
+					qz.setUniqueParticipation(scanner2.nextBoolean());
 					
+					System.out.println();
 					
 					// Scan through scanner2.next() which is date
 					Scanner scannerDate = new Scanner(scanner2.next());
-					scanner2.useDelimiter("\\s*/\\s*");
-					int day = scannerDate.nextInt();
-					int month = scannerDate.nextInt();
+					scannerDate.useDelimiter("\\s*/\\s*");
 					int year = scannerDate.nextInt();
+					int month = scannerDate.nextInt();
+					int day = scannerDate.nextInt();
 					if (scannerDate!=null){
 						scannerDate.close();
 					}
@@ -208,5 +217,4 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 				  System.out.println(ex.getMessage());
 			  }
 		}
-        
 }

@@ -139,7 +139,17 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 						exercise.getDiscriminator() + " ; " + exercise.getQuestion() +
 						" ; " + exercise.getCorrectAnswer() + " ; " + Arrays.toString(exercise.getAnswerHints()) + " ; " + exercise.getAuthor() +
 						" ; " + exercise.getCategory() + " ; " + exercise.getMaxAnswerTime() + " ; " + exercise.getMaxNumberOfAttempts() +
-						" ; " + exercise.getDateRegistration();
+						" ; " + exercise.getDateRegistration() + " ; ";
+				
+				if (exercise.getQuizExercises() != null){
+					for (int j = 0; j < exercise.getQuizExercises().size(); j++) {
+						line += exercise.getQuizExercises().get(j).getMaxScore() +
+								" , " + exercise.getQuizExercises().get(j).getQuiz().getQuizId() +
+								" , " + exercise.getQuizExercises().get(j).getExercise().getExerciseId() + " ; ";
+					}
+				}
+				
+				//System.out.println(line);
 				
 				// Check type of exercises with discriminator
 				switch (exercise.getDiscriminator()){
@@ -197,7 +207,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			int count = 1;
 			
 			// Loop through each String object in tempExercises
-			for (int i = 0; i <= tempExercises.size(); i++) {
+			for (int i = 0; i < tempExercises.size(); i++) {
 				Scanner scanner2 = new Scanner(tempExercises.get(i));
 				scanner2.useDelimiter("\\s*;\\s*");
 				
@@ -294,7 +304,8 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		try {
 			
-			
+			Quiz quiz1 = new Quiz();
+			Quiz quiz2 = new Quiz("testsubject");
 			
 			Exercise exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
 					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
@@ -305,6 +316,13 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			Exercise exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
 					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
 					new DateGC(2013,10,1), 'S');
+			
+			QuizExercise qe = new QuizExercise(1, quiz1, exercise1);
+			QuizExercise qe2 = new QuizExercise(2, quiz2, exercise1);
+			
+			exercise1.addExercise(qe);
+			exercise1.addExercise(qe2);
+			
 			
 			ExerciseCatalog ec = new ExerciseCatalog();
 			ec.addExercise(exercise1);
