@@ -6,7 +6,6 @@ package model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -127,6 +126,8 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		
 		try {
+			if (exercises == null)throw new IllegalArgumentException("Exercises lijst is leeg, er is niets om op te slaan!");
+			
 			// Create new writer
 			PrintWriter writer = new PrintWriter(file);
 			
@@ -148,8 +149,6 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 								" , " + exercise.getQuizExercises().get(j).getExercise().getExerciseId() + " ; ";
 					}
 				}
-				
-				//System.out.println(line);
 				
 				// Check type of exercises with discriminator
 				switch (exercise.getDiscriminator()){
@@ -175,8 +174,10 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			// Clone writer
 			if (writer !=null)
 				writer.close();
-			
-		} catch (FileNotFoundException e) {
+		
+		} catch (FileNotFoundException e){
+			System.out.println(e.getMessage());
+		} catch (Exception e){
 			System.out.println(e.getMessage());
 		}
 	}
@@ -288,67 +289,72 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					scanner2.close();
 				}
 				count++;
-				//System.out.println(ex.toString());
 			}
-		  }
-		  catch(FileNotFoundException ex){
-			  System.out.println("Bestand niet gevonden!");
-		  }
-		  catch(Exception ex){
-			  System.out.println(ex.getMessage());
-		  }
+		} catch(FileNotFoundException ex){
+			System.out.println("Bestand niet gevonden!");
+		} catch(Exception ex){
+			System.out.println(ex.getMessage());
+		}
 	}
 	
-	public void createQuizExercises(List<Exercise> exercises, List<Quiz> quizzes) throws Exception{
+	public void createQuizExercises(List<Exercise> exercises, List<Quiz> quizzes){
 		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
 		
-		// Scan through file
-		Scanner scanner = new Scanner(file);
-		
-		List<String> tempExercises = new ArrayList<String>();
-		
-		// Add each line as String object to tempExercises list
-		while (scanner.hasNextLine()){
-		  tempExercises.add(scanner.nextLine());
-		}
-
-		if (scanner!=null){
-		  scanner.close();
-		}
-		// Loop through each String object in tempExercises
-		for (int i = 0; i < tempExercises.size(); i++) {
-			Scanner scanner2 = new Scanner(tempExercises.get(i));
-			scanner2.useDelimiter("\\S*;\\S*");
+		try{
+			if (exercises == null)throw new IllegalArgumentException("exercises lijst is null!");
+			if (exercises.size() == 0)throw new IllegalArgumentException("exercises lijst is leeg!");
+			if (quizzes == null)throw new IllegalArgumentException("quizzes lijst is null!");
+			if (quizzes.size() == 0)throw new IllegalArgumentException("quizzes lijst is leeg!");
 			
+			// Scan through file
+			Scanner scanner = new Scanner(file);
 			
-			for (int j = 0; j < 9; j++) {
-				String skip = scanner2.next();
-	
-				//System.out.println(skip);
+			List<String> tempExercises = new ArrayList<String>();
+			
+			// Add each line as String object to tempExercises list
+			while (scanner.hasNextLine()){
+			  tempExercises.add(scanner.nextLine());
 			}
-			
-			while (scanner2.hasNext()){
-				Scanner scanner3 = new Scanner(scanner2.next());
-				scanner3.useDelimiter("\\S*,\\S*");
+	
+			if (scanner!=null){
+			  scanner.close();
+			}
+			// Loop through each String object in tempExercises
+			for (int i = 0; i < tempExercises.size(); i++) {
+				Scanner scanner2 = new Scanner(tempExercises.get(i));
+				scanner2.useDelimiter("\\s*;\\s*");
 				
-				int tempScore = scanner3.nextInt();
-				//System.out.println(scanner3.next());
-				int tempQuizId = scanner3.nextInt();
-				int tempExerciseID= scanner3.nextInt();
-				QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+				// Skip unused parameters
+				for (int j = 0; j < 9; j++) {
+					scanner2.next();
+				}
 				
-				quizzes.get(tempQuizId - 1).addQuizExercise(qe);
-				exercises.get(tempExerciseID - 1).addExercise(qe);
+				while (scanner2.hasNext()){
+					Scanner scanner3 = new Scanner(scanner2.next());
+					scanner3.useDelimiter("\\s*,\\s*");
+					
+					int tempScore = scanner3.nextInt();
+					int tempQuizId = scanner3.nextInt();
+					int tempExerciseID= scanner3.nextInt();
+					QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+					
+					quizzes.get(tempQuizId - 1).addQuizExercise(qe);
+					exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+					
+					if (scanner2!=null){
+						scanner3.close();
+					}
+				}
 				
 				if (scanner2!=null){
-					scanner3.close();
+					scanner2.close();
 				}
 			}
-			
-			
-			if (scanner2!=null){
-				scanner2.close();
-			}
+		} catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
+		catch(IllegalArgumentException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -386,10 +392,10 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 //			ec.writeExercisesToFile();
 			ec.readExercisesFromFile();
 			qc.readQuizzesFromFile();
-			
+			//System.out.println(ec.exercises.size() + "  " + qc.getQuizCatalogs().size());
 			ec.createQuizExercises(ec.getExercises(), qc.getQuizCatalogs());
 			
-			ec.exercises.get(0).toString();
+			System.out.println(ec.exercises.get(0).getQuizExercises().get(0).getMaxScore());
 			
 			
 			

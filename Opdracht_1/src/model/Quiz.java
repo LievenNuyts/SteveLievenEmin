@@ -239,7 +239,7 @@ public class Quiz implements Comparable<Quiz>{
 	
 	//methods
 
-	public void addQuizExercise(QuizExercise quizExercise) throws Exception {
+	public void addQuizExercise(QuizExercise quizExercise) throws IllegalArgumentException {
 
 		try
 		{
@@ -247,12 +247,12 @@ public class Quiz implements Comparable<Quiz>{
 			{
 				if (quizExercises.get(i).equals(quizExercise)) 
 				{
-					throw new Exception("Exercise already exists.");
+					throw new IllegalArgumentException("Exercise already exists.");
 				}
 			}
 			quizExercises.add(quizExercise);
 		}
-		catch (Exception ex){ throw new Exception(ex.getMessage());
+		catch (IllegalArgumentException ex){ throw new IllegalArgumentException(ex.getMessage());
 		}
 	}
 

@@ -5,6 +5,7 @@ package testing;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +79,7 @@ public class ExerciseCatalogTest {
 		catalog.setExercises(null);
 	}
 	
-	// addOpdracht
+	// addExercise
 	
 	@Test
 	public void test_addExercise_Valid_Value_Is_Accepted() {
@@ -97,7 +98,7 @@ public class ExerciseCatalogTest {
 		catalog.addExercise(exercise1);
 	}
 	
-	// removeOpdracht
+	// removeExercise
 	
 	@Test
 	public void test_removeExercise_Valid_Value_Is_Accepted() {
@@ -111,13 +112,21 @@ public class ExerciseCatalogTest {
 		catalog.removeExercise(null);
 	}
 	
-	// updateOpdracht
+	// updateExercise
 	
 	@Test
 	public void test_updateExercise_Valid_Value_Is_Accepted() {
 		catalog.updateExercise(exercise1,exercise2);
 		
 		assertEquals(catalog.getExercises().get(0),exercise2);
+	}
+	
+	// writeExercisesToFile
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_writeExercisesToFile_If_Exercises_Is_Empty() {
+		catalog.setExercises(null);
+		catalog.writeExercisesToFile();
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

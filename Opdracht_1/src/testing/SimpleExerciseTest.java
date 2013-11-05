@@ -24,11 +24,15 @@ import model.Quiz;
 public class SimpleExerciseTest {
 	
 	private Exercise exercise, exerciseEqual, exerciseNotEqual;
+	private QuizExercise quizEx1, quizEx2;
+	private List<QuizExercise> quizExercisesList;
 	
 	@Before
 	public void setUp() throws Exception{
-		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-		quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
+		quizExercisesList = new ArrayList<QuizExercise>();
+		quizEx1 = new QuizExercise(2,new Quiz(),new SimpleExercise());
+		quizEx2 = new QuizExercise();
+		quizExercisesList.add(quizEx1);
 		
 		exercise = new SimpleExercise(1, "Hoofdstad van België?", "Brussel", new String[]{"Stad","Centrum"},
 				1, 30, Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S');
@@ -36,15 +40,13 @@ public class SimpleExerciseTest {
 				1 ,30 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S');
 		exerciseNotEqual = new SimpleExercise(2, "Hoofdstad van Spanje?","Madrid",new String[]{"Stad","Centrum"},
 				2 ,40 ,Exercise.ExerciseCategory.AARDRIJKSKUNDE, Teacher.BAKKER, quizExercisesList, new DateGC(2013,10,1), 'S');
+		
 	}
 	
 	// Constructor
 	
 	@Test
 	public void test_Constructor_Object_Is_Created() {
-		List<QuizExercise> quizExercisesList = new ArrayList<QuizExercise>();
-		quizExercisesList.add(new QuizExercise(2, new Quiz(), new SimpleExercise()));
-		
 		assertEquals(1, exercise.getExerciseId());
 		assertEquals("Hoofdstad van België?", exercise.getQuestion());
 		assertEquals("Brussel", exercise.getCorrectAnswer());
@@ -151,7 +153,7 @@ public class SimpleExerciseTest {
 		exercise.setAnswerHints(null);
 	}
 	
-	// setQuizzen
+	// setQuizExercises
 	
 	@Test
 	public void test_setQuizExercises_Valid_Value_Is_Accepted() {
@@ -221,6 +223,51 @@ public class SimpleExerciseTest {
 		exercise.setDiscriminator('A');
 	}
 	
+	// isCorrectAnswer
+	
+	@Test
+	public void test_Equals_True_If_Answers_Equal() {
+		assertTrue(exercise.isCorrectAnswer("Brussel"));
+	}
+	
+	@Test
+	public void test_Equals_False_If_Answers_Not_Equal() {
+		assertFalse(exercise.isCorrectAnswer("Leuven"));
+	}
+	
+	// addQuizExercise
+	
+	@Test
+	public void test_addQuizExercise_Valid_Value_Is_Accepted() {
+		exercise.addQuizExercise(quizEx2);
+		
+		assertEquals(quizExercisesList.size(),exercise.getQuizExercises().size());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_addExercise_Exception_If_Parameter_Is_Null() {
+		exercise.addQuizExercise(null);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_addExercise_Exception_If_Parameter_Exists() {
+		exercise.addQuizExercise(quizEx1);
+	}
+	
+	// removeQuizExercises
+	
+	@Test
+	public void test_removeQuizExercise_Valid_Value_Is_Accepted() {
+		exercise.removeQuizExercise(quizEx1);
+		
+		assertEquals(quizExercisesList.size(),exercise.getQuizExercises().size());
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_removeExercise_Exception_If_Parameter_Is_Null() {
+		exercise.removeQuizExercise(null);
+	}
+	
 	// equals
 	
 	@Test
@@ -256,17 +303,5 @@ public class SimpleExerciseTest {
 	@Test
 	public void test_Equals_False_If_Questions_Not_Equal() {
 		assertFalse(exerciseEqual.compareTo(exerciseNotEqual) == exerciseNotEqual.compareTo(exerciseEqual));
-	}
-	
-	// isCorrectAnswer
-	
-	@Test
-	public void test_Equals_True_If_Answers_Equal() {
-		assertTrue(exercise.isCorrectAnswer("Brussel"));
-	}
-	
-	@Test
-	public void test_Equals_False_If_Answers_Not_Equal() {
-		assertFalse(exercise.isCorrectAnswer("Leuven"));
 	}
 }
