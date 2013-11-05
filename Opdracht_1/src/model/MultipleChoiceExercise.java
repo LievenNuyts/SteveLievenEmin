@@ -1,19 +1,14 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.Scanner;
 
 import utils.DateGC;
-
-
-import model.Exercise.ExerciseCategory;
-import utils.DateGC;
-import utils.DateQuiz;
 
 /**
  * 
@@ -105,7 +100,7 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
     			throw new IllegalArgumentException("Gelieve een antwoord in te vullen!");
     		}
     		
-    		this.correctAnswer = correctAnswer;
+    		correctAnswer = getCorrectAnswer();
     	}
     	
     	
@@ -117,7 +112,7 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
     			throw new IllegalArgumentException("Geen antwoord gegeven!");
     		}
     			
-    		if(answer.equals(correctAnswer)){
+    		if(answer.equals(getCorrectAnswer())){
     			return true;
     		}
     			
@@ -186,6 +181,23 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
 			} else if (!multipleChoice.equals(other.multipleChoice))
 				return false;
 			return true;
+		}
+		
+		@Override
+		public MultipleChoiceExercise clone() throws CloneNotSupportedException{
+			GregorianCalendar gc = new GregorianCalendar();
+			gc.set(getDateRegistration().getGregCal().get(Calendar.YEAR), 
+					getDateRegistration().getGregCal().get(Calendar.MONTH), 
+					getDateRegistration().getGregCal().get(Calendar.DATE));
+			
+			DateGC date = new DateGC();
+			date.setGregCal(gc);
+			
+			MultipleChoiceExercise exercise = new MultipleChoiceExercise(getExerciseId(), getQuestion(), getCorrectAnswer(), 
+					getAnswerHints(), getMaxNumberOfAttempts(), getMaxAnswerTime(), getCategory(), 
+					getAuthor(), getQuizExercises(), date, getDiscriminator(), getMultipleChoice());
+			
+			return exercise;
 		}
 
 }
