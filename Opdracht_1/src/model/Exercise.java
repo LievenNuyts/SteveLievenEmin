@@ -321,7 +321,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	 * @param quizExercise
 	 * @throws IllegalArgumentException
 	 */
-	public void addExercise(QuizExercise quizExercise) throws IllegalArgumentException{
+	public void addQuizExercise(QuizExercise quizExercise) throws IllegalArgumentException{
 		if (quizExercise == null)throw new IllegalArgumentException("quizExercise is null!");
 		for (QuizExercise qE: quizExercises) {
 			if (qE.equals(quizExercise))throw new IllegalArgumentException("quizExercise bestaat al!");
@@ -335,7 +335,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	 * @param quizExercise
 	 * @throws IllegalArgumentException
 	 */
-	public void removeExercise(QuizExercise quizExercise) throws IllegalArgumentException{
+	public void removeQuizExercise(QuizExercise quizExercise) throws IllegalArgumentException{
 		if (quizExercise == null)throw new IllegalArgumentException("Opdracht is null!");
 		quizExercises.remove(quizExercise);
 	}

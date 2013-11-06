@@ -21,7 +21,7 @@ import utils.DateQuiz;
 
 public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 	
-        private ArrayList<Quiz> quizCatalogs = new ArrayList<Quiz>();        
+        private ArrayList<Quiz> quizCatalogs;        
         
         
         public QuizCatalog() throws IllegalArgumentException{
@@ -114,6 +114,8 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 			File file = new File("src" + File.separator + "files" + File.separator + "quizzes.txt");
 			
 			try {
+				if (quizCatalogs == null)throw new IllegalArgumentException("quizCatalogs lijst is leeg, er is niets om op te slaan!");
+
 				// Create new writer
 				PrintWriter writer = new PrintWriter(file);
 				
@@ -204,6 +206,7 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 					// Add result to dateRegistration parameter
 					qz.setDate(new DateQuiz(day, month, year));
 					
+					quizCatalogs.add(qz);
 					if (scanner2!=null){
 						scanner2.close();
 					}
@@ -213,7 +216,7 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 			  catch(FileNotFoundException ex){
 				  System.out.println("Bestand niet gevonden!");
 			  }
-			  catch(Exception ex){
+			  catch(IllegalArgumentException ex){
 				  System.out.println(ex.getMessage());
 			  }
 		}
