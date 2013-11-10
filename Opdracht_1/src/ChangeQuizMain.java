@@ -2,11 +2,11 @@ import javax.swing.SwingUtilities;
 
 import controller.ChangeQuizController;
 import view.ChangeQuizView;
-import model.Quiz;
+import model.ExerciseCatalog;
+import model.QuizCatalog;
 
 
 public class ChangeQuizMain {
-
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 			
@@ -18,8 +18,9 @@ public class ChangeQuizMain {
 
 	}
 	public static void runQuiz() {
-		Quiz quiz = new Quiz();
-		ChangeQuizView changeView = new ChangeQuizView(quiz);
-		ChangeQuizController changeController = new ChangeQuizController(changeView, quiz);
+		QuizCatalog quizCatalog = new QuizCatalog();
+		ExerciseCatalog exCatalog = new ExerciseCatalog();
+		ChangeQuizView changeView = new ChangeQuizView(quizCatalog, exCatalog);
+		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
 	}
 }
