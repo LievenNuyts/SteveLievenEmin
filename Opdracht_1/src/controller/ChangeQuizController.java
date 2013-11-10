@@ -1,5 +1,8 @@
 package controller;
 
+import model.Quiz;
+import view.ChangeQuizView;
+
 
 /**
  * 
@@ -10,4 +13,14 @@ package controller;
 
 public class ChangeQuizController {
 
+	private ChangeQuizView changeView;
+	private Quiz quiz;
+	
+	public ChangeQuizController(ChangeQuizView changeView, Quiz quiz) {
+
+		this.changeView = changeView;
+		this.quiz = quiz;
+	}
+	
+	
 }
