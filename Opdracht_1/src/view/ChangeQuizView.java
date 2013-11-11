@@ -45,16 +45,17 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			setLayout(new FlowLayout());
 			
+
 			panel_01 = new JPanel(); 
 			panel_02 = new JPanel();
-			txt_01 = new JTextField("Tekstveld 1", 25);
-			txt_02 = new JTextField("Tekstveld 2", 15);
-			lb_01 = new JLabel("01");
-			lb_02 = new JLabel("02");
-			lb_03 = new JLabel("03");
-			lb_04 = new JLabel("04");
+			txt_01 = new JTextField("Find quiz", 25);
+			txt_02 = new JTextField("Find exercise", 15);
+			lb_01 = new JLabel("Status");
+			lb_02 = new JLabel("Show category");
+			lb_03 = new JLabel("Quiz");
+			lb_04 = new JLabel("Exercise");
 			table = new JTable();
-			btn_update = new JButton("Update");
+			btn_update = new JButton("Search");
 			
 			//implements interface Actionlistener
 			btn_update.addActionListener(new ActionListener() {
@@ -81,6 +82,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			panel_02.add(lb_03);
 			panel_02.add(lb_04);
+			panel_02.add(table);
 			
 			add(panel_01);
 			add(panel_02);
