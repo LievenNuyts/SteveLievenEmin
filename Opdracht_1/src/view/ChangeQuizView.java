@@ -1,6 +1,9 @@
 package view;
 
+import java.awt.FlowLayout;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,7 +22,7 @@ import model.ExerciseCatalog;
  * 
  */
 
-public class ChangeQuizView extends JFrame {
+public class ChangeQuizView extends JFrame implements ActionListener{
 	
 		private static final long serialVersionUID = 1L;
 		private QuizCatalog quizCatalog;
@@ -40,9 +43,69 @@ public class ChangeQuizView extends JFrame {
 			this.quizCatalog = quizCatalog;
 			this.exCatalog = exCatalog;
 			
+			setLayout(new FlowLayout());
+			
 			panel_01 = new JPanel(); 
 			panel_02 = new JPanel();
+			txt_01 = new JTextField("Tekstveld 1", 25);
+			txt_02 = new JTextField("Tekstveld 2", 15);
+			lb_01 = new JLabel("01");
+			lb_02 = new JLabel("02");
+			lb_03 = new JLabel("03");
+			lb_04 = new JLabel("04");
+			table = new JTable();
+			btn_update = new JButton("Update");
+			
+			//implements interface Actionlistener
+			btn_update.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					System.out.println("Update!");
+					//uit te voeren code
+					
+				}
+				
+			});
+			
+			
+			//layout
+			
+			panel_01.add(txt_01);
+			panel_01.add(txt_02);
+			panel_01.add(lb_01);
+			
+			panel_01.add(btn_update);
+			
+			panel_01.add(lb_02);
+			
+			panel_02.add(lb_03);
+			panel_02.add(lb_04);
+			
+			add(panel_01);
+			add(panel_02);
+			
+			
+			//window
+			
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setSize(750,750);
+			this.setVisible(true);
+			
 		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+
+			JButton source = (JButton)e.getSource();
+			
+			if(source == btn_update) {
+				System.out.println("Update via cast e.getSource");
+			}
+			
+		}
+		
 		
 		
 
