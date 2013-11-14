@@ -1,10 +1,13 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,9 +22,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import model.Quiz;
-import model.QuizCatalog;
 import model.ExerciseCatalog;
+import model.QuizCatalog;
 
 /**
  * 
@@ -35,7 +37,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 		private static final long serialVersionUID = 1L;
 		private QuizCatalog quizCatalog;
 		private ExerciseCatalog exCatalog;
-		private JPanel panel_01, panel_02;
+		private JPanel panel_01, panel_02, panel_03, panel_04;
 		private JTextField txt_01, txt_02;
 		private JLabel lb_01, lb_02, lb_03, lb_04;
 		private JTable table;
@@ -60,9 +62,52 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			setLayout(new FlowLayout());
 			
-
+			//Panel 01
+			
+			Dimension size_01 = getPreferredSize();
+			size_01.width = 500;
+			size_01.height = 200;
+			
 			panel_01 = new JPanel(); 
+			panel_01.setPreferredSize(size_01);
+			
+			panel_01.setBorder(BorderFactory.createTitledBorder("Quiz"));
+			
+			//Panel 02
+			
+			Dimension size_02 = getPreferredSize();
+			size_02.width = 500;
+			size_02.height = 200;
+			
 			panel_02 = new JPanel();
+			panel_02.setPreferredSize(size_02);
+			
+			panel_02.setBorder(BorderFactory.createTitledBorder("Exercise"));
+			
+			//Panel 03
+			
+			Dimension size_03 = getPreferredSize();
+			size_03.width = 500;
+			size_03.height = 350;
+			
+			panel_03 = new JPanel();
+			panel_03.setPreferredSize(size_03);
+			
+			panel_03.setBorder(BorderFactory.createTitledBorder("Controls"));
+			
+			//Panel 04
+			
+			Dimension size_04 = getPreferredSize();
+			size_04.width = 500;
+			size_04.height = 350;
+			
+			panel_04 = new JPanel();
+			panel_04.setPreferredSize(size_03);
+			
+			panel_04.setBorder(BorderFactory.createTitledBorder("Controls"));
+			
+			//Components
+			
 			txt_01 = new JTextField("Find quiz", 25);
 			txt_02 = new JTextField("Find exercise", 15);
 			
@@ -127,6 +172,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			panel_01.add(btn_edit);
 			panel_01.add(btn_delete);
 			panel_01.add(lb_02);
+			
 			panel_02.add(lb_03);
 			panel_02.add(lb_04);
 			panel_02.add(table);
@@ -134,10 +180,18 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			panel_02.add(comboLeerjaar);
 			panel_02.add(comboCategory);
 			
+			panel_03.add(new JScrollPane(listQuiz));
+			panel_04.add(new JScrollPane(listExercise));
+			
 			add(panel_01);
 			add(panel_02);
-			add(new JScrollPane(listQuiz));
-			add(new JScrollPane(listExercise));
+			add(panel_03);
+			add(panel_04);
+			
+			GridBagConstraints gbc = new GridBagConstraints();
+			
+			
+
 			
 			listQuiz.addListSelectionListener(
 					new ListSelectionListener() // anonymous inner class
@@ -155,7 +209,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			//window
 			
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			this.setSize(750,750);
+			this.setSize(1200,750);
 			this.setVisible(true);
 			
 			
