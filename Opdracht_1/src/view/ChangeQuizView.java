@@ -19,11 +19,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import model.ExerciseCatalog;
 import model.QuizCatalog;
+import model.Exercise.ExerciseCategory;
+import model.QuizStatus;
 
 /**
  * 
@@ -44,21 +47,15 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 		private JButton btn_update, btn_edit, btn_delete;
 		private JList listExercise;
         private JList listQuiz;
-        private JComboBox<String> comboCategory;
-        private JComboBox<String> comboStatus;
+        private JComboBox comboCategory;
+        private JComboBox comboStatus;
         private JComboBox<Integer> comboLeerjaar;
         //private final JScrollPane paneExercise;
         //private final JScrollPane paneQuiz;
-		
-		public ChangeQuizView()
-		{
-			super("Change Quiz");
-		}
 
-		public ChangeQuizView(QuizCatalog quizCatalog, ExerciseCatalog exCatalog) throws HeadlessException {
+		public ChangeQuizView() {
 			super("Change quiz");
-			this.quizCatalog = quizCatalog;
-			this.exCatalog = exCatalog;
+
 			
 			setLayout(new FlowLayout());
 			
@@ -115,16 +112,14 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			lb_01.setBounds(36, 24, 112, 15);
 			getContentPane().add(lb_01);
 			
-			comboStatus = new JComboBox<String>();
-			comboStatus.addItem("UNDER CONSTRUCTION");
-			comboStatus.addItem("COMPLETED");
-			comboStatus.addItem("READY");
-			comboStatus.addItem("LAST CHANCE");
-			comboStatus.addItem("CLOSED");
+			comboStatus = new JComboBox(QuizStatus.values());
 			
-			comboLeerjaar = new JComboBox<Integer>();
 			
-			comboCategory = new JComboBox<String>();
+			Integer[] leerJaren = {1, 2, 3, 4};
+			comboLeerjaar = new JComboBox<Integer>(leerJaren);
+			
+			
+			comboCategory = new JComboBox(ExerciseCategory.values());
 			
 			listExercise = new JList<>();
 			listExercise.setVisibleRowCount(10);
@@ -133,7 +128,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			listQuiz = new JList<>();
 			listQuiz.setVisibleRowCount(10);
 			listQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-               
+              
 			lb_02 = new JLabel("Show category");
 			lb_03 = new JLabel("Quiz");
 			lb_04 = new JLabel("Exercise");
@@ -147,10 +142,10 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			btn_delete = new JButton("Delete");
 			btn_delete.addActionListener(this);
-			
+			/*
 			this.quizCatalog.readQuizzesFromFile();
 			this.exCatalog.readExercisesFromFile();
-			
+			*/
 			/*
 			//implements interface Actionlistener
 			btn_update.addActionListener(new ActionListener() {
@@ -190,7 +185,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			GridBagConstraints gbc = new GridBagConstraints();
 			
-			
+			/*
 
 			
 			listQuiz.addListSelectionListener(
@@ -207,7 +202,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			
 			//window
-			
+			*/
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setSize(1200,750);
 			this.setVisible(true);
@@ -235,7 +230,16 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			}
 		}
 		
-		
+		public static void main(String[] args) {
+	        
+	        SwingUtilities.invokeLater(new Runnable() {
+	            @Override
+	            public void run() {
+	            	ChangeQuizView ex = new ChangeQuizView();
+	                ex.setVisible(true);
+	            }
+	        });
+	    }
 		
 
 }

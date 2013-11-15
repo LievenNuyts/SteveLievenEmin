@@ -18,12 +18,12 @@ public class ChangeQuizController {
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exCatalog;
 	
-	public ChangeQuizController(ChangeQuizView changeView, QuizCatalog quizCatalog, ExerciseCatalog exCatalog) {
-
+	public ChangeQuizController() {
+		/*
 		this.changeView = changeView;
 		this.quizCatalog = quizCatalog;
 		this.exCatalog = exCatalog;
-
+		 */
 	}
 	
 	

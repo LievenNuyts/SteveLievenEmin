@@ -11,24 +11,6 @@ import utils.DateQuiz;
  *
  */
 
-enum QuizStatus {
-
-	UNDERCONSTRUCION(1), 
-	COMPLETED(2), 
-	READY(3),
-	LASTCHANCE(4), 
-	CLOSED(5);
-
-	private final int StatusID;
-
-	QuizStatus(int StatusID) { 
-		this.StatusID = StatusID; 
-	}
-	public int getValue() { 
-		return StatusID; 
-	}
-
-}
 
 public class Quiz implements Comparable<Quiz>{
 	

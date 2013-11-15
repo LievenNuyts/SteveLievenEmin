@@ -1,5 +1,6 @@
 package controller;
 
+import view.ChangeQuizView;
 import view.Menu;
 
 import javax.swing.JFrame;
@@ -41,7 +42,7 @@ public class StartAppController extends JFrame{
 		addQuizController = new AddQuizController();
 		addExerciseController = new AddExerciseController();
 		
-		changeQuizController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
+		changeQuizController = new ChangeQuizController();
 		changeExerciseController = new ChangeExerciseController();
 		
 		deleteQuizController = new DeleteQuizController();
@@ -51,6 +52,10 @@ public class StartAppController extends JFrame{
 	
 	public static void main(String[] args) throws Exception {
         new StartAppController().startApp();
+        QuizCatalog quizCatalog = new QuizCatalog();
+		ExerciseCatalog exCatalog = new ExerciseCatalog();
+		ChangeQuizView changeView = new ChangeQuizView(quizCatalog, exCatalog);
+		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
 	}
 	
 	public void startApp(){
