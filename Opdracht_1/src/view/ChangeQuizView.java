@@ -41,10 +41,10 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 		private QuizCatalog quizCatalog;
 		private ExerciseCatalog exCatalog;
 		private JPanel panel_01, panel_02, panel_03, panel_04;
-		private JTextField txt_01, txt_02;
-		private JLabel lb_01, lb_02, lb_03, lb_04;
+		private JTextField txt_01;
+		private JLabel lb_01, lb_02, lb_03, lb_04, lb_05;
 		private JTable table;
-		private JButton btn_update, btn_edit, btn_delete;
+		private JButton btn_update, btn_edit, btn_delete, btn_search_quiz;
 		private JList listExercise;
         private JList listQuiz;
         private JComboBox comboCategory;
@@ -62,24 +62,24 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			//Panel 01
 			
 			Dimension size_01 = getPreferredSize();
-			size_01.width = 500;
-			size_01.height = 200;
+			size_01.width = 700;
+			size_01.height = 100;
 			
 			panel_01 = new JPanel(); 
 			panel_01.setPreferredSize(size_01);
 			
-			panel_01.setBorder(BorderFactory.createTitledBorder("Quiz"));
+			panel_01.setBorder(BorderFactory.createTitledBorder("Search Controls"));
 			
 			//Panel 02
 			
 			Dimension size_02 = getPreferredSize();
-			size_02.width = 500;
-			size_02.height = 200;
+			size_02.width = 300;
+			size_02.height = 100;
 			
 			panel_02 = new JPanel();
 			panel_02.setPreferredSize(size_02);
 			
-			panel_02.setBorder(BorderFactory.createTitledBorder("Exercise"));
+			panel_02.setBorder(BorderFactory.createTitledBorder("Update Controls"));
 			
 			//Panel 03
 			
@@ -90,7 +90,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			panel_03 = new JPanel();
 			panel_03.setPreferredSize(size_03);
 			
-			panel_03.setBorder(BorderFactory.createTitledBorder("Controls"));
+			panel_03.setBorder(BorderFactory.createTitledBorder("Quiz"));
 			
 			//Panel 04
 			
@@ -101,14 +101,21 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			panel_04 = new JPanel();
 			panel_04.setPreferredSize(size_03);
 			
-			panel_04.setBorder(BorderFactory.createTitledBorder("Controls"));
+			panel_04.setBorder(BorderFactory.createTitledBorder("Exercise"));
 			
 			//Components
 			
-			txt_01 = new JTextField("Find quiz", 25);
-			txt_02 = new JTextField("Find exercise", 15);
+			//panel 01
 			
-			lb_01 = new JLabel("Status");
+			txt_01 = new JTextField("Find quiz", 50);
+			
+			btn_search_quiz = new JButton("Search");
+			btn_search_quiz.addActionListener(this);
+			
+			
+			
+			
+			lb_01 = new JLabel("Status: ");
 			lb_01.setBounds(36, 24, 112, 15);
 			getContentPane().add(lb_01);
 			
@@ -129,12 +136,11 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			listQuiz.setVisibleRowCount(10);
 			listQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
               
-			lb_02 = new JLabel("Show category");
-			lb_03 = new JLabel("Quiz");
-			lb_04 = new JLabel("Exercise");
+			lb_02 = new JLabel("  Show category: ");
+			lb_05 = new JLabel("  Grade: ");
 			table = new JTable();
 			
-			btn_update = new JButton("Search");
+			btn_update = new JButton("Update");
 			btn_update.addActionListener(this);
 			
 			btn_edit = new JButton("Edit");
@@ -161,19 +167,26 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			//layout
 			
 			panel_01.add(txt_01);
-			panel_01.add(txt_02);
-			panel_01.add(lb_01);
-			panel_01.add(btn_update);
-			panel_01.add(btn_edit);
-			panel_01.add(btn_delete);
-			panel_01.add(lb_02);
+			panel_01.add(btn_search_quiz);
 			
-			panel_02.add(lb_03);
-			panel_02.add(lb_04);
+			panel_01.add(lb_01);
+			panel_01.add(comboStatus);
+			
+			panel_01.add(lb_05);
+			panel_01.add(comboLeerjaar);
+			
+			panel_01.add(lb_02);
+			panel_01.add(comboCategory);
+			
+			
+			
+			
+			
 			panel_02.add(table);
-			panel_02.add(comboStatus);
-			panel_02.add(comboLeerjaar);
-			panel_02.add(comboCategory);
+			
+			panel_02.add(btn_update);
+			panel_02.add(btn_edit);
+			panel_02.add(btn_delete);
 			
 			panel_03.add(new JScrollPane(listQuiz));
 			panel_04.add(new JScrollPane(listExercise));
@@ -182,8 +195,6 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			add(panel_02);
 			add(panel_03);
 			add(panel_04);
-			
-			GridBagConstraints gbc = new GridBagConstraints();
 			
 			/*
 
@@ -204,7 +215,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			//window
 			*/
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			this.setSize(1200,750);
+			this.setSize(1100,550);
 			this.setVisible(true);
 			
 			
@@ -218,6 +229,10 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			if(source == btn_update) {
 				System.out.println("Search through e.getSource");
+				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
+			}
+			else if(source == btn_search_quiz) {
+				System.out.println("Edit through e.getSource");
 				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
 			}
 			else if(source == btn_edit) {
