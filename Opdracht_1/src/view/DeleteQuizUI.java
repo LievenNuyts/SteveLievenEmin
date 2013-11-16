@@ -23,7 +23,7 @@ public class DeleteQuizUI extends JFrame{
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
-	Object [][] data = {
+	Object [][] data = {//example is maar om wa mee te foefelen
     		{"1","Jan","Aardrijkskunde","1","New"},
     		{"2","Karel","Wiskunde","1","New"},
     		{"3","Paul","Taal","2","Active"}, 
@@ -78,7 +78,7 @@ public class DeleteQuizUI extends JFrame{
     		{"1","Jan","Aardrijkskunde","1","New"},
     		{"2","Karel","Wiskunde","1","New"},
     		{"3","Paul","Taal","2","Active"} 	
-    }; //example
+    }; //example is maar om wa mee te foefelen
 	
 	
 	public DeleteQuizUI(){
