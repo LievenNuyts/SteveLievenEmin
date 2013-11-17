@@ -138,6 +138,8 @@ public class ChangeQuizView extends JFrame {
 			    listModel.addElement("new");  
 			  }  
 			*/
+			
+			
 			listExercise = new JList<>(listModelEx);
 			listModelEx.addElement("1 - New exercise");  
 			listModelEx.addElement("2 - New exercise");
@@ -145,6 +147,11 @@ public class ChangeQuizView extends JFrame {
 			listModelEx.addElement("4 - New exercise");
 			listModelEx.addElement("5 - New exercise");
 			listExercise.setVisibleRowCount(10);
+			
+			Dimension size_list_ex = getPreferredSize();
+			size_list_ex.width = 400;
+			size_list_ex.height = 50;
+			listExercise.setPreferredSize(size_list_ex);
 			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			listModelQuiz = new DefaultListModel(); 
@@ -156,6 +163,11 @@ public class ChangeQuizView extends JFrame {
 			listModelQuiz.addElement("4 - New Quiz");
 			listModelQuiz.addElement("5 - New Quiz");
 			listQuiz.setVisibleRowCount(10);
+			
+			Dimension size_list_quiz = getPreferredSize();
+			size_list_quiz.width = 400;
+			size_list_quiz.height = 50;
+			listQuiz.setPreferredSize(size_list_quiz);
 			listQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
               
 			lb_02 = new JLabel("  Show category: ");

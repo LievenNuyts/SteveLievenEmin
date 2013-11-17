@@ -39,7 +39,7 @@ public class ChangeQuizController {
 			String quizTitle;
 			String status;
 			Integer grade;
-			String category;c
+			String category;
 
 			try {
 				
