@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.Scanner;
 
 import utils.DateQuiz;
@@ -16,7 +17,7 @@ import utils.DateQuiz;
  * 
  */
 
-public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
+public class QuizCatalog extends Observable implements Comparable<QuizCatalog>, Cloneable{
 	
         private ArrayList<Quiz> quizCatalogs;        
         

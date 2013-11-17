@@ -4,10 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -37,7 +35,7 @@ import model.QuizStatus;
  * 
  */
 
-public class ChangeQuizView extends JFrame implements ActionListener{
+public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 	
 		private static final long serialVersionUID = 1L;
 		private QuizCatalog quizCatalog;
@@ -166,7 +164,7 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			
 			
 			btn_update = new JButton("Update");
-			btn_update.addActionListener(this);
+			//btn_update.addActionListener(this);
 			
 			btn_edit = new JButton("Edit");
 			btn_edit.addActionListener(this);
@@ -223,30 +221,31 @@ public class ChangeQuizView extends JFrame implements ActionListener{
 			add(panel_03);
 			add(panel_04);
 			
-			/*
-
-			
-			listQuiz.addListSelectionListener(
-					new ListSelectionListener() // anonymous inner class
-					{
-						// handle list selection events
-						public void valueChanged( ListSelectionEvent event )
-						{
-							//getContentPane().setBackground(
-							//		quizCatalog[listQuiz.getSelectedIndex()] );
-						} // end method valueChanged
-					} // end anonymous inner class
-					); // end call to addListSelectionListener
-			
-			
+					
 			//window
-			*/
+			
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			this.setSize(1100,550);
 			this.setVisible(true);
 			
 			
 		}
+		
+		public void update(Observable obs, Object obj) {
+
+			//who called us and what did they send?
+			System.out.println ("View      : Observable is " + obs.getClass() + ", object passed is " + obj.getClass());
+
+			//model Push 
+
+			//listQuiz.add(quizCatalog);	
+
+	    	} //update()
+
+		public void addController(ActionListener controller){
+			System.out.println("View      : adding controller");
+			btn_update.addActionListener(controller);	//need instance of controller before can add it as a listener 
+		} //addController()
 		
 		
 		    
