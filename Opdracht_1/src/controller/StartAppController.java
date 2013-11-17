@@ -24,13 +24,13 @@ public class StartAppController extends JFrame{
 
 	private Menu startMenu;
 	
-	private AddQuizController addQuizController;
+	//private AddQuizController addQuizController;
 	private ChangeQuizController changeQuizController;
-	private DeleteQuizController deleteQuizController;
+	//private DeleteQuizController deleteQuizController;
 	
-	private AddExerciseController addExerciseController;
-	private ChangeExerciseController changeExerciseController;
-	private DeleteExerciseController deleteExerciseController;
+	//private AddExerciseController addExerciseController;
+	//private ChangeExerciseController changeExerciseController;
+	//private DeleteExerciseController deleteExerciseController;
 	
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exerciseCatalog;
@@ -38,8 +38,8 @@ public class StartAppController extends JFrame{
 	public StartAppController() {
 		
 		startMenu = new Menu("Add exercise","Add quiz","Update exercise","Update quiz","Delete exercise","Delete quiz");
-		
-		addQuizController = new AddQuizController();
+		/*
+		createQuizController = new createQuizController();
 		addExerciseController = new AddExerciseController();
 		
 		changeQuizController = new ChangeQuizController();
@@ -47,15 +47,15 @@ public class StartAppController extends JFrame{
 		
 		deleteQuizController = new DeleteQuizController();
 		deleteExerciseController = new DeleExerciseController();
-		
+		*/
 	}
 	
 	public static void main(String[] args) throws Exception {
         new StartAppController().startApp();
         QuizCatalog quizCatalog = new QuizCatalog();
 		ExerciseCatalog exCatalog = new ExerciseCatalog();
-		ChangeQuizView changeView = new ChangeQuizView(quizCatalog, exCatalog);
-		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
+		ChangeQuizView changeView = new ChangeQuizView();
+		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog);
 	}
 	
 	public void startApp(){

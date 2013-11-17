@@ -239,9 +239,26 @@ public class ChangeQuizView extends JFrame {
 			return comboCategory.getSelectedItem().toString();
 		}
 		
-		public void addListener(ActionListener listenForUpdateButton) {
+		// events
+		
+		public void addUpdateListener(ActionListener listenForUpdateButton) {
 
 			btn_update.addActionListener(listenForUpdateButton);
+		}
+		
+		public void addDeleteListener(ActionListener listenForDeleteButton) {
+			
+			btn_delete.addActionListener(listenForDeleteButton);
+		}
+		
+		public void addEditListener(ActionListener listenForEditButton) {
+			
+			btn_edit.addActionListener(listenForEditButton);
+		}
+
+		public void addSearchListener(ActionListener listenForSearchButton) {
+	
+			btn_search_quiz.addActionListener(listenForSearchButton);
 		}
 
 		// Open a popup that contains the error message passed

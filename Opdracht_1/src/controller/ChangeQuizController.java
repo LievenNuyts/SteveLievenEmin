@@ -3,7 +3,6 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.ExerciseCatalog;
 import model.QuizCatalog;
 import view.ChangeQuizView;
 
@@ -27,11 +26,15 @@ public class ChangeQuizController {
 		// is clicked to execute the actionPerformed method
 		// in the CalculateListener inner class
 
-		this.view.addListener(new QuizListener());
+		this.view.addUpdateListener(new QuizListener());
+		this.view.addDeleteListener(new DeleteListener());
+		this.view.addEditListener(new EditListener());
+		this.view.addSearchListener(new SearchListener());
 	}
 
 	class QuizListener implements ActionListener {
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			// dataMembers
@@ -42,9 +45,9 @@ public class ChangeQuizController {
 			String category;
 
 			try {
-				
+
 				System.out.println("Updatebutton");
-				
+
 				quizTitle = view.getQuizTitle();
 				status = view.getStatus();
 				grade = view.getGrade();
@@ -66,5 +69,77 @@ public class ChangeQuizController {
 
 		}
 
+	}
+
+	class DeleteListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			// dataMembers
+
+			try {
+
+				System.out.println("Deletebutton");
+
+			}
+
+			catch (Exception ex) {
+
+				System.out.println(ex);
+
+				view.displayErrorMessage("Error.");
+
+			}
+
+		}
+	}
+	
+	class EditListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			// dataMembers
+
+			try {
+
+				System.out.println("Editbutton");
+
+			}
+
+			catch (Exception ex) {
+
+				System.out.println(ex);
+
+				view.displayErrorMessage("Error.");
+
+			}
+
+		}
+	}
+	
+	class SearchListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			// dataMembers
+
+			try {
+
+				System.out.println("Searchbutton");
+
+			}
+
+			catch (Exception ex) {
+
+				System.out.println(ex);
+
+				view.displayErrorMessage("Error.");
+
+			}
+
+		}
 	}
 }
