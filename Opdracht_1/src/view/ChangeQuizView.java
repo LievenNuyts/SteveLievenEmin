@@ -35,11 +35,11 @@ import model.QuizStatus;
  * 
  */
 
-public class ChangeQuizView extends JFrame implements ActionListener, Observer{
+public class ChangeQuizView extends JFrame {
 	
 		private static final long serialVersionUID = 1L;
-		private QuizCatalog quizCatalog;
-		private ExerciseCatalog exCatalog;
+
+
 		private JPanel panel_01, panel_02, panel_03, panel_04;
 		private JTextField txt_01;
 		private JLabel lb_01, lb_02, lb_03, lb_04, lb_05;
@@ -293,6 +293,8 @@ public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 	            }
 	        });
 	    }
+
+		
 		
 
 }
