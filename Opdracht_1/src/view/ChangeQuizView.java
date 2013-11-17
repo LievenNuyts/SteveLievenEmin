@@ -171,21 +171,6 @@ public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 			
 			btn_delete = new JButton("Delete");
 			btn_delete.addActionListener(this);
-			/*
-			this.quizCatalog.readQuizzesFromFile();
-			this.exCatalog.readExercisesFromFile();
-			*/
-			/*
-			//implements interface Actionlistener
-			btn_update.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					System.out.println("Search!");
-					//uit te voeren code					
-				}
-			});
-			*/
 			
 			//layout
 			
@@ -200,11 +185,6 @@ public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 			
 			panel_01.add(lb_02);
 			panel_01.add(comboCategory);
-			
-			
-			//exCatalog.readExercisesFromFile();
-			
-			
 			
 			panel_02.add(table);
 			
@@ -231,6 +211,35 @@ public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 			
 		}
 		
+		public String getQuizTitle() {
+			return txt_01.getText();
+		}
+		
+		public String getStatus(){
+			return comboStatus.getSelectedItem().toString();
+		}
+		
+		public Integer getGrade(){
+			return Integer.parseInt(comboLeerjaar.getSelectedItem().toString());
+		}
+		
+		public String getCategory(){
+			return comboCategory.getSelectedItem().toString();
+		}
+		
+		void addListener(ActionListener listenForUpdateButton) {
+
+			btn_update.addActionListener(listenForUpdateButton);
+		}
+
+		// Open a popup that contains the error message passed
+
+		public void displayErrorMessage(String errorMessage) {
+
+			JOptionPane.showMessageDialog(this, errorMessage);
+		}
+
+		/**
 		public void update(Observable obs, Object obj) {
 
 			//who called us and what did they send?
@@ -273,7 +282,7 @@ public class ChangeQuizView extends JFrame implements ActionListener, Observer{
 				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
 			}
 		}
-		
+		*/
 		public static void main(String[] args) {
 	        
 	        SwingUtilities.invokeLater(new Runnable() {
