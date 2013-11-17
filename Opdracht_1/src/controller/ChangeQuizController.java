@@ -39,14 +39,12 @@ public class ChangeQuizController {
 			String quizTitle;
 			String status;
 			Integer grade;
-			String category;
-
-			// Surround interactions with the view with
-			// a try block in case numbers weren't
-			// properly entered
+			String category;c
 
 			try {
-
+				
+				System.out.println("Updatebutton");
+				
 				quizTitle = view.getQuizTitle();
 				status = view.getStatus();
 				grade = view.getGrade();
@@ -58,11 +56,11 @@ public class ChangeQuizController {
 
 			}
 
-			catch (NumberFormatException ex) {
+			catch (Exception ex) {
 
 				System.out.println(ex);
 
-				view.displayErrorMessage("You Need to Enter 2 Integers");
+				view.displayErrorMessage("Error.");
 
 			}
 

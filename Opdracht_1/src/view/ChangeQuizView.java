@@ -113,7 +113,7 @@ public class ChangeQuizView extends JFrame {
 			txt_01 = new JTextField("Find quiz", 50);
 			
 			btn_search_quiz = new JButton("Search");
-			btn_search_quiz.addActionListener(this);
+			//btn_search_quiz.addActionListener(this);
 			
 			
 			
@@ -167,10 +167,10 @@ public class ChangeQuizView extends JFrame {
 			//btn_update.addActionListener(this);
 			
 			btn_edit = new JButton("Edit");
-			btn_edit.addActionListener(this);
+			//btn_edit.addActionListener(this);
 			
 			btn_delete = new JButton("Delete");
-			btn_delete.addActionListener(this);
+			//btn_delete.addActionListener(this);
 			
 			//layout
 			
@@ -227,7 +227,7 @@ public class ChangeQuizView extends JFrame {
 			return comboCategory.getSelectedItem().toString();
 		}
 		
-		void addListener(ActionListener listenForUpdateButton) {
+		public void addListener(ActionListener listenForUpdateButton) {
 
 			btn_update.addActionListener(listenForUpdateButton);
 		}
@@ -282,7 +282,7 @@ public class ChangeQuizView extends JFrame {
 				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
 			}
 		}
-		*/
+		
 		public static void main(String[] args) {
 	        
 	        SwingUtilities.invokeLater(new Runnable() {
@@ -295,6 +295,6 @@ public class ChangeQuizView extends JFrame {
 	    }
 
 		
-		
+		*/
 
 }

@@ -10,6 +10,8 @@ import controller.ChangeQuizController;
  */
 
 public class RunChangeView {
+	
+	public static void main(String[] args){
 
 	ChangeQuizView changeView = new ChangeQuizView();
 
@@ -18,5 +20,6 @@ public class RunChangeView {
 	ChangeQuizController theController = new ChangeQuizController(changeView,model);
 
 	//changeview.setVisible(true);
+	}
 
 } 
