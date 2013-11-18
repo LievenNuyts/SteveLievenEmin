@@ -94,7 +94,7 @@ public class ChangeQuizController {
 
 		}
 	}
-	
+
 	class EditListener implements ActionListener {
 
 		@Override
@@ -118,7 +118,7 @@ public class ChangeQuizController {
 
 		}
 	}
-	
+
 	class SearchListener implements ActionListener {
 
 		@Override
@@ -133,7 +133,7 @@ public class ChangeQuizController {
 			}
 
 			catch (Exception ex) {
-
+cc
 				System.out.println(ex);
 
 				view.displayErrorMessage("Error.");
