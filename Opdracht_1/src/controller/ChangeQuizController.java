@@ -3,6 +3,8 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import model.QuizCatalog;
 import view.ChangeQuizView;
 
@@ -129,11 +131,11 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Searchbutton");
-
+				
 			}
 
 			catch (Exception ex) {
-cc
+				
 				System.out.println(ex);
 
 				view.displayErrorMessage("Error.");
