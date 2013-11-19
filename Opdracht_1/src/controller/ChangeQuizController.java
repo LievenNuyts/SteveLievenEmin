@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import model.Quiz;
 import model.QuizCatalog;
 import view.ChangeQuizView;
 
@@ -83,6 +84,10 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Deletebutton");
+				
+				for(Quiz q : quizModel.getExercises()){
+					
+				}
 
 			}
 
