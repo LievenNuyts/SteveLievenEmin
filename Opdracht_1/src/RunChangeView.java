@@ -1,3 +1,4 @@
+import model.ExerciseCatalog;
 import model.QuizCatalog;
 import view.ChangeQuizView;
 import controller.ChangeQuizController;
@@ -15,11 +16,13 @@ public class RunChangeView {
 
 	ChangeQuizView changeView = new ChangeQuizView();
 
-	QuizCatalog model = new QuizCatalog();
+	QuizCatalog quizModel = new QuizCatalog();
+	ExerciseCatalog exModel = new ExerciseCatalog();
+	
+	
 
-	ChangeQuizController theController = new ChangeQuizController(changeView,model);
+	ChangeQuizController controller = new ChangeQuizController(changeView, quizModel, exModel);
 
-	//changeview.setVisible(true);
 	}
 
 } 

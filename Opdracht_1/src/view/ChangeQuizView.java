@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -21,8 +22,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
@@ -243,25 +242,35 @@ public class ChangeQuizView extends JFrame {
 			return comboCategory.getSelectedItem().toString();
 		}
 		
-		public void setQuizList(List<Quiz>quizList){
+		public void setListQuiz(List<Quiz> quizList){
 			DefaultListModel listModel = new DefaultListModel();
 			
 			for(Quiz q : quizList){
 				listModel.addElement(q.getQuizExercises());
 			}
 			
-			this.quizList.setModel(listModel);
+			this.listQuiz.setModel(listModel);
 		}
 		
-		public void setExerciseList(List<Exercise>exerciseList){
+		public void setListExercise(List<Exercise> exerciseList){
 			DefaultListModel listModel = new DefaultListModel();
 			
 			for(Exercise ex : exerciseList){
 				listModel.addElement(ex.getQuestion());
 			}
 			
-			this.exerciseList.setModel(listModel);
+			this.listExercise.setModel(listModel);
 		}
+		
+		public DefaultListModel getListQuizModel(){
+			return listModelQuiz;
+		}
+		
+		public DefaultListModel getListExModel(){
+			return listModelEx;
+		}
+		
+		
 		// events
 		
 		public void addUpdateListener(ActionListener listenForUpdateButton) {

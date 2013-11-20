@@ -3,8 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
+import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 import view.ChangeQuizView;
@@ -19,15 +18,25 @@ import view.ChangeQuizView;
 public class ChangeQuizController {
 
 	private ChangeQuizView view;
-	private QuizCatalog dataModel;
+	private QuizCatalog quizModel;
+	private ExerciseCatalog exerciseModel;
 
-	public ChangeQuizController(ChangeQuizView view, QuizCatalog dataModel) {
+	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel, ExerciseCatalog exerciseModel) {
 		this.view = view;
-		this.dataModel = dataModel;
+		this.quizModel = quizModel;
+		this.exerciseModel = exerciseModel;
 
-		// Tell the View that when ever the calculate button
-		// is clicked to execute the actionPerformed method
-		// in the CalculateListener inner class
+		// Load exercises and quizzes
+		this.exerciseModel.readExercisesFromFile();
+		this.quizModel.readQuizzesFromFile();
+		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
+				quizModel.getQuizCatalogs());
+
+		// Add exercises to exercisesList (JList)
+		this.view.setListExercise(exerciseModel.getExercises());
+		this.view.setListQuiz(quizModel.getQuizCatalogs());
+				
+		//Add listeners
 
 		this.view.addUpdateListener(new QuizListener());
 		this.view.addDeleteListener(new DeleteListener());
@@ -56,8 +65,6 @@ public class ChangeQuizController {
 				grade = view.getGrade();
 				category = view.getCategory();
 
-				dataModel.writeQuizzesToFile();
-
 				// view.(dataModel.getQuizCatalogs());
 
 			}
@@ -85,9 +92,9 @@ public class ChangeQuizController {
 
 				System.out.println("Deletebutton");
 				
-				for(Quiz q : quizModel.getExercises()){
+				//for(Quiz q : quizModel.getExercises()){
 					
-				}
+				//}
 
 			}
 
