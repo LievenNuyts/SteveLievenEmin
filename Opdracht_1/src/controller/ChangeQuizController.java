@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
@@ -21,7 +22,8 @@ public class ChangeQuizController {
 	private QuizCatalog quizModel;
 	private ExerciseCatalog exerciseModel;
 
-	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel, ExerciseCatalog exerciseModel) {
+	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
+			ExerciseCatalog exerciseModel) {
 		this.view = view;
 		this.quizModel = quizModel;
 		this.exerciseModel = exerciseModel;
@@ -35,8 +37,8 @@ public class ChangeQuizController {
 		// Add exercises to exercisesList (JList)
 		this.view.setListExercise(exerciseModel.getExercises());
 		this.view.setListQuiz(quizModel.getQuizCatalogs());
-				
-		//Add listeners
+
+		// Add listeners
 
 		this.view.addUpdateListener(new QuizListener());
 		this.view.addDeleteListener(new DeleteListener());
@@ -91,10 +93,10 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Deletebutton");
-				
-				//for(Quiz q : quizModel.getExercises()){
-					
-				//}
+
+				// for(Quiz q : quizModel.getExercises()){
+
+				// }
 
 			}
 
@@ -131,29 +133,28 @@ public class ChangeQuizController {
 			}
 
 		}
-	}
 
-	class SearchListener implements ActionListener {
+		class SearchListeners implements ActionListener {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-			// dataMembers
+				// dataMembers
 
-			try {
+				try {
 
-				System.out.println("Searchbutton");
-				
+					System.out.println("Searchbutton");
+
+				}
+
+				catch (Exception ex) {
+
+					System.out.println(ex);
+
+					view.displayErrorMessage("Error.");
+
+				}
 			}
-
-			catch (Exception ex) {
-				
-				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
-			}
-
 		}
 	}
 }

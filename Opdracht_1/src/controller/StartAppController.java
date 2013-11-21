@@ -55,7 +55,7 @@ public class StartAppController extends JFrame{
         QuizCatalog quizCatalog = new QuizCatalog();
 		ExerciseCatalog exCatalog = new ExerciseCatalog();
 		ChangeQuizView changeView = new ChangeQuizView();
-		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog);
+		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
 	}
 	
 	public void startApp(){

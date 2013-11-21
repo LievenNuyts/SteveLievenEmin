@@ -134,14 +134,9 @@ public class ChangeQuizView extends JFrame {
 			
 			comboCategory = new JComboBox(ExerciseCategory.values());
 			
-			listModelEx = new DefaultListModel();  
+			//populate list exercises
 			
-			 /*  
-			public void actionPerformed(ActionEvent evt) {  
-			    listModel.addElement("new");  
-			  }  
-			*/
-			
+			listModelEx = new DefaultListModel();
 			
 			listExercise = new JList<>(listModelEx);
 			listModelEx.addElement("1 - New exercise");  
@@ -156,6 +151,8 @@ public class ChangeQuizView extends JFrame {
 			size_list_ex.height = 50;
 			listExercise.setPreferredSize(size_list_ex);
 			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			//populate list quiz
 			
 			listModelQuiz = new DefaultListModel(); 
 			
@@ -226,20 +223,10 @@ public class ChangeQuizView extends JFrame {
 			
 		}
 		
+		//Selectors
+		
 		public String getQuizTitle() {
 			return txt_01.getText();
-		}
-		
-		public String getStatus(){
-			return comboStatus.getSelectedItem().toString();
-		}
-		
-		public Integer getGrade(){
-			return Integer.parseInt(comboLeerjaar.getSelectedItem().toString());
-		}
-		
-		public String getCategory(){
-			return comboCategory.getSelectedItem().toString();
 		}
 		
 		public void setListQuiz(List<Quiz> quizList){
@@ -260,6 +247,20 @@ public class ChangeQuizView extends JFrame {
 			}
 			
 			this.listExercise.setModel(listModel);
+		}
+		
+		//Modifiers
+		
+		public String getStatus(){
+			return comboStatus.getSelectedItem().toString();
+		}
+		
+		public Integer getGrade(){
+			return Integer.parseInt(comboLeerjaar.getSelectedItem().toString());
+		}
+		
+		public String getCategory(){
+			return comboCategory.getSelectedItem().toString();
 		}
 		
 		public DefaultListModel getListQuizModel(){
