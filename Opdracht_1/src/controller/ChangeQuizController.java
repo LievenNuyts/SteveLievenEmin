@@ -3,6 +3,7 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -29,17 +30,19 @@ public class ChangeQuizController {
 		this.exerciseModel = exerciseModel;
 
 		// Load exercises and quizzes
+		
 		this.exerciseModel.readExercisesFromFile();
 		this.quizModel.readQuizzesFromFile();
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
 
 		// Add exercises to exercisesList (JList)
+
 		this.view.setListExercise(exerciseModel.getExercises());
 		this.view.setListQuiz(quizModel.getQuizCatalogs());
 
 		// Add listeners
-
+		
 		this.view.addUpdateListener(new QuizListener());
 		this.view.addDeleteListener(new DeleteListener());
 		this.view.addEditListener(new EditListener());
@@ -133,8 +136,9 @@ public class ChangeQuizController {
 			}
 
 		}
+	}
 
-		class SearchListeners implements ActionListener {
+		class SearchListener implements ActionListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -156,5 +160,5 @@ public class ChangeQuizController {
 				}
 			}
 		}
-	}
+	
 }

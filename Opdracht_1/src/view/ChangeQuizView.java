@@ -54,8 +54,8 @@ public class ChangeQuizView extends JFrame {
         private JComboBox comboCategory;
         private JComboBox comboStatus;
         private JComboBox<Integer> comboLeerjaar;
-		private DefaultListModel listModelEx;
-		private DefaultListModel listModelQuiz;
+		private DefaultListModel<Exercise> listModelEx;
+		private DefaultListModel<Quiz> listModelQuiz;
         //private final JScrollPane paneExercise;
         //private final JScrollPane paneQuiz;
 
@@ -136,14 +136,16 @@ public class ChangeQuizView extends JFrame {
 			
 			//populate list exercises
 			
-			listModelEx = new DefaultListModel();
+			listModelEx = new DefaultListModel<Exercise>();
 			
 			listExercise = new JList<>(listModelEx);
+			/*
 			listModelEx.addElement("1 - New exercise");  
 			listModelEx.addElement("2 - New exercise");
 			listModelEx.addElement("3 - New exercise");
 			listModelEx.addElement("4 - New exercise");
 			listModelEx.addElement("5 - New exercise");
+			*/
 			listExercise.setVisibleRowCount(10);
 			
 			Dimension size_list_ex = getPreferredSize();
@@ -154,14 +156,16 @@ public class ChangeQuizView extends JFrame {
 			
 			//populate list quiz
 			
-			listModelQuiz = new DefaultListModel(); 
+			listModelQuiz = new DefaultListModel<Quiz>(); 
 			
 			listQuiz = new JList<>(listModelQuiz);
+			/*
 			listModelQuiz.addElement("1 - New Quiz");
 			listModelQuiz.addElement("2 - New Quiz");
 			listModelQuiz.addElement("3 - New Quiz");
 			listModelQuiz.addElement("4 - New Quiz");
 			listModelQuiz.addElement("5 - New Quiz");
+			*/
 			listQuiz.setVisibleRowCount(10);
 			
 			Dimension size_list_quiz = getPreferredSize();
@@ -225,12 +229,8 @@ public class ChangeQuizView extends JFrame {
 		
 		//Selectors
 		
-		public String getQuizTitle() {
-			return txt_01.getText();
-		}
-		
 		public void setListQuiz(List<Quiz> quizList){
-			DefaultListModel listModel = new DefaultListModel();
+			DefaultListModel<Quiz> listModel = new DefaultListModel<Quiz>(); //<> verwijderen
 			
 			for(Quiz q : quizList){
 				listModel.addElement(q.getQuizExercises());
@@ -240,7 +240,7 @@ public class ChangeQuizView extends JFrame {
 		}
 		
 		public void setListExercise(List<Exercise> exerciseList){
-			DefaultListModel listModel = new DefaultListModel();
+			DefaultListModel<Exercise> listModel = new DefaultListModel<Exercise>();
 			
 			for(Exercise ex : exerciseList){
 				listModel.addElement(ex.getQuestion());
@@ -250,6 +250,10 @@ public class ChangeQuizView extends JFrame {
 		}
 		
 		//Modifiers
+		
+		public String getQuizTitle() {
+			return txt_01.getText();
+		}
 		
 		public String getStatus(){
 			return comboStatus.getSelectedItem().toString();
@@ -263,11 +267,11 @@ public class ChangeQuizView extends JFrame {
 			return comboCategory.getSelectedItem().toString();
 		}
 		
-		public DefaultListModel getListQuizModel(){
+		public DefaultListModel<Quiz> getListQuizModel(){
 			return listModelQuiz;
 		}
 		
-		public DefaultListModel getListExModel(){
+		public DefaultListModel<Exercise> getListExModel(){
 			return listModelEx;
 		}
 		
