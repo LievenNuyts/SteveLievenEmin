@@ -3,12 +3,12 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 import view.ChangeQuizView;
+import view.CreateQuizView;
 
 /**
  * 
@@ -161,4 +161,16 @@ public class ChangeQuizController {
 			}
 		}
 	
+		public static void main(String[] args) {
+	        
+			ExerciseCatalog em = new ExerciseCatalog();
+			QuizCatalog qm = new QuizCatalog();
+			ChangeQuizView view = new ChangeQuizView();
+			
+			
+			ChangeQuizController controller = new ChangeQuizController(view, qm, em);
+			
+			view.setVisible(true);
+	    }
+		
 }

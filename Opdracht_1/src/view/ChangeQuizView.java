@@ -230,7 +230,7 @@ public class ChangeQuizView extends JFrame {
 		//Selectors
 		
 		public void setListQuiz(List<Quiz> quizList){
-			DefaultListModel<Quiz> listModel = new DefaultListModel<Quiz>(); //<> verwijderen
+			DefaultListModel listModel = new DefaultListModel(); //<> verwijderen
 			
 			for(Quiz q : quizList){
 				listModel.addElement(q.getQuizExercises());
@@ -240,7 +240,7 @@ public class ChangeQuizView extends JFrame {
 		}
 		
 		public void setListExercise(List<Exercise> exerciseList){
-			DefaultListModel<Exercise> listModel = new DefaultListModel<Exercise>();
+			DefaultListModel listModel = new DefaultListModel();
 			
 			for(Exercise ex : exerciseList){
 				listModel.addElement(ex.getQuestion());
