@@ -1,5 +1,12 @@
 package view;
 
+/**
+ *  
+ * @author Lieven
+ * @version 17/11/2013
+ *
+ */
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,17 +20,17 @@ import model.Quiz;
 import model.QuizCatalog;
 
 
-public class DeleteQuizUI extends JFrame{
+public class DeleteQuizView extends JFrame{
 	
 	private QuizCatalog catalog;
 	
 	private JButton btn_up, btn_down, btn_delete, btn_exit;
-	private JTable table;
+	public JTable table;
 	private JScrollPane pane;
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
-	Object [][] data = {//example is maar om wa mee te foefelen
+	private Object [][] data = {//example is maar om wa mee te foefelen
     		{"1","Jan","Aardrijkskunde","1","New"},
     		{"2","Karel","Wiskunde","1","New"},
     		{"3","Paul","Taal","2","Active"}, 
@@ -81,22 +88,22 @@ public class DeleteQuizUI extends JFrame{
     }; //example is maar om wa mee te foefelen
 	
 	
-	public DeleteQuizUI(){
-		
+	public DeleteQuizView(){	
 		super("Delete quiz");
-		defineLayout();
-		eventsToButtons();
-		table.setRowSelectionInterval(0, 0);
+		this.setUp();
 	}
 	
-	public DeleteQuizUI(QuizCatalog catalog){
+	public DeleteQuizView(QuizCatalog catalog){
 		
 		super("Delete quiz");
-		this.catalog = catalog;	
-		defineLayout();
-		eventsToButtons();
-		table.setRowSelectionInterval(0, 0);	
+		this.setUp();
 	}
+	
+	private void setUp(){	
+		this.defineLayout();
+		this.table.setRowSelectionInterval(0, 0);
+	}
+	
 	
 	public void loadJTable(){
 	
@@ -119,7 +126,7 @@ public class DeleteQuizUI extends JFrame{
 		table = new JTable(model);	
 	}
 	
-	public void defineLayout(){
+	private void defineLayout(){
 		
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -195,74 +202,37 @@ public class DeleteQuizUI extends JFrame{
 		add(pnl_one,frameConstraints);
 		add(pnl_two,frameConstraints);
 	}
+
 	
+	// GETTERS & SETTERS
 	
-	public void eventsToButtons(){
-		
-		//btn_up
-		
-		btn_up.addActionListener(new ActionListener(){
-		
-			public void actionPerformed(ActionEvent e){
-				
-				int rowIndex = table.getSelectedRow();
-				rowIndex--;
-				table.setRowSelectionInterval(rowIndex, rowIndex);		
-			}		
-		});
-				
-		
-		//btn_down 
-		
-		btn_down.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent e){
-				int rowIndex = table.getSelectedRow();
-				rowIndex++;
-				table.setRowSelectionInterval(rowIndex, rowIndex);			
-			}		
-		});
-		
-		
-		//btn_delete
-		
-		btn_delete.addActionListener(new ActionListener(){
-			
-			public void actionPerformed(ActionEvent e){
-				
-				int quizIDtoDelete = (int) table.getValueAt(table.getSelectedRow(), 0);
-				
-				for(Quiz quiz : catalog.getQuizCatalogs()){
-					
-					if(quiz.getQuizId() == quizIDtoDelete){
-						
-						catalog.deleteQuiz(quiz);
-					}
-				}
-			}		
-		});
-		
-		
-		//btn_exit
-		
-		btn_exit.addActionListener(new ActionListener(){		
-			public void actionPerformed(ActionEvent e){
-				dispose();		
-			}		
-		});	
+	public void setQuizCatalog(QuizCatalog catalog){	
+		this.catalog = catalog;
+	}
+	
+	public QuizCatalog getQuizCatalog(){	
+		return this.catalog;
 	}
 	
 	
+	//ADD LISTENERES TO BUTTONS
+	public void addDeleteQuizListener(ActionListener listener){
+
+		btn_delete.addActionListener(listener);
+	}
 	
+	public void addCloseWindowListener(ActionListener listener){
+
+		btn_exit.addActionListener(listener);
+	}
 	
-	public static void main(String[] args) {
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-            	DeleteQuizUI ex = new DeleteQuizUI();
-                ex.setVisible(true);
-            }
-        });
-    }	
+	public void addButtonUpListener(ActionListener listener){
+
+		btn_up.addActionListener(listener);
+	}
+	
+	public void addButtonDownListener(ActionListener listener){
+
+		btn_down.addActionListener(listener);
+	}	
 }
