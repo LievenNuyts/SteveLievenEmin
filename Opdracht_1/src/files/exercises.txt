@@ -1,3 +1,3 @@
-S ; Wat is mijn Voornaam ; Emin ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 1 , 1 , 1 ; 2 , 1 , 1 ; 
-S ; Wat is mijn Naam ; Iandyrhanov ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 
-S ; Hoofdstad van België? ; Brussel ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 
+S ; Wat is mijn Voornaam ; Emin ; [kort, 4] ; Bakker ; Nederlands ; 30 ; 2 ; 1 oktober 2013 ; 1 , 1 , 1 ; 2 , 1 , 1 ; 
+S ; Wat is mijn Naam ; Iandyrhanov ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 3 , 1 , 2 ; 
+S ; Hoofdstad van België? ; Brussel ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 7 , 1 , 3 ; 

@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale.Category;
 
@@ -24,9 +25,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
@@ -66,6 +74,12 @@ public class CreateQuizView extends JFrame {
 	private JList addedExercisesList;
 	private DefaultListModel listModel2;
 	
+	private DefaultTableModel dataModel;
+	private JTable addedExercisesTable;
+	private String col[] = {"Opdracht", "MaxScore"}; 
+	private JScrollPane paneTable;
+	
+	
 	public CreateQuizView() {  
 
 		// Elements of top panel
@@ -87,6 +101,8 @@ public class CreateQuizView extends JFrame {
 		this.addedExerciseLabel = new JLabel("Aantal toegevoegde opdrachten: ");
 		this.amountExercisesLabel = new JLabel("0");
 		this.categoriesComboBox = new JComboBox(ExerciseCategory.values());
+		this.categoriesComboBox.addItem("Alle");
+		this.categoriesComboBox.setSelectedIndex(categoriesComboBox.getItemCount() - 1);
 		this.sortExercisesComboBox = new JComboBox(sort);
 		this.moveUpButton = new JButton("^^^^");
 		this.addToQuizButton = new JButton("--->");
@@ -95,6 +111,23 @@ public class CreateQuizView extends JFrame {
 		this.listModel2 = new DefaultListModel();
 		this.exercisesList = new JList();
 		this.addedExercisesList = new JList(listModel2);
+		
+		this.dataModel = new DefaultTableModel(col, 0);
+		this.addedExercisesTable = new JTable(dataModel){
+			@Override
+			public boolean isCellEditable(int row, int col) {
+			     switch (col) {
+			         case 0:
+			        	 return false;
+			         case 1:
+			             return true;
+			         default:
+			             return false;
+			      }
+			}
+		};
+		
+		this.paneTable = new JScrollPane(addedExercisesTable);
 		
 		initUI();
     }
@@ -214,7 +247,7 @@ public class CreateQuizView extends JFrame {
 		gcB.gridheight = 4;
 		gcB.gridx = 3;
 		gcB.gridy = 2;
-		panelBottom.add(addedExercisesList, gcB);
+		panelBottom.add(paneTable, gcB);/////////////////////////////
 		
 		// Layout of the top panel
 		GridBagConstraints gcT = new GridBagConstraints();
@@ -322,8 +355,15 @@ public class CreateQuizView extends JFrame {
 	/**
 	 * @return
 	 */
-	public String getSelectedValueFromList(){
-		return String.valueOf(addedExercisesList.getSelectedValue());
+	public String getSelectedExerciseValueFromTable(){
+		return String.valueOf(dataModel.getValueAt(addedExercisesTable.getSelectedRow(), 0));
+	}
+	
+	/**
+	 * @return
+	 */
+	public int getSelectedIndexFromList(){
+		return addedExercisesList.getSelectedIndex();
 	}
 	
 	/**
@@ -331,6 +371,34 @@ public class CreateQuizView extends JFrame {
 	 */
 	public DefaultListModel getListModel2(){
 		return listModel2;
+	}
+
+	/**
+	 * @return
+	 */
+	public DefaultTableModel getDataModel(){
+		return dataModel;
+	}
+	
+	/**
+	 * @return
+	 */
+	public int getSelectedRow(){
+		return addedExercisesTable.getSelectedRow();
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getSelectedCategory(){
+		return String.valueOf(categoriesComboBox.getSelectedItem());
+	}
+	
+	/**
+	 * @return
+	 */
+	public String getSelectedSortByValue(){
+		return String.valueOf(sortExercisesComboBox.getSelectedItem());
 	}
 	
 	// Modifiers
@@ -344,10 +412,28 @@ public class CreateQuizView extends JFrame {
 		DefaultListModel listModel = new DefaultListModel();
 		
 		for (Exercise ex : exerciseList){
-			listModel.addElement(ex.getQuestion());
+			//String tempCat = ex.getQuestion().s
+			listModel.addElement("("+ String.valueOf(ex.getCategory()).toUpperCase().substring(0, 3) + ") " 
+					+ ex.getQuestion());
 		}
 		
 		this.exercisesList.setModel(listModel);
+	}
+	
+	/**
+	 * Set amount of added exercises
+	 */
+	public void setAmountAddedExercises(String text){ 
+		amountExercisesLabel.setText(text);;
+	}
+	
+	/**
+	 * Add listener to addQuizButton
+	 * 
+	 * @param listenForAddQuizButton
+	 */
+	public void addAddQuizButtonListener(ActionListener listenForAddQuizButton){
+		addQuizButton.addActionListener(listenForAddQuizButton);
 	}
 	
 	/**
@@ -366,6 +452,33 @@ public class CreateQuizView extends JFrame {
 	 */
 	public void addRemoveFromQuizButtonListener(ActionListener listenForRemoveFromQuizButton){
 		removeFromQuizButton.addActionListener(listenForRemoveFromQuizButton);
+	}
+	
+	/**
+	 * Add listener to moveUpButton
+	 * 
+	 * @param listenForMoveUpButton
+	 */
+	public void addMoveUpButtonListener(ActionListener listenForMoveUpButton){
+		moveUpButton.addActionListener(listenForMoveUpButton);
+	}
+	
+	/**
+	 * Add listener to categoriesComboBox
+	 * 
+	 * @param listenForCategoriesComboBox
+	 */
+	public void addCategoriesComboBoxListener(ActionListener listenForCategoriesComboBox){
+		categoriesComboBox.addActionListener(listenForCategoriesComboBox);
+	}
+	
+	/**
+	 * Add listener to sortExercisesComboBox
+	 * 
+	 * @param listenForSortExercisesComboBox
+	 */
+	public void addSortExercisesComboBoxListener(ActionListener listenForSortExercisesComboBox){
+		sortExercisesComboBox.addActionListener(listenForSortExercisesComboBox);
 	}
 	
     /**
