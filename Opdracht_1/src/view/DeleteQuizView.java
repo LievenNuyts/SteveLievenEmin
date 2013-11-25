@@ -25,105 +25,63 @@ public class DeleteQuizView extends JFrame{
 	private QuizCatalog catalog;
 	
 	private JButton btn_up, btn_down, btn_delete, btn_exit;
-	public JTable table;
+	
+	private JTable table;
+	private DefaultTableModel model;
+	
 	private JScrollPane pane;
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
-	private Object [][] data = {//example is maar om wa mee te foefelen
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"} 	
-    }; //example is maar om wa mee te foefelen
-	
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
-		this.setUp();
+		this.defineLayout();
 	}
 	
 	public DeleteQuizView(QuizCatalog catalog){
 		
 		super("Delete quiz");
-		this.setUp();
+		this.catalog = catalog;
+		this.defineLayout();
 	}
 	
-	private void setUp(){	
-		this.defineLayout();
-		this.table.setRowSelectionInterval(0, 0);
+	//method to reset the DefaultTableModel
+	public void resetTable(){
+		model.setRowCount(0);
 	}
 	
 	
 	public void loadJTable(){
+		
+		if(table == null){
+			table = new JTable();
+		}
 	
-		String[][] dataBuilder = null; 
-		DefaultTableModel model = new DefaultTableModel(dataBuilder, columnNames);
-		int counter = 0;	
+		if(model == null){
+			model = new DefaultTableModel();
+			model.setColumnIdentifiers(columnNames);
+		}
 		
 		for(Quiz quiz : catalog.getQuizCatalogs()){
-	    	
-			String quizID = Integer.toString(quiz.getQuizId());
-			String author = quiz.getTeacher().toString();
-			String subject = quiz.getSubject();
-			String grade = Integer.toString(quiz.getLeerJaren());
-			String status = quiz.getStatus().toString();		
+	
+			String[] dataBuilder = new String[5];
 			
-	    	model.insertRow(counter, new Object[] {quizID, author, subject, grade, status});   	
-	    	counter++;
-	    }
+			dataBuilder[0] = Integer.toString(quiz.getQuizId());
+			dataBuilder[1] = quiz.getTeacher().toString();
+			dataBuilder[2] = quiz.getSubject();
+			dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
+			dataBuilder[4] = quiz.getStatus().toString();
+			
+			model.addRow(dataBuilder);
+		}
 		
-		table = new JTable(model);	
+		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
+		
+		if(table.getRowCount() != 0){
+			table.setRowSelectionInterval(0, 0);
+		}
 	}
 	
 	private void defineLayout(){
@@ -149,13 +107,8 @@ public class DeleteQuizView extends JFrame{
 		pnl_two.setBorder(BorderFactory.createTitledBorder("Quiz List"));
 				
 		//TABLE
-		if(catalog == null){		
-			table = new JTable(data, columnNames);
-		}
-		else{
-			loadJTable();
-		}
-		
+		loadJTable();
+			
 		table.setPreferredScrollableViewportSize(new Dimension(400,450));
 		table.setFillsViewportHeight(true);	
 		pane = new JScrollPane(table);
@@ -214,6 +167,9 @@ public class DeleteQuizView extends JFrame{
 		return this.catalog;
 	}
 	
+	public JTable getJTable(){
+		return this.table;
+	}
 	
 	//ADD LISTENERES TO BUTTONS
 	public void addDeleteQuizListener(ActionListener listener){
