@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
@@ -21,8 +22,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
@@ -55,8 +54,8 @@ public class ChangeQuizView extends JFrame {
         private JComboBox comboCategory;
         private JComboBox comboStatus;
         private JComboBox<Integer> comboLeerjaar;
-		private DefaultListModel listModelEx;
-		private DefaultListModel listModelQuiz;
+		private DefaultListModel<Exercise> listModelEx;
+		private DefaultListModel<Quiz> listModelQuiz;
         //private final JScrollPane paneExercise;
         //private final JScrollPane paneQuiz;
 
@@ -135,21 +134,18 @@ public class ChangeQuizView extends JFrame {
 			
 			comboCategory = new JComboBox(ExerciseCategory.values());
 			
-			listModelEx = new DefaultListModel();  
+			//populate list exercises
 			
-			 /*  
-			public void actionPerformed(ActionEvent evt) {  
-			    listModel.addElement("new");  
-			  }  
-			*/
-			
+			listModelEx = new DefaultListModel<Exercise>();
 			
 			listExercise = new JList<>(listModelEx);
+			/*
 			listModelEx.addElement("1 - New exercise");  
 			listModelEx.addElement("2 - New exercise");
 			listModelEx.addElement("3 - New exercise");
 			listModelEx.addElement("4 - New exercise");
 			listModelEx.addElement("5 - New exercise");
+			*/
 			listExercise.setVisibleRowCount(10);
 			
 			Dimension size_list_ex = getPreferredSize();
@@ -158,14 +154,18 @@ public class ChangeQuizView extends JFrame {
 			listExercise.setPreferredSize(size_list_ex);
 			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
-			listModelQuiz = new DefaultListModel(); 
+			//populate list quiz
+			
+			listModelQuiz = new DefaultListModel<Quiz>(); 
 			
 			listQuiz = new JList<>(listModelQuiz);
+			/*
 			listModelQuiz.addElement("1 - New Quiz");
 			listModelQuiz.addElement("2 - New Quiz");
 			listModelQuiz.addElement("3 - New Quiz");
 			listModelQuiz.addElement("4 - New Quiz");
 			listModelQuiz.addElement("5 - New Quiz");
+			*/
 			listQuiz.setVisibleRowCount(10);
 			
 			Dimension size_list_quiz = getPreferredSize();
@@ -227,6 +227,30 @@ public class ChangeQuizView extends JFrame {
 			
 		}
 		
+		//Selectors
+		
+		public void setListQuiz(List<Quiz> quizList){
+			DefaultListModel listModel = new DefaultListModel(); //<> verwijderen
+			
+			for(Quiz q : quizList){
+				listModel.addElement(q.getQuizExercises());
+			}
+			
+			this.listQuiz.setModel(listModel);
+		}
+		
+		public void setListExercise(List<Exercise> exerciseList){
+			DefaultListModel listModel = new DefaultListModel();
+			
+			for(Exercise ex : exerciseList){
+				listModel.addElement(ex.getQuestion());
+			}
+			
+			this.listExercise.setModel(listModel);
+		}
+		
+		//Modifiers
+		
 		public String getQuizTitle() {
 			return txt_01.getText();
 		}
@@ -243,25 +267,15 @@ public class ChangeQuizView extends JFrame {
 			return comboCategory.getSelectedItem().toString();
 		}
 		
-		public void setQuizList(List<Quiz>quizList){
-			DefaultListModel listModel = new DefaultListModel();
-			
-			for(Quiz q : quizList){
-				listModel.addElement(q.getQuizExercises());
-			}
-			
-			this.quizList.setModel(listModel);
+		public DefaultListModel<Quiz> getListQuizModel(){
+			return listModelQuiz;
 		}
 		
-		public void setExerciseList(List<Exercise>exerciseList){
-			DefaultListModel listModel = new DefaultListModel();
-			
-			for(Exercise ex : exerciseList){
-				listModel.addElement(ex.getQuestion());
-			}
-			
-			this.exerciseList.setModel(listModel);
+		public DefaultListModel<Exercise> getListExModel(){
+			return listModelEx;
 		}
+		
+		
 		// events
 		
 		public void addUpdateListener(ActionListener listenForUpdateButton) {
