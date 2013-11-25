@@ -103,8 +103,11 @@ public class DeleteQuizController {
 		
 			try {
 				int rowIndex = window.getJTable().getSelectedRow();
-				rowIndex--;
-				window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
+				
+				if(rowIndex > 0){
+					rowIndex--;
+					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
+				}
 			}
 
 			catch (Exception exc) {
@@ -119,8 +122,11 @@ public class DeleteQuizController {
 		
 			try {
 				int rowIndex = window.getJTable().getSelectedRow();
-				rowIndex++;
-				window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
+				
+				if(rowIndex < window.getJTable().getRowCount()-1){
+					rowIndex++;
+					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
+				}		
 			}
 
 			catch (Exception exc) {

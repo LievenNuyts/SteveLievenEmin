@@ -33,63 +33,6 @@ public class DeleteQuizView extends JFrame{
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
-	private Object [][] data = {//example is maar om wa mee te foefelen
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"}, 	
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"1","Jan","Aardrijkskunde","1","New"},
-    		{"2","Karel","Wiskunde","1","New"},
-    		{"3","Paul","Taal","2","Active"} 	
-    }; //example is maar om wa mee te foefelen
-	
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
@@ -135,6 +78,7 @@ public class DeleteQuizView extends JFrame{
 		
 		table.setModel(model);
 		table.setAutoCreateRowSorter(true);
+		
 		if(table.getRowCount() != 0){
 			table.setRowSelectionInterval(0, 0);
 		}
@@ -163,13 +107,8 @@ public class DeleteQuizView extends JFrame{
 		pnl_two.setBorder(BorderFactory.createTitledBorder("Quiz List"));
 				
 		//TABLE
-		if(catalog == null){		
-			table = new JTable(data, columnNames);
-		}
-		else{
-			loadJTable();
-		}
-		
+		loadJTable();
+			
 		table.setPreferredScrollableViewportSize(new Dimension(400,450));
 		table.setFillsViewportHeight(true);	
 		pane = new JScrollPane(table);
