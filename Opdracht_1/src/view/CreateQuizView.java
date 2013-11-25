@@ -70,8 +70,6 @@ public class CreateQuizView extends JFrame {
 	private JButton addToQuizButton;
 	private JButton removeFromQuizButton;
 	private JList exercisesList;
-	private JList addedExercisesList;
-	private DefaultListModel listModel2;
 	
 	private DefaultTableModel dataModel;
 	private JTable addedExercisesTable;
@@ -106,10 +104,7 @@ public class CreateQuizView extends JFrame {
 		this.moveUpButton = new JButton("^^^^");
 		this.addToQuizButton = new JButton("--->");
 		this.removeFromQuizButton = new JButton("<---");
-
-		this.listModel2 = new DefaultListModel();
 		this.exercisesList = new JList();
-		this.addedExercisesList = new JList(listModel2);
 		
 		this.dataModel = new DefaultTableModel(col, 0);
 		this.addedExercisesTable = new JTable(dataModel){
@@ -357,20 +352,6 @@ public class CreateQuizView extends JFrame {
 	public String getSelectedExerciseValueFromTable(){
 		return String.valueOf(dataModel.getValueAt(addedExercisesTable.getSelectedRow(), 0));
 	}
-	
-	/**
-	 * @return
-	 */
-	public int getSelectedIndexFromList(){
-		return addedExercisesList.getSelectedIndex();
-	}
-	
-	/**
-	 * @return
-	 */
-	public DefaultListModel getListModel2(){
-		return listModel2;
-	}
 
 	/**
 	 * @return
@@ -424,6 +405,21 @@ public class CreateQuizView extends JFrame {
 	 */
 	public void setAmountAddedExercises(String text){ 
 		amountExercisesLabel.setText(text);;
+	}
+	
+	/**
+	 * Reset window
+	 */
+	public void reset(){
+		this.subjectTextField.setText("");
+		this.gradesComboBox.setSelectedIndex(0);
+		this.authorsComboBox.setSelectedIndex(0);
+		this.stateComboBox.setSelectedIndex(0);
+		this.categoriesComboBox.setSelectedIndex(categoriesComboBox.getItemCount() - 1);
+		this.sortExercisesComboBox.setSelectedIndex(0);
+		this.amountExercisesLabel.setText("0");
+		
+		dataModel.setRowCount(0);
 	}
 	
 	/**
