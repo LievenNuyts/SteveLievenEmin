@@ -29,6 +29,7 @@ public class DeleteQuizView extends JFrame{
 	private JScrollPane pane;
 	private JPanel pnl_one, pnl_two;
 	
+	private DefaultTableModel model;
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
 	private Object [][] data = {//example is maar om wa mee te foefelen
     		{"1","Jan","Aardrijkskunde","1","New"},
@@ -96,6 +97,7 @@ public class DeleteQuizView extends JFrame{
 	public DeleteQuizView(QuizCatalog catalog){
 		
 		super("Delete quiz");
+		this.catalog = catalog;
 		this.setUp();
 	}
 	
@@ -104,26 +106,37 @@ public class DeleteQuizView extends JFrame{
 		this.table.setRowSelectionInterval(0, 0);
 	}
 	
+	//method to reset the DefaultTableModel
+	public void resetTable(){
+		//model.fireTableDataChanged();
+		//model = null;
+	}
+	
 	
 	public void loadJTable(){
-	
-		String[][] dataBuilder = null; 
-		DefaultTableModel model = new DefaultTableModel(dataBuilder, columnNames);
-		int counter = 0;	
-		
-		for(Quiz quiz : catalog.getQuizCatalogs()){
-	    	
-			String quizID = Integer.toString(quiz.getQuizId());
-			String author = quiz.getTeacher().toString();
-			String subject = quiz.getSubject();
-			String grade = Integer.toString(quiz.getLeerJaren());
-			String status = quiz.getStatus().toString();		
 			
-	    	model.insertRow(counter, new Object[] {quizID, author, subject, grade, status});   	
-	    	counter++;
+		int numberOfQuizzesInCatalog = catalog.getQuizCatalogs().size();
+			
+		//creates array with 5 columns and a row per quiz in the catalog
+		String[][] dataBuilder = new String[numberOfQuizzesInCatalog][5]; 
+			
+		int rowCounter = 0;	
+			
+		for(Quiz quiz : catalog.getQuizCatalogs()){
+		    					
+			dataBuilder[rowCounter][0] = Integer.toString(quiz.getQuizId());
+			dataBuilder[rowCounter][1] = quiz.getTeacher().toString();
+			dataBuilder[rowCounter][2] = quiz.getSubject();
+			dataBuilder[rowCounter][3] = Integer.toString(quiz.getLeerJaren());
+			dataBuilder[rowCounter][4] = quiz.getStatus().toString();
+			   		
+		   	rowCounter++;	
 	    }
-		
+			
+		model = new DefaultTableModel(dataBuilder, columnNames);
+			
 		table = new JTable(model);	
+
 	}
 	
 	private void defineLayout(){

@@ -63,15 +63,17 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int quizIDtoDelete = (int) window.table.getValueAt(window.table.getSelectedRow(), 0);
-				
+				String quizIDtoDelete = (String) window.table.getValueAt(window.table.getSelectedRow(), 0);
+					
 				for(Quiz quiz : window.getQuizCatalog().getQuizCatalogs()){
 					
-					if(quiz.getQuizId() == quizIDtoDelete){
+					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
 						
 						window.getQuizCatalog().deleteQuiz(quiz);
 					}
 				}
+				//window.resetTable();
+				window.loadJTable();
 			}
 
 			catch (Exception exc) {
@@ -128,11 +130,16 @@ public class DeleteQuizController {
 	}
 	
 	
+	// STATIC VOID MAIN
+	
 	public static void main(String[] args) {
-        
+	    
 		QuizCatalog qCatalog = new QuizCatalog();	
 		DeleteQuizController controller = new DeleteQuizController(qCatalog);	
 		controller.window.setVisible(true);
-    }
+	}
+	
 }
+
+
 
