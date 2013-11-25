@@ -68,11 +68,12 @@ public class DeleteQuizController {
 				for(Quiz quiz : window.getQuizCatalog().getQuizCatalogs()){
 					
 					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-						
+						System.out.print("johooo" + quiz.getQuizId());
 						window.getQuizCatalog().deleteQuiz(quiz);
+						break;
 					}
 				}
-				//window.resetTable();
+				window.resetTable();
 				window.loadJTable();
 			}
 

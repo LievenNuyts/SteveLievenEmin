@@ -25,11 +25,13 @@ public class DeleteQuizView extends JFrame{
 	private QuizCatalog catalog;
 	
 	private JButton btn_up, btn_down, btn_delete, btn_exit;
+	
 	public JTable table;
+	private DefaultTableModel model;
+	
 	private JScrollPane pane;
 	private JPanel pnl_one, pnl_two;
 	
-	private DefaultTableModel model;
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
 	private Object [][] data = {//example is maar om wa mee te foefelen
     		{"1","Jan","Aardrijkskunde","1","New"},
@@ -108,35 +110,35 @@ public class DeleteQuizView extends JFrame{
 	
 	//method to reset the DefaultTableModel
 	public void resetTable(){
-		//model.fireTableDataChanged();
-		//model = null;
+		model.setRowCount(0);
 	}
 	
 	
 	public void loadJTable(){
-			
-		int numberOfQuizzesInCatalog = catalog.getQuizCatalogs().size();
-			
-		//creates array with 5 columns and a row per quiz in the catalog
-		String[][] dataBuilder = new String[numberOfQuizzesInCatalog][5]; 
-			
-		int rowCounter = 0;	
-			
+		
+		if(table == null){
+			table = new JTable();
+		}
+	
+		if(model == null){
+			model = new DefaultTableModel();
+			model.setColumnIdentifiers(columnNames);
+		}
+		
 		for(Quiz quiz : catalog.getQuizCatalogs()){
-		    					
-			dataBuilder[rowCounter][0] = Integer.toString(quiz.getQuizId());
-			dataBuilder[rowCounter][1] = quiz.getTeacher().toString();
-			dataBuilder[rowCounter][2] = quiz.getSubject();
-			dataBuilder[rowCounter][3] = Integer.toString(quiz.getLeerJaren());
-			dataBuilder[rowCounter][4] = quiz.getStatus().toString();
-			   		
-		   	rowCounter++;	
-	    }
+	
+			String[] dataBuilder = new String[5];
 			
-		model = new DefaultTableModel(dataBuilder, columnNames);
+			dataBuilder[0] = Integer.toString(quiz.getQuizId());
+			dataBuilder[1] = quiz.getTeacher().toString();
+			dataBuilder[2] = quiz.getSubject();
+			dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
+			dataBuilder[4] = quiz.getStatus().toString();
 			
-		table = new JTable(model);	
-
+			model.addRow(dataBuilder);
+		}
+		
+		table.setModel(model);
 	}
 	
 	private void defineLayout(){
