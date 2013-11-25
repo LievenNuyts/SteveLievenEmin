@@ -63,12 +63,11 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				String quizIDtoDelete = (String) window.table.getValueAt(window.table.getSelectedRow(), 0);
+				String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);
 					
 				for(Quiz quiz : window.getQuizCatalog().getQuizCatalogs()){
 					
 					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-						System.out.print("johooo" + quiz.getQuizId());
 						window.getQuizCatalog().deleteQuiz(quiz);
 						break;
 					}
@@ -103,9 +102,9 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.table.getSelectedRow();
+				int rowIndex = window.getJTable().getSelectedRow();
 				rowIndex--;
-				window.table.setRowSelectionInterval(rowIndex, rowIndex);		
+				window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
 			}
 
 			catch (Exception exc) {
@@ -119,9 +118,9 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.table.getSelectedRow();
+				int rowIndex = window.getJTable().getSelectedRow();
 				rowIndex++;
-				window.table.setRowSelectionInterval(rowIndex, rowIndex);
+				window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
 			}
 
 			catch (Exception exc) {

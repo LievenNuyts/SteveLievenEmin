@@ -26,7 +26,7 @@ public class DeleteQuizView extends JFrame{
 	
 	private JButton btn_up, btn_down, btn_delete, btn_exit;
 	
-	public JTable table;
+	private JTable table;
 	private DefaultTableModel model;
 	
 	private JScrollPane pane;
@@ -93,19 +93,14 @@ public class DeleteQuizView extends JFrame{
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
-		this.setUp();
+		this.defineLayout();
 	}
 	
 	public DeleteQuizView(QuizCatalog catalog){
 		
 		super("Delete quiz");
 		this.catalog = catalog;
-		this.setUp();
-	}
-	
-	private void setUp(){	
 		this.defineLayout();
-		this.table.setRowSelectionInterval(0, 0);
 	}
 	
 	//method to reset the DefaultTableModel
@@ -139,6 +134,10 @@ public class DeleteQuizView extends JFrame{
 		}
 		
 		table.setModel(model);
+		table.setAutoCreateRowSorter(true);
+		if(table.getRowCount() != 0){
+			table.setRowSelectionInterval(0, 0);
+		}
 	}
 	
 	private void defineLayout(){
@@ -229,6 +228,9 @@ public class DeleteQuizView extends JFrame{
 		return this.catalog;
 	}
 	
+	public JTable getJTable(){
+		return this.table;
+	}
 	
 	//ADD LISTENERES TO BUTTONS
 	public void addDeleteQuizListener(ActionListener listener){
