@@ -19,7 +19,7 @@ import utils.DateGC;
 
 public class MultipleChoiceExercise extends Exercise implements Validatable {
         
-        String multipleChoice;
+        private String multipleChoice;
         
 
         

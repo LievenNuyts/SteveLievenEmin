@@ -116,8 +116,8 @@ public class CreateQuizController {
 				}
 				quModel.addQuiz(quiz);
 				
-				//exModel.writeExercisesToFile();
-				//quModel.writeQuizzesToFile();
+				exModel.writeExercisesToFile();
+				quModel.writeQuizzesToFile();
 				
 				view.displayErrorMessage("Quiz is toegevoegd");
 				
