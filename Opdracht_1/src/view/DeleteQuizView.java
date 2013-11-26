@@ -24,7 +24,7 @@ public class DeleteQuizView extends JFrame{
 	
 	private QuizCatalog catalog;
 	
-	private JButton btn_up, btn_down, btn_delete, btn_exit;
+	private JButton btn_up, btn_down, btn_delete, btn_exit, btn_save;
 	
 	private JTable table;
 	private DefaultTableModel model;
@@ -116,8 +116,9 @@ public class DeleteQuizView extends JFrame{
 		//BUTTONS
 	    btn_up = new JButton("↑");
 	    btn_down = new JButton("↓");	    
-	    btn_delete = new JButton("Delete");    
+	    btn_delete = new JButton("Delete quiz");    
 	    btn_exit = new JButton("Cancel");
+	    btn_save = new JButton("Save & close");
 			            
 			    
 	    //ADD BUTTONS TO PANEL ONE
@@ -141,6 +142,10 @@ public class DeleteQuizView extends JFrame{
 				
 		panelConstraints.gridx = 0;
 		panelConstraints.gridy = 3;
+		pnl_one.add(btn_save, panelConstraints);
+		
+		panelConstraints.gridx = 0;
+		panelConstraints.gridy = 4;
 		pnl_one.add(btn_exit, panelConstraints);
 	
 		//ADD PANE(WITH TABLE) TO PANEL TWO	
@@ -190,5 +195,10 @@ public class DeleteQuizView extends JFrame{
 	public void addButtonDownListener(ActionListener listener){
 
 		btn_down.addActionListener(listener);
+	}	
+	
+	public void addSaveAndCloseListener(ActionListener listener){
+
+		btn_save.addActionListener(listener);
 	}	
 }

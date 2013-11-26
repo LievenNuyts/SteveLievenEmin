@@ -39,11 +39,15 @@ public class DeleteQuizController {
 		this.window.addCloseWindowListener(new CloseWindowListener());
 		this.window.addButtonUpListener(new ButtonUpListener());
 		this.window.addButtonDownListener(new ButtonDownListener());
+		this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
 	}
 
 	//METHODS
+	//zien dat de relaties ook verwijderd zijn (in exercise en quizcatalog klasses
 	
-	
+	public void makeVisible(){
+		this.window.isVisible();
+	}
 	
 	//GETTERS & SETTERS
 	
@@ -55,6 +59,9 @@ public class DeleteQuizController {
 		return this.quizCatalog;	
 	}	
 
+	}
+	
+	
 	
 	//EVENT LISTENERS
 
@@ -69,6 +76,7 @@ public class DeleteQuizController {
 					
 					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
 						window.getQuizCatalog().deleteQuiz(quiz);
+						
 						break;
 					}
 				}
@@ -82,7 +90,21 @@ public class DeleteQuizController {
 		}
 	}
 
+	class SaveAndCloseWindowListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		
+			try {
+				quizCatalog.writeQuizzesToFile();
+				window.dispose();	
+			}
 
+			catch (Exception exc) {
+				System.out.println(exc);
+			}
+		}
+	}
+	
 	class CloseWindowListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
