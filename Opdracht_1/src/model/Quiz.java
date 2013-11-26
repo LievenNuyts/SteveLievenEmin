@@ -16,7 +16,7 @@ public class Quiz implements Comparable<Quiz>{
 	
 	private int quizId;
 	private String subject; // subject = ""
-	private int leerJaren; // leerJaren = 0
+	private int grades; // leerJaren = 0
 	private QuizStatus status;
 	private Teacher teacher;
 	private DateQuiz date;
@@ -85,7 +85,7 @@ public class Quiz implements Comparable<Quiz>{
 		int result = 1;
 		result = prime * result + (isTest ? 1231 : 1237);
 		result = prime * result + (isUniqueParticipation ? 1231 : 1237);
-		result = prime * result + leerJaren;
+		result = prime * result + grades;
 		result = prime * result
 				+ ((subject == null) ? 0 : subject.hashCode());
 		return result;
@@ -104,7 +104,7 @@ public class Quiz implements Comparable<Quiz>{
 			return false;
 		if (isUniqueParticipation != other.isUniqueParticipation)
 			return false;
-		if (leerJaren != other.leerJaren)
+		if (grades != other.grades)
 			return false;
 		if (subject == null) {
 			if (other.subject != null)
@@ -135,7 +135,7 @@ public class Quiz implements Comparable<Quiz>{
             
             String quizSummary = "";
             quizSummary += "\nQuiz : " + subject
-            				+ "\nYears: " + leerJaren
+            				+ "\nYears: " + grades
                             + "\nDate: " + date.getDateInEuropeanFormat()
                             + "\nCreated by: " + teacher 
                             + "\n" + quizText 
@@ -163,11 +163,11 @@ public class Quiz implements Comparable<Quiz>{
 	}
 
 	public int getLeerJaren() {
-		return leerJaren;
+		return grades;
 	}
 
 	public void setLeerJaren(int leerJaren) {
-		this.leerJaren = leerJaren;
+		this.grades = leerJaren;
 	}
 
 	public QuizStatus getStatus() {

@@ -89,6 +89,12 @@ public class CreateQuizController {
 				if (view.getSubject() == null) throw new IllegalArgumentException("Onderwerp is null!");
 				if (view.getSubject().isEmpty()) throw new IllegalArgumentException("Onderwerp is leeg!");
 				
+				// Iterate through each row to check maxScore
+				for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
+					if(!isNumeric(String.valueOf(view.getDataModel().getValueAt(i, 1)))) throw new NumberFormatException("MaxScore moet een numeriek waarde zijn!");
+					if(String.valueOf(view.getDataModel().getValueAt(i, 1)).isEmpty()) throw new IllegalArgumentException("MaxScore is leeg!");
+				}
+				
 				Quiz quiz = new Quiz(view.getSubject());
 				quiz.setLeerJaren(Integer.parseInt(view.getGrade()));
 				quiz.setTeacher(Teacher.valueOf(view.getAuthor().toUpperCase()));
@@ -114,8 +120,19 @@ public class CreateQuizController {
 				quModel.writeQuizzesToFile();
 				
 				view.displayErrorMessage("Quiz is toegevoegd");
+				
+				view.reset();
+				
+				// Load exercises and quizzes
+				exModel.readExercisesFromFile();
+				quModel.readQuizzesFromFile();
+				exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
+				
+				
 			}
-			catch(IllegalArgumentException ex){
+			catch (NumberFormatException ex) {
+				view.displayErrorMessage(ex.getMessage());
+			} catch(IllegalArgumentException ex){
 				System.out.println(ex);
 				view.displayErrorMessage(ex.getMessage());
 			} catch (Exception ex) {
@@ -169,7 +186,7 @@ public class CreateQuizController {
 
 		public void actionPerformed(ActionEvent e) {
 			try{
-				moveUpExercise(view.getSelectedIndexFromList());
+				moveUpExercise(view.getSelectedRow());
 			}
 			catch(IllegalArgumentException ex){
 				System.out.println(ex);
@@ -260,12 +277,10 @@ public class CreateQuizController {
 	public void removeFromAddedExercisesTable(String exercise) throws IllegalArgumentException{
 		if (view.getSelectedRow() == -1)throw new IllegalArgumentException("Selecteer Opdracht");
 		
-		view.getListModel2().removeElement(exercise);
-		
 		view.getDataModel().removeRow(view.getSelectedRow());
 		
 		// Change addedExerciseLabel (JLabel)
-		view.setAmountAddedExercises(String.valueOf(view.getListModel2().size()));
+		view.setAmountAddedExercises(String.valueOf(view.getDataModel().getRowCount()));
 	}
 	
 	/**
@@ -332,7 +347,7 @@ public class CreateQuizController {
 	}
 	
 	/**
-	 * Comporator to compare by category in Exercise class
+	 * Comparator to compare by category in Exercise class
 	 */
 	public static Comparator<Exercise> ExerciseCategoryComparator = new Comparator<Exercise>() {
 		public int compare(Exercise exercise1, Exercise exercise2) {
@@ -343,6 +358,23 @@ public class CreateQuizController {
 			return exericseCategory1.compareTo(exericseCategory2);
 		}
 	};
+	
+	/**
+	 * Check numeric input
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static boolean isNumeric(String str)  
+	{  
+	  try{  
+	    int i = Integer.parseInt(str);  
+	  }  
+	  catch(NumberFormatException ex){  
+	    return false;  
+	  }  
+	  return true;  
+	}
 
 	public static void main(String[] args) {
         
