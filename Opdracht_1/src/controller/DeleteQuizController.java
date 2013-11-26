@@ -59,8 +59,6 @@ public class DeleteQuizController {
 		return this.quizCatalog;	
 	}	
 
-	}
-	
 	
 	
 	//EVENT LISTENERS
