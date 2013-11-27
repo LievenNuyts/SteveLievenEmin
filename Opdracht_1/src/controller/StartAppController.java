@@ -26,7 +26,7 @@ public class StartAppController extends JFrame{
 	
 	//private AddQuizController addQuizController;
 	private ChangeQuizController changeQuizController;
-	//private DeleteQuizController deleteQuizController;
+	private DeleteQuizController deleteQuizController;
 	
 	//private AddExerciseController addExerciseController;
 	//private ChangeExerciseController changeExerciseController;
