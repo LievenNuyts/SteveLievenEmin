@@ -45,8 +45,12 @@ public class DeleteQuizController {
 	//METHODS
 	//zien dat de relaties ook verwijderd zijn (in exercise en quizcatalog klasses
 	
-	public void makeVisible(){
-		this.window.isVisible();
+	public void makeWindowVisible(){
+		this.window.setVisible(true);
+	}
+	
+	public void hideWindow(){
+		this.window.setVisible(false);
 	}
 	
 	//GETTERS & SETTERS
@@ -60,9 +64,8 @@ public class DeleteQuizController {
 	}	
 
 	
-	
 	//EVENT LISTENERS
-
+	
 	class DeleteQuizListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
