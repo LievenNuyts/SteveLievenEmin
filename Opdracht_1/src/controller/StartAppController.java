@@ -24,7 +24,7 @@ public class StartAppController extends JFrame{
 
 	private Menu startMenu;
 	
-	//private AddQuizController addQuizController;
+	private AddQuizController addQuizController;
 	private ChangeQuizController changeQuizController;
 	private DeleteQuizController deleteQuizController;
 	
