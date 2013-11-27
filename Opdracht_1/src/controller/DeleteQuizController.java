@@ -10,9 +10,11 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
+import model.QuizExercise;
 import view.CreateQuizView;
 import view.DeleteQuizView;
 
@@ -20,6 +22,7 @@ public class DeleteQuizController {
 
 	private DeleteQuizView window;
 	private QuizCatalog quizCatalog;
+	private ExerciseCatalog exerciseCatalog;
 	
 	
 	//CLASS CONSTRUCTORS
@@ -28,10 +31,12 @@ public class DeleteQuizController {
 		window = new DeleteQuizView();
 	}
 	
-	public DeleteQuizController(QuizCatalog quizCatalog){
+	public DeleteQuizController(QuizCatalog quizCatalog, ExerciseCatalog exerciseCatalog){
 	
 		this.setQuizCatalog(quizCatalog);
 		this.quizCatalog.readQuizzesFromFile();
+		this.setExerciseCatalog(exerciseCatalog);
+		this.exerciseCatalog.readExercisesFromFile();
 		
 		this.window = new DeleteQuizView(quizCatalog);
 		this.window.setQuizCatalog(quizCatalog);
@@ -45,6 +50,8 @@ public class DeleteQuizController {
 	//METHODS
 	//zien dat de relaties ook verwijderd zijn (in exercise en quizcatalog klasses
 	
+	
+	//make window visible or invisible
 	public void makeWindowVisible(){
 		this.window.setVisible(true);
 	}
@@ -63,6 +70,13 @@ public class DeleteQuizController {
 		return this.quizCatalog;	
 	}	
 
+	public void setExerciseCatalog(ExerciseCatalog exerciseCatalog){
+		this.exerciseCatalog = exerciseCatalog;
+	}
+	
+	public ExerciseCatalog getExerciseCatalog(){
+		return this.exerciseCatalog;	
+	}
 	
 	//EVENT LISTENERS
 	
@@ -76,9 +90,30 @@ public class DeleteQuizController {
 				for(Quiz quiz : window.getQuizCatalog().getQuizCatalogs()){
 					
 					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-						window.getQuizCatalog().deleteQuiz(quiz);
 						
-						break;
+						//loop through all QuizExercises in the quiz that will be deleted
+						for(QuizExercise qE : quiz.getQuizExercises()){						
+							//loop through all exercises in ExerciseCatalog
+							for(Exercise exercise : exerciseCatalog.getExercises()){
+								//lookup the exercise which is linked to the QuizExercise
+								//and look for the same exercise in the ExerciseCatalog
+								if(qE.getExercise().equals(exercise)){
+									//loop through QuizExercise list of the exercise
+									for(QuizExercise qE2 : exercise.getQuizExercises()){						
+										//look for QuizExercise that matches the above QuizExercise
+										if(qE.equals(qE2)){
+											//matching QuizExercise can be deleted
+											exercise.removeQuizExercise(qE2);
+											break;//to stop the loop if found, no need to check the others
+										}
+									}	
+									break;//to stop the loop if found, no need to check the others
+								}
+							}								
+						}						
+						
+						window.getQuizCatalog().deleteQuiz(quiz);				
+						break; //to stop the loop if found, no need to check the others
 					}
 				}
 				window.resetTable();
@@ -163,8 +198,9 @@ public class DeleteQuizController {
 	
 	public static void main(String[] args) {
 	    
-		QuizCatalog qCatalog = new QuizCatalog();	
-		DeleteQuizController controller = new DeleteQuizController(qCatalog);	
+		QuizCatalog qCatalog = new QuizCatalog();
+		ExerciseCatalog eCatalog = new ExerciseCatalog();
+		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);	
 		controller.window.setVisible(true);
 	}
 	
