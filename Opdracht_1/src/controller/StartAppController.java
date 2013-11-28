@@ -63,7 +63,7 @@ public class StartAppController extends JFrame{
 		case 3:
 			//Delete quiz
 			deleteQuizController = new DeleteQuizController();
-			
+			System.out.println("test");
 			break;
 
 		default:
