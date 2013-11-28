@@ -17,9 +17,6 @@ import view.Menu;
 
 public class StartAppController extends JFrame{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Menu startMenu;
@@ -66,7 +63,7 @@ public class StartAppController extends JFrame{
 		case 3:
 			//Delete quiz
 			deleteQuizController = new DeleteQuizController();
-			deleteQuizController.makeWindowVisible();
+			
 			break;
 
 		default:

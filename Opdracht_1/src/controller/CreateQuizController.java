@@ -13,7 +13,7 @@ import java.util.Collections;
 
 import javax.swing.SwingUtilities;
 
-import bsh.This;
+//import bsh.This;
 import model.EnumerationExercise;
 import model.Exercise;
 import model.ExerciseCatalog;
