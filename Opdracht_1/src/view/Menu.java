@@ -1,30 +1,27 @@
 package view;
 
-/**
- * 
- * @author Steve
- * @version 11/11/2013
- *
- */
-
 public class Menu {
-
-	private String menu;
-	String[] choices = new String[6];
-
-	public Menu(String[] choices) {
-
-		this.choices = choices;
-
+	
+	private String menuTekst;
+	private int stopWaarde;
+	public Menu (String ... menuOpties){
+		menuTekst = "";
 		int i = 0;
-
-		for (i = 0; i < choices.length; i++){
-			menu = menu + i++ + " - " + choices[i] + "\n";
-
+		for (i =0;i < menuOpties.length;i++){
+			menuTekst += (i+1)+"."+menuOpties[i]+"\n";
 		}
+		stopWaarde = i+1;
+		menuTekst += stopWaarde+"."+"Stoppen"+"\n\n";
+		menuTekst += "Maak je keuze (1-"+stopWaarde+")";
+				
 	}
-	public int getChoice() {
-		return 0; //method geeft keuze als int terug
+	
+	public int getMenuKeuze(){
+		return IO.leesIntMetVenster(menuTekst,"Menu");
+	}
+	
+	public int getStopWaarde(){
+		return stopWaarde;
 	}
 }
 

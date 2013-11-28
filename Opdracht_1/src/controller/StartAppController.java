@@ -24,67 +24,46 @@ public class StartAppController extends JFrame{
 
 	private Menu startMenu;
 	
-	private AddQuizController addQuizController;
+	private CreateQuizController addQuizController;
 	private ChangeQuizController changeQuizController;
 	private DeleteQuizController deleteQuizController;
 	
-	private AddExerciseController addExerciseController;
-	private ChangeExerciseController changeExerciseController;
-	private DeleteExerciseController deleteExerciseController;
+	ChangeQuizView changeView;
 	
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exerciseCatalog;
 	
 	public StartAppController() {
 		
-		startMenu = new Menu("Add exercise","Add quiz","Update exercise","Update quiz","Delete exercise","Delete quiz");
-		/*
-		createQuizController = new createQuizController();
-		addExerciseController = new AddExerciseController();
-		
-		changeQuizController = new ChangeQuizController();
-		changeExerciseController = new ChangeExerciseController();
-		
-		deleteQuizController = new DeleteQuizController();
-		deleteExerciseController = new DeleExerciseController();
-		*/
+		startMenu = new Menu("Add quiz","Update quiz","Delete quiz");
 	}
 	
 	public static void main(String[] args) throws Exception {
-        new StartAppController().startApp();
-        QuizCatalog quizCatalog = new QuizCatalog();
-		ExerciseCatalog exCatalog = new ExerciseCatalog();
-		ChangeQuizView changeView = new ChangeQuizView();
-		ChangeQuizController changeController = new ChangeQuizController(changeView, quizCatalog, exCatalog);
+        new StartAppController().startApp();	
 	}
 	
 	public void startApp(){
 		
-		int choice = startMenu.getChoice();
+		quizCatalog = new QuizCatalog();
+		exerciseCatalog = new ExerciseCatalog();
+		
+		changeView = new ChangeQuizView();
+		
+		changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
+		
+		int choice = startMenu.getMenuKeuze();
 		
 		switch (choice) {
 		case 1:
-			//Voeg opdracht toe
+			//Voeg quiz toe
 			break;
 		
 		case 2:
-			//voeg Quiz toe
+			//Update quiz
 			break;
 		
 		case 3:
-			//update opdracht
-			break;
-			
-		case 4:
-			//update quiz
-			break;
-			
-		case 5:
-			//delete opdracht
-			break;
-			
-		case 6:
-			//delete quiz
+			//Delete quiz
 			break;
 
 		default:
