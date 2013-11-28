@@ -80,6 +80,8 @@ public class DeleteQuizController {
 	
 	//EVENT LISTENERS
 	
+	
+	//EUUUUJ BEZIET DEES EENS MANNEN ! NO IDEA OF DA GA WERKEN
 	class DeleteQuizListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
