@@ -1,12 +1,12 @@
 package controller;
 
-import view.ChangeQuizView;
-import view.Menu;
-
 import javax.swing.JFrame;
 
 import model.ExerciseCatalog;
 import model.QuizCatalog;
+import view.ChangeQuizView;
+import view.CreateQuizView;
+import view.Menu;
 
 /**
  * 
@@ -24,10 +24,11 @@ public class StartAppController extends JFrame{
 
 	private Menu startMenu;
 	
-	private CreateQuizController addQuizController;
+	private CreateQuizController createQuizController;
 	private ChangeQuizController changeQuizController;
 	private DeleteQuizController deleteQuizController;
 	
+	CreateQuizView createView;
 	ChangeQuizView changeView;
 	
 	private QuizCatalog quizCatalog;
@@ -46,24 +47,26 @@ public class StartAppController extends JFrame{
 		
 		quizCatalog = new QuizCatalog();
 		exerciseCatalog = new ExerciseCatalog();
-		
-		changeView = new ChangeQuizView();
-		
-		changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
-		
+	
 		int choice = startMenu.getMenuKeuze();
 		
 		switch (choice) {
 		case 1:
 			//Voeg quiz toe
+			createView = new CreateQuizView();
+			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
 			break;
 		
 		case 2:
 			//Update quiz
+			changeView = new ChangeQuizView();
+			changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
 			break;
 		
 		case 3:
 			//Delete quiz
+			deleteQuizController = new DeleteQuizController();
+			deleteQuizController.makeWindowVisible();
 			break;
 
 		default:
