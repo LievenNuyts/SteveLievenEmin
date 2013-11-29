@@ -375,7 +375,7 @@ public class CreateQuizController {
 	  }  
 	  return true;  
 	}
-
+/*
 	public static void main(String[] args) {
         
 		ExerciseCatalog ec = new ExerciseCatalog();
@@ -387,5 +387,5 @@ public class CreateQuizController {
 		
 		view.setVisible(true);
     }
-	
+	*/
 }

@@ -52,18 +52,20 @@ public class StartAppController extends JFrame{
 			//Voeg quiz toe
 			createView = new CreateQuizView();
 			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
+			createView.setVisible(true);
 			break;
 		
 		case 2:
 			//Update quiz
 			changeView = new ChangeQuizView();
 			changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
+			changeView.setVisible(true);
 			break;
 		
 		case 3:
 			//Delete quiz
 			deleteQuizController = new DeleteQuizController();
-			System.out.println("test");
+			deleteQuizController.makeWindowVisible();
 			break;
 
 		default:
