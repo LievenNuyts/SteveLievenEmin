@@ -64,7 +64,7 @@ public class StartAppController extends JFrame{
 		
 		case 3:
 			//Delete quiz
-			deleteQuizController = new DeleteQuizController();
+			deleteQuizController = new DeleteQuizController(quizCatalog, exerciseCatalog);
 			deleteQuizController.makeWindowVisible();
 			break;
 

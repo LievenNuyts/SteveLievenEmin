@@ -2,19 +2,20 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 import view.ChangeQuizView;
-import view.CreateQuizView;
 
 /**
  * 
  * @author Steve
  * @version 4/11/2013
- * update::::::
+ * 
  */
 
 public class ChangeQuizController {
@@ -33,13 +34,18 @@ public class ChangeQuizController {
 		
 		this.exerciseModel.readExercisesFromFile();
 		this.quizModel.readQuizzesFromFile();
+		
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
-
+/*
 		// Add exercises to exercisesList (JList)
 
 		this.view.setListExercise(exerciseModel.getExercises());
 		this.view.setListQuiz(quizModel.getQuizCatalogs());
+		*/
+		// Load exercises in exercisesList (JList)
+				loadExercisesPerCategory(exerciseModel.getExercises());
+				loadQuizzes(quizModel.getQuizCatalogs());
 
 		// Add listeners
 		
@@ -159,6 +165,29 @@ public class ChangeQuizController {
 
 				}
 			}
+		}
+		
+		public void loadExercisesPerCategory(List<Exercise> exercises){
+			exercises = exerciseModel.getExercises();
+			
+			if (view.getSelectedCategory() == "Alle"){
+				this.view.setExercisesList(exercises);
+			}
+			else{
+				List<Exercise> tempExs = new ArrayList<Exercise>();
+				
+				for (Exercise ex : exercises){
+					if (view.getSelectedCategory() == String.valueOf(ex.getCategory())){
+						tempExs.add(ex);
+					}
+				}
+				this.view.setExercisesList(tempExs);
+			}
+		}
+		
+		public void loadQuizzes(List<Quiz> quizzes){
+			quizzes = quizModel.getQuizCatalogs();
+			this.view.setQuizList(quizzes);
 		}
 	
 		public static void main(String[] args) {
