@@ -167,6 +167,23 @@ public class ChangeQuizController {
 			}
 		}
 		
+		class ExercisesInQuizListener implements ActionListener{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					for(QuizExercise : quizList){
+						FindExercisesInQuizTable(view.getSelectedValueToList());
+					}
+					
+				}
+				catch(IllegalArgumentException ex){
+					System.out.println(ex);
+					view.displayErrorMessage(ex.getMessage());
+				}
+			}
+		}
+		
 		public void loadExercisesPerCategory(List<Exercise> exercises){
 			exercises = exerciseModel.getExercises();
 			
@@ -188,6 +205,18 @@ public class ChangeQuizController {
 		public void loadQuizzes(List<Quiz> quizzes){
 			quizzes = quizModel.getQuizCatalogs();
 			this.view.setQuizList(quizzes);
+		}
+		
+		public void FindExercisesInQuizTable(String exercise) throws IllegalArgumentException{
+			if (exercise == "null")throw new IllegalArgumentException("Selecteer een opdracht");
+			for (String q : getAddedExercises()){
+				if (q.equals(exercise))throw new IllegalArgumentException("Opdracht is al toegevoegd");
+			}
+			
+			view.getDataModel().addRow(new String[]{exercise, ""});
+			
+			// Change addedExerciseLabel (JLabel)
+			view.setAmountAddedExercises(String.valueOf(view.getDataModel().getRowCount()));
 		}
 	
 		public static void main(String[] args) {
