@@ -18,13 +18,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
 import model.Quiz;
+import model.QuizExercise;
 import model.QuizStatus;
 import model.Teacher;
+import controller.StartAppController;
 
 
 /**
@@ -43,10 +47,11 @@ public class ChangeQuizView extends JFrame {
 		private JTextField txt_01;
 		private JLabel lb_01, lb_02, lb_03, lb_04, lb_05;
 
-		private JButton btn_update, btn_edit, btn_delete, btn_search_quiz;
+		private JButton btn_update, btn_delete, btn_search_quiz;
 
-		private JList listExercise;
-        private JList listQuiz;
+		private JList <Exercise> listExercise;
+        private JList <Quiz> listQuiz;
+        private JList <QuizExercise> listExercisesInQuiz;
         
         private JComboBox comboCategory;
         private JComboBox comboStatus;
@@ -56,6 +61,7 @@ public class ChangeQuizView extends JFrame {
         
 		private DefaultListModel<Exercise> listModelEx;
 		private DefaultListModel<Quiz> listModelQuiz;	
+		private DefaultListModel<QuizExercise> listModelExercisesInQuiz;
 		
 		private DefaultTableModel tableExercisesModel;
 		
@@ -90,7 +96,7 @@ public class ChangeQuizView extends JFrame {
 			//panel 05
 			
 			Dimension size_05 = getPreferredSize();
-			size_05.width = 750;
+			size_05.width = 550;
 			size_05.height = 100;
 			
 			panel_05 = new JPanel(); 
@@ -101,8 +107,8 @@ public class ChangeQuizView extends JFrame {
 			//Panel 02
 			
 			Dimension size_02 = getPreferredSize();
-			size_02.width = 750;
-			size_02.height = 75;
+			size_02.width = 200;
+			size_02.height = 100;
 			
 			panel_02 = new JPanel();
 			panel_02.setPreferredSize(size_02);
@@ -129,7 +135,7 @@ public class ChangeQuizView extends JFrame {
 			panel_04 = new JPanel();
 			panel_04.setPreferredSize(size_04);
 			
-			panel_04.setBorder(BorderFactory.createTitledBorder("Exercise"));
+			panel_04.setBorder(BorderFactory.createTitledBorder("Available Exercises"));
 			
 			//panel 06
 			
@@ -205,7 +211,41 @@ public class ChangeQuizView extends JFrame {
 			lb_02 = new JLabel("  Show category: ");
 			lb_05 = new JLabel("  Grade: ");
 			
-			//populate Ex in Quiz
+			
+			
+			
+			listQuiz.addListSelectionListener(new ListSelectionListener() {
+			    public void valueChanged(ListSelectionEvent event) {
+			        if (!event.getValueIsAdjusting()){
+			            JList<Quiz> source = (JList)event.getSource();
+			            
+			            Quiz selected = (Quiz)source.getSelectedValue();	            
+			            
+			            getExercisesInQuiz(selected.getQuizExercises());
+			            
+			            
+			            
+			            
+			        }
+			    }
+			});
+			
+			//populate Ex in selected Quiz
+			
+			listModelExercisesInQuiz = new DefaultListModel<QuizExercise>();
+			
+			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);
+			
+			Dimension size_list_exInQuiz = getPreferredSize();
+			size_list_exInQuiz.width = 300;
+			size_list_exInQuiz.height = 40;
+			listExercisesInQuiz.setPreferredSize(size_list_exInQuiz);
+			listExercisesInQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			
+			
+			
+			
+			
 			
 			this.tableExercisesModel = new DefaultTableModel(col, 0);
 			this.addedToTableExercises = new JTable(tableExercisesModel){
@@ -229,11 +269,8 @@ public class ChangeQuizView extends JFrame {
 			paneTable.setPreferredSize(size_paneTable);
 			
 			
-			btn_update = new JButton("Update");
+			btn_update = new JButton("Add");
 			//btn_update.addActionListener(this);
-			
-			btn_edit = new JButton("Edit");
-			//btn_edit.addActionListener(this);
 			
 			btn_delete = new JButton("Delete");
 			//btn_delete.addActionListener(this);
@@ -258,17 +295,17 @@ public class ChangeQuizView extends JFrame {
 			panel_05.add(comboSortExercises);
 			
 			panel_02.add(btn_update);
-			panel_02.add(btn_edit);
 			panel_02.add(btn_delete);
 			
-			panel_03.add(new JScrollPane(listQuiz));
-			
+			panel_03.add(new JScrollPane(listQuiz));		
 			panel_04.add(new JScrollPane(listExercise));
-			panel_06.add(paneTable);
+			panel_06.add(new JScrollPane(listExercisesInQuiz));
+			//panel_06.add(paneTable);
 			
 			add(panel_01);
-			add(panel_05);
+
 			add(panel_02);
+			add(panel_05);
 			add(panel_03);
 			add(panel_04);
 			add(panel_06);
@@ -277,10 +314,24 @@ public class ChangeQuizView extends JFrame {
 					
 			//window
 			
-			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+			
+			
+			
+			
 			this.setSize(800,700);
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
+			
+			
+			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			this.addWindowListener(new java.awt.event.WindowAdapter() {
+			    @Override
+			    public void windowClosing(java.awt.event.WindowEvent evt)
+			    {	
+			    	new StartAppController().startApp();
+			    }
+			});
 			
 			
 		}
@@ -384,9 +435,21 @@ public class ChangeQuizView extends JFrame {
 			DefaultListModel listModel = new DefaultListModel();
 			
 			for (Quiz q : quizList){
-				listModel.addElement(String.valueOf(q.getSubject()) + " - (" + q.getDate()+ ")");
+				listModel.addElement(q);
 			}
 			this.listQuiz.setModel(listModel);
+		}
+		
+		//add exercises in quiz to list
+		
+		public void getExercisesInQuiz(List<QuizExercise> exInQuizList){
+			DefaultListModel listModel = new DefaultListModel<>();
+			
+			for (QuizExercise ex : exInQuizList){
+
+				listModel.addElement(ex.getExercise().getQuestion());
+			}
+			this.listExercisesInQuiz.setModel(listModel);
 		}
 		
 
@@ -405,15 +468,13 @@ public class ChangeQuizView extends JFrame {
 			btn_delete.addActionListener(listenForDeleteButton);
 		}
 		
-		public void addEditListener(ActionListener listenForEditButton) {
-			
-			btn_edit.addActionListener(listenForEditButton);
-		}
 
 		public void addSearchListener(ActionListener listenForSearchButton) {
 	
 			btn_search_quiz.addActionListener(listenForSearchButton);
 		}
+		
+		
 
 		// Open a popup that contains the error message passed
 
