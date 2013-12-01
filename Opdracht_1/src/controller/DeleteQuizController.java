@@ -106,16 +106,16 @@ public class DeleteQuizController {
 										if(qE.equals(qE2)){
 											//matching QuizExercise can be deleted
 											exercise.removeQuizExercise(qE2);
-											break;//to stop the loop if found, no need to check the others
+											//break;//to stop the loop if found, no need to check the others
 										}
 									}	
-									break;//to stop the loop if found, no need to check the others
+									//break;//to stop the loop if found, no need to check the others
 								}
 							}								
 						}						
 						
 						window.getQuizCatalog().deleteQuiz(quiz);				
-						break; //to stop the loop if found, no need to check the others
+						//break; //to stop the loop if found, no need to check the others
 					}
 				}
 				window.resetTable();
