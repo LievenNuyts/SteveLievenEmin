@@ -37,12 +37,7 @@ public class ChangeQuizController {
 		
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
-/*
-		// Add exercises to exercisesList (JList)
 
-		this.view.setListExercise(exerciseModel.getExercises());
-		this.view.setListQuiz(quizModel.getQuizCatalogs());
-		*/
 		// Load exercises in exercisesList (JList)
 				loadExercisesPerCategory(exerciseModel.getExercises());
 				loadQuizzes(quizModel.getQuizCatalogs());
@@ -66,6 +61,7 @@ public class ChangeQuizController {
 			Integer grade;
 			String category;
 
+
 			try {
 
 				System.out.println("Updatebutton");
@@ -75,18 +71,12 @@ public class ChangeQuizController {
 				grade = view.getGrade();
 				category = view.getCategory();
 
-				// view.(dataModel.getQuizCatalogs());
+			} 
 
-			}
-
-			catch (Exception ex) {
-
+			catch(IllegalArgumentException ex){
 				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
+				view.displayErrorMessage(ex.getMessage());
 			}
-
 		}
 
 	}
@@ -190,8 +180,8 @@ public class ChangeQuizController {
 			quizzes = quizModel.getQuizCatalogs();
 			this.view.setQuizList(quizzes);
 		}
+		
 
-	
 		public static void main(String[] args) {
 	        
 			ExerciseCatalog em = new ExerciseCatalog();

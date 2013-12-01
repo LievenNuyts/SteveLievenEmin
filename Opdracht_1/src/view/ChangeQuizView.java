@@ -268,7 +268,20 @@ public class ChangeQuizView extends JFrame {
 			listExercisesInQuiz.setPreferredSize(size_list_exInQuiz);
 			listExercisesInQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
+			//get exercise
 			
+			listExercise.addListSelectionListener(new ListSelectionListener() {
+			    public void valueChanged(ListSelectionEvent event) {
+			        if (!event.getValueIsAdjusting()){
+			            JList<Exercise> source = (JList)event.getSource();
+			            
+			            Exercise selected = (Exercise)source.getSelectedValue();	
+
+			            getExercise(selected);
+
+			        }
+			    }
+			});
 			
 			
 			//JTable: not used
@@ -442,8 +455,7 @@ public class ChangeQuizView extends JFrame {
 			
 			for (Exercise ex : exerciseList){
 
-				listModel.addElement("("+ String.valueOf(ex.getCategory()).toUpperCase().substring(0, 3) + ") " 
-						+ ex.getQuestion());
+				listModel.addElement(ex);
 			}
 			
 			this.listExercise.setModel(listModel);
@@ -469,6 +481,14 @@ public class ChangeQuizView extends JFrame {
 
 				listModel.addElement(ex.getExercise().getQuestion());
 			}
+			this.listExercisesInQuiz.setModel(listModel);
+		}
+		
+		public void getExercise(Exercise ex){
+			System.out.println(ex.getQuestion()); //test
+			DefaultListModel listModel = new DefaultListModel<>();
+			
+			listModel.addElement(ex.getQuestion());
 			this.listExercisesInQuiz.setModel(listModel);
 		}
 		
