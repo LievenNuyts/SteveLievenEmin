@@ -2,13 +2,14 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 import view.ChangeQuizView;
-import view.CreateQuizView;
 
 /**
  * 
@@ -33,13 +34,18 @@ public class ChangeQuizController {
 		
 		this.exerciseModel.readExercisesFromFile();
 		this.quizModel.readQuizzesFromFile();
+		
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
-
+/*
 		// Add exercises to exercisesList (JList)
 
 		this.view.setListExercise(exerciseModel.getExercises());
 		this.view.setListQuiz(quizModel.getQuizCatalogs());
+		*/
+		// Load exercises in exercisesList (JList)
+				loadExercisesPerCategory(exerciseModel.getExercises());
+				loadQuizzes(quizModel.getQuizCatalogs());
 
 		// Add listeners
 		
@@ -159,6 +165,58 @@ public class ChangeQuizController {
 
 				}
 			}
+		}
+		
+		class ExercisesInQuizListener implements ActionListener{
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try{
+					for(QuizExercise : quizList){
+						FindExercisesInQuizTable(view.getSelectedValueToList());
+					}
+					
+				}
+				catch(IllegalArgumentException ex){
+					System.out.println(ex);
+					view.displayErrorMessage(ex.getMessage());
+				}
+			}
+		}
+		
+		public void loadExercisesPerCategory(List<Exercise> exercises){
+			exercises = exerciseModel.getExercises();
+			
+			if (view.getSelectedCategory() == "Alle"){
+				this.view.setExercisesList(exercises);
+			}
+			else{
+				List<Exercise> tempExs = new ArrayList<Exercise>();
+				
+				for (Exercise ex : exercises){
+					if (view.getSelectedCategory() == String.valueOf(ex.getCategory())){
+						tempExs.add(ex);
+					}
+				}
+				this.view.setExercisesList(tempExs);
+			}
+		}
+		
+		public void loadQuizzes(List<Quiz> quizzes){
+			quizzes = quizModel.getQuizCatalogs();
+			this.view.setQuizList(quizzes);
+		}
+		
+		public void FindExercisesInQuizTable(String exercise) throws IllegalArgumentException{
+			if (exercise == "null")throw new IllegalArgumentException("Selecteer een opdracht");
+			for (String q : getAddedExercises()){
+				if (q.equals(exercise))throw new IllegalArgumentException("Opdracht is al toegevoegd");
+			}
+			
+			view.getDataModel().addRow(new String[]{exercise, ""});
+			
+			// Change addedExerciseLabel (JLabel)
+			view.setAmountAddedExercises(String.valueOf(view.getDataModel().getRowCount()));
 		}
 	
 		public static void main(String[] args) {
