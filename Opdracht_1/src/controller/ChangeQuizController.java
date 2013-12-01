@@ -23,6 +23,7 @@ public class ChangeQuizController {
 	private ChangeQuizView view;
 	private QuizCatalog quizModel;
 	private ExerciseCatalog exerciseModel;
+	private List<Quiz> resultList;
 
 	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
 			ExerciseCatalog exerciseModel) {
@@ -91,45 +92,12 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Deletebutton");
-
-				// for(Quiz q : quizModel.getExercises()){
-
-				// }
-
+				removeFromQuiz(view.getSelectedQuizValueFromList(), view.getSelectedExerciseValueFromList());
 			}
-
-			catch (Exception ex) {
-
+			catch(IllegalArgumentException ex){
 				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
+				view.displayErrorMessage(ex.getMessage());
 			}
-
-		}
-	}
-
-	class EditListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			// dataMembers
-
-			try {
-
-				System.out.println("Editbutton");
-
-			}
-
-			catch (Exception ex) {
-
-				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
-			}
-
 		}
 	}
 
@@ -138,12 +106,9 @@ public class ChangeQuizController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// dataMembers
-
 				try {
-
 					System.out.println("Searchbutton");
-
+					Search(quizModel.getQuizCatalogs());
 				}
 
 				catch (Exception ex) {
@@ -179,6 +144,34 @@ public class ChangeQuizController {
 		public void loadQuizzes(List<Quiz> quizzes){
 			quizzes = quizModel.getQuizCatalogs();
 			this.view.setQuizList(quizzes);
+		}
+		
+		public void removeFromQuiz(Quiz quiz, Exercise exercise) throws IllegalArgumentException{
+
+			//remove from list
+			quiz.getQuizExercises().remove(exercise);
+			System.out.println("Removed.");
+			
+		}
+		
+		//Searchmethod add to resultlist werkt niet. 
+		
+		public void Search(List<Quiz> quizList) throws IllegalArgumentException{
+				
+			
+				String searchString = view.getQuizTitle();
+				
+				for (Quiz curVal : quizList){
+				  if (curVal.getSubject() != null && curVal.getSubject().equals(searchString)){
+					  System.out.println(curVal.getSubject() + " test");
+					  resultList.add(curVal);
+				  }
+				  
+				  this.view.setQuizList(resultList);
+				}
+			
+			
+			
 		}
 		
 

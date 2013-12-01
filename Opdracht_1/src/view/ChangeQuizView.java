@@ -393,8 +393,12 @@ public class ChangeQuizView extends JFrame {
 		/**
 		 * @return
 		 */
-		public String getSelectedExerciseValueFromTable(){
-			return String.valueOf(tableExercisesModel.getValueAt(addedToTableExercises.getSelectedRow(), 0));
+		public Exercise getSelectedExerciseValueFromList(){
+			return listExercise.getSelectedValue(); 
+		}
+		
+		public Quiz getSelectedQuizValueFromList(){
+			return listQuiz.getSelectedValue();
 		}
 
 		/**
@@ -485,11 +489,8 @@ public class ChangeQuizView extends JFrame {
 		}
 		
 		public void getExercise(Exercise ex){
-			System.out.println(ex.getQuestion()); //test
-			DefaultListModel listModel = new DefaultListModel<>();
+			System.out.println(ex.getQuestion());
 			
-			listModel.addElement(ex.getQuestion());
-			this.listExercisesInQuiz.setModel(listModel);
 		}
 		
 
