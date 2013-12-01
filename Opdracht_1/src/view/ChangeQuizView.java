@@ -85,8 +85,8 @@ public class ChangeQuizView extends JFrame {
 			//Panel 01
 			
 			Dimension size_01 = getPreferredSize();
-			size_01.width = 750;
-			size_01.height = 75;
+			size_01.width = 550;
+			size_01.height = 100;
 			
 			panel_01 = new JPanel(); 
 			panel_01.setPreferredSize(size_01);
@@ -96,7 +96,7 @@ public class ChangeQuizView extends JFrame {
 			//panel 05
 			
 			Dimension size_05 = getPreferredSize();
-			size_05.width = 550;
+			size_05.width = 750;
 			size_05.height = 100;
 			
 			panel_05 = new JPanel(); 
@@ -130,7 +130,7 @@ public class ChangeQuizView extends JFrame {
 			
 			Dimension size_04 = getPreferredSize();
 			size_04.width = 375;
-			size_04.height = 300;
+			size_04.height = 215;
 			
 			panel_04 = new JPanel();
 			panel_04.setPreferredSize(size_04);
@@ -141,58 +141,70 @@ public class ChangeQuizView extends JFrame {
 			
 			Dimension size_06 = getPreferredSize();
 			size_06.width = 375;
-			size_06.height = 300;
+			size_06.height = 215;
 			
 			panel_06 = new JPanel();
 			panel_06.setPreferredSize(size_06);
 			
 			panel_06.setBorder(BorderFactory.createTitledBorder("Exercises in Quiz"));
 			
+			
+			
 			//Components
 			
 			//panel 01
 			
+			//Search
+			
 			txt_01 = new JTextField("Find quiz", 35);
 			
 			btn_search_quiz = new JButton("Search");
-			//btn_search_quiz.addActionListener(this);
+
+			//panel 02
 			
+			//Status
 
 			lb_01 = new JLabel(" Status: ");
-			lb_01.setBounds(36, 24, 112, 15);
 			getContentPane().add(lb_01);
-			
 			comboStatus = new JComboBox(QuizStatus.values());
 			
+			//Grades
 			
-			Integer[] leerJaren = {1, 2, 3, 4};
-			comboLeerjaar = new JComboBox<Integer>(leerJaren);
+			lb_05 = new JLabel("  Grade: ");
+			getContentPane().add(lb_05);
+			Integer[] grades = {1, 2, 3, 4};
+			comboLeerjaar = new JComboBox<Integer>(grades);
 			
+			//Category
 			
+			lb_02 = new JLabel("  Show category: ");
+			getContentPane().add(lb_02);
 			comboCategory = new JComboBox(ExerciseCategory.values());
 			comboCategory.addItem("Alle");
 			comboCategory.setSelectedIndex(comboCategory.getItemCount() - 1);
 			
-			lb_03 = new JLabel(" Author: ");
+			//Author
+			
+			lb_03 = new JLabel("               Author: ");
 			getContentPane().add(lb_03);
 			comboAuthor = new JComboBox(Teacher.values());
 			
-			//populate list exercises
+			//Sort
 			
-			listModelEx = new DefaultListModel<Exercise>();
-			
-			listExercise = new JList<>(listModelEx);
-			
-			listExercise.setVisibleRowCount(5);
-			
-			Dimension size_list_ex = getPreferredSize();
-			size_list_ex.width = 300;
-			size_list_ex.height = 50;
-			listExercise.setPreferredSize(size_list_ex);
-			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			
+			lb_04 = new JLabel(" Sort: ");
+			getContentPane().add(lb_04);
 			sort = new String[]{ "Geen", "Categorie", "Vraag"};
 			comboSortExercises = new JComboBox<String>(sort);
+			
+			
+			//Panel 03
+			
+			btn_update = new JButton("Add");
+			
+			btn_delete = new JButton("Delete");
+			
+			
+			//Panel 04
 			
 			//populate list quiz
 			
@@ -203,16 +215,34 @@ public class ChangeQuizView extends JFrame {
 			listQuiz.setVisibleRowCount(6);
 			
 			Dimension size_list_quiz = getPreferredSize();
-			size_list_quiz.width = 500;
+			size_list_quiz.width = 700;
 			size_list_quiz.height = 40;
 			listQuiz.setPreferredSize(size_list_quiz);
 			listQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
               
-			lb_02 = new JLabel("  Show category: ");
-			lb_05 = new JLabel("  Grade: ");
+			
+			//Panel 05
+			
+			//populate list exercises
+			
+			listModelEx = new DefaultListModel<Exercise>();
+			
+			listExercise = new JList<>(listModelEx);
+			
+			listExercise.setVisibleRowCount(10);
+			
+			Dimension size_list_ex = getPreferredSize();
+			size_list_ex.width = 350;
+			size_list_ex.height = 50;
+			listExercise.setPreferredSize(size_list_ex);
+			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			
 			
+
+			//Panel 06
+			
+			//populate ex in selected Quiz
 			
 			listQuiz.addListSelectionListener(new ListSelectionListener() {
 			    public void valueChanged(ListSelectionEvent event) {
@@ -222,31 +252,27 @@ public class ChangeQuizView extends JFrame {
 			            Quiz selected = (Quiz)source.getSelectedValue();	            
 			            
 			            getExercisesInQuiz(selected.getQuizExercises());
-			            
-			            
-			            
-			            
 			        }
 			    }
 			});
-			
-			//populate Ex in selected Quiz
 			
 			listModelExercisesInQuiz = new DefaultListModel<QuizExercise>();
 			
 			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);
 			
+			listExercisesInQuiz.setVisibleRowCount(10);
+			
 			Dimension size_list_exInQuiz = getPreferredSize();
-			size_list_exInQuiz.width = 300;
-			size_list_exInQuiz.height = 40;
+			size_list_exInQuiz.width = 350;
+			size_list_exInQuiz.height = 50;
 			listExercisesInQuiz.setPreferredSize(size_list_exInQuiz);
 			listExercisesInQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			
 			
 			
-			
-			
+			//JTable: not used
+			/*
 			this.tableExercisesModel = new DefaultTableModel(col, 0);
 			this.addedToTableExercises = new JTable(tableExercisesModel){
 				@Override
@@ -268,12 +294,8 @@ public class ChangeQuizView extends JFrame {
 			size_list_ex.height = 45;
 			paneTable.setPreferredSize(size_paneTable);
 			
+			*/
 			
-			btn_update = new JButton("Add");
-			//btn_update.addActionListener(this);
-			
-			btn_delete = new JButton("Delete");
-			//btn_delete.addActionListener(this);
 			
 			//layout
 			
@@ -281,29 +303,30 @@ public class ChangeQuizView extends JFrame {
 			panel_01.add(btn_search_quiz);
 			
 			panel_05.add(lb_01);
-			panel_05.add(comboStatus);
-			
+			panel_05.add(comboStatus);			
 			panel_05.add(lb_05);
-			panel_05.add(comboLeerjaar);
-			
+			panel_05.add(comboLeerjaar);			
 			panel_05.add(lb_02);
-			panel_05.add(comboCategory);
-			
+			panel_05.add(comboCategory);			
 			panel_05.add(lb_03);
-			panel_05.add(comboAuthor);
-			
+			panel_05.add(comboAuthor);	
+			panel_05.add(lb_04);
 			panel_05.add(comboSortExercises);
 			
 			panel_02.add(btn_update);
 			panel_02.add(btn_delete);
 			
-			panel_03.add(new JScrollPane(listQuiz));		
+			panel_03.add(new JScrollPane(listQuiz));
+			
 			panel_04.add(new JScrollPane(listExercise));
+			
 			panel_06.add(new JScrollPane(listExercisesInQuiz));
 			//panel_06.add(paneTable);
 			
+			
+			//sequence panels
+			
 			add(panel_01);
-
 			add(panel_02);
 			add(panel_05);
 			add(panel_03);
@@ -313,13 +336,8 @@ public class ChangeQuizView extends JFrame {
 			
 					
 			//window
-			
 
-			
-			
-			
-			
-			this.setSize(800,700);
+			this.setSize(800,620);
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
 			
@@ -431,6 +449,8 @@ public class ChangeQuizView extends JFrame {
 			this.listExercise.setModel(listModel);
 		}
 		
+		//setQuizzes
+		
 		public void setQuizList(List<Quiz> quizList){
 			DefaultListModel listModel = new DefaultListModel();
 			
@@ -453,9 +473,6 @@ public class ChangeQuizView extends JFrame {
 		}
 		
 
-
-		
-		
 		// events
 		
 		public void addUpdateListener(ActionListener listenForUpdateButton) {
@@ -482,45 +499,4 @@ public class ChangeQuizView extends JFrame {
 
 			JOptionPane.showMessageDialog(this, errorMessage);
 		}
-
-		/*
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-
-			JButton source = (JButton)e.getSource();
-			
-			if(source == btn_update) {
-				System.out.println("Search through e.getSource");
-				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
-			}
-			else if(source == btn_search_quiz) {
-				System.out.println("Edit through e.getSource");
-				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
-			}
-			else if(source == btn_edit) {
-				System.out.println("Edit through e.getSource");
-				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
-			}
-			else if(source == btn_delete) {
-				System.out.println("Delete through e.getSource");
-				JOptionPane.showMessageDialog(ChangeQuizView.this, String.format("You pressed: %s", e.getActionCommand() ));
-			}
-		}
-		
-		public static void main(String[] args) {
-	        
-	        SwingUtilities.invokeLater(new Runnable() {
-	            @Override
-	            public void run() {
-	            	ChangeQuizView ex = new ChangeQuizView();
-	                ex.setVisible(true);
-	            }
-	        });
-	    }
-
-		
-		*/
-
 }
