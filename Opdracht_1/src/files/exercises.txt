@@ -17,5 +17,5 @@ M > Welk getal is een priemgetal? > 13 > [] > Mulder > Wiskunde > 20 > 1 > 1 dec
 M > Wat is een vloeistof? > melk > [is niet vast] > Smit > Wetenschappen > 20 > 2 > 1 december 2013 > 3 , 4 , 17 > steen;ijs;melk;hout;helium
 M > Welke figuur heeft vier hoeken? > rechthoek > [met rechte hoeken] > Smit > Wiskunde > 20 > 2 > 1 december 2013 > 3 , 3 , 18 > driehoek;cirkel;rechthoek;lijn;ellips
 M > Welk land is geen Europees land? > Congo > [Afrika] > Leeuwen > Aardrijkskunde > 20 > 2 > 1 december 2013 > 3 , 2 , 19 > 2 , 5 , 19 > Congo;Nederland,Italië;Spanje
-M > Welk land is ook een schiereiland? >  > [laars] > Leeuwen > Aardrijkskunde > 20 > 2 > 1 december 2013 > 2 , 2 , 20 > België;Italië;Congo;Duitsland 
+M > Welk land is ook een schiereiland? > Italië > [laars] > Leeuwen > Aardrijkskunde > 20 > 2 > 1 december 2013 > 2 , 2 , 20 > België;Italië;Congo;Duitsland 
 M > Wat is geen werkwoord? > flessenopener > [kan je niet doen] > Bakker > Nederlands > 20 > 2 > 3 december 2013 > 1 , 5 , 21 > hardlopen;spelen;flessenopener;rekenen;slapen
