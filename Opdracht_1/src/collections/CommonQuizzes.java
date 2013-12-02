@@ -110,7 +110,7 @@ public class CommonQuizzes {
 		System.out.println("\nSelect quiz: ");
 		Scanner scan = new Scanner(System.in);
 		int selectedRow = scan.nextInt();
-		
+		scan.close();
 		cQ.getCommonQuizzes(tempQuizzesList.get(selectedRow - 1));
 	}
 

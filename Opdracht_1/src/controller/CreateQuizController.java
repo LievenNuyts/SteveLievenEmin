@@ -54,6 +54,7 @@ public class CreateQuizController {
 		this.exModel.readExercisesFromFile();
 		this.quModel.readQuizzesFromFile();
 		this.exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
+		System.out.println(quModel.getQuizCatalogs().size());
 		
 		// Load exercises in exercisesList (JList)
 		loadPerCategory(exModel.getExercises());
@@ -386,10 +387,6 @@ public class CreateQuizController {
 		CreateQuizController controller = new CreateQuizController(view, ec, qc);
 		
 		view.setVisible(true);
-<<<<<<< HEAD
     }
-=======
-    }*/
->>>>>>> a5e5fa79f6bfb1059db0bc8c0b5de2a0d7668776
 	
 }
