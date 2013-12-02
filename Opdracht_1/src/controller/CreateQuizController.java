@@ -386,6 +386,10 @@ public class CreateQuizController {
 		CreateQuizController controller = new CreateQuizController(view, ec, qc);
 		
 		view.setVisible(true);
+<<<<<<< HEAD
     }
+=======
+    }*/
+>>>>>>> a5e5fa79f6bfb1059db0bc8c0b5de2a0d7668776
 	
 }

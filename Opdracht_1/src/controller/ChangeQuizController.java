@@ -23,6 +23,7 @@ public class ChangeQuizController {
 	private ChangeQuizView view;
 	private QuizCatalog quizModel;
 	private ExerciseCatalog exerciseModel;
+	private List<Quiz> resultList;
 
 	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
 			ExerciseCatalog exerciseModel) {
@@ -37,12 +38,7 @@ public class ChangeQuizController {
 		
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
-/*
-		// Add exercises to exercisesList (JList)
 
-		this.view.setListExercise(exerciseModel.getExercises());
-		this.view.setListQuiz(quizModel.getQuizCatalogs());
-		*/
 		// Load exercises in exercisesList (JList)
 				loadExercisesPerCategory(exerciseModel.getExercises());
 				loadQuizzes(quizModel.getQuizCatalogs());
@@ -51,7 +47,6 @@ public class ChangeQuizController {
 		
 		this.view.addUpdateListener(new QuizListener());
 		this.view.addDeleteListener(new DeleteListener());
-		this.view.addEditListener(new EditListener());
 		this.view.addSearchListener(new SearchListener());
 	}
 
@@ -67,6 +62,7 @@ public class ChangeQuizController {
 			Integer grade;
 			String category;
 
+
 			try {
 
 				System.out.println("Updatebutton");
@@ -76,18 +72,12 @@ public class ChangeQuizController {
 				grade = view.getGrade();
 				category = view.getCategory();
 
-				// view.(dataModel.getQuizCatalogs());
+			} 
 
-			}
-
-			catch (Exception ex) {
-
+			catch(IllegalArgumentException ex){
 				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
+				view.displayErrorMessage(ex.getMessage());
 			}
-
 		}
 
 	}
@@ -102,45 +92,12 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Deletebutton");
-
-				// for(Quiz q : quizModel.getExercises()){
-
-				// }
-
+				removeFromQuiz(view.getSelectedQuizValueFromList(), view.getSelectedExerciseValueFromList());
 			}
-
-			catch (Exception ex) {
-
+			catch(IllegalArgumentException ex){
 				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
+				view.displayErrorMessage(ex.getMessage());
 			}
-
-		}
-	}
-
-	class EditListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-
-			// dataMembers
-
-			try {
-
-				System.out.println("Editbutton");
-
-			}
-
-			catch (Exception ex) {
-
-				System.out.println(ex);
-
-				view.displayErrorMessage("Error.");
-
-			}
-
 		}
 	}
 
@@ -149,12 +106,9 @@ public class ChangeQuizController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// dataMembers
-
 				try {
-
 					System.out.println("Searchbutton");
-
+					Search(quizModel.getQuizCatalogs());
 				}
 
 				catch (Exception ex) {
@@ -167,22 +121,7 @@ public class ChangeQuizController {
 			}
 		}
 		
-		class ExercisesInQuizListener implements ActionListener{
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try{
-					for(QuizExercise : quizList){
-						FindExercisesInQuizTable(view.getSelectedValueToList());
-					}
-					
-				}
-				catch(IllegalArgumentException ex){
-					System.out.println(ex);
-					view.displayErrorMessage(ex.getMessage());
-				}
-			}
-		}
+		
 		
 		public void loadExercisesPerCategory(List<Exercise> exercises){
 			exercises = exerciseModel.getExercises();
@@ -207,18 +146,35 @@ public class ChangeQuizController {
 			this.view.setQuizList(quizzes);
 		}
 		
-		public void FindExercisesInQuizTable(String exercise) throws IllegalArgumentException{
-			if (exercise == "null")throw new IllegalArgumentException("Selecteer een opdracht");
-			for (String q : getAddedExercises()){
-				if (q.equals(exercise))throw new IllegalArgumentException("Opdracht is al toegevoegd");
-			}
+		public void removeFromQuiz(Quiz quiz, Exercise exercise) throws IllegalArgumentException{
+
+			//remove from list
+			quiz.getQuizExercises().remove(exercise);
+			System.out.println("Removed.");
 			
-			view.getDataModel().addRow(new String[]{exercise, ""});
-			
-			// Change addedExerciseLabel (JLabel)
-			view.setAmountAddedExercises(String.valueOf(view.getDataModel().getRowCount()));
 		}
-	
+		
+		//Searchmethod add to resultlist werkt niet. 
+		
+		public void Search(List<Quiz> quizList) throws IllegalArgumentException{
+				
+			
+				String searchString = view.getQuizTitle();
+				
+				for (Quiz curVal : quizList){
+				  if (curVal.getSubject() != null && curVal.getSubject().equals(searchString)){
+					  System.out.println(curVal.getSubject() + " test");
+					  resultList.add(curVal);
+				  }
+				  
+				  this.view.setQuizList(resultList);
+				}
+			
+			
+			
+		}
+		
+
 		public static void main(String[] args) {
 	        
 			ExerciseCatalog em = new ExerciseCatalog();

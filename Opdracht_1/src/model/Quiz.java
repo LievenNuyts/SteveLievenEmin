@@ -119,17 +119,17 @@ public class Quiz implements Comparable<Quiz>{
     public String toString() {
             String quizText = "";
             if (isTest) {
-            	quizText = "\nThis is a test.";
+            	quizText = "\n This is a test.";
             } 
             else {
-            	quizText = "\nThis is not a test.";
+            	quizText = "\n This is not a test.";
             }
             
             if (isUniqueParticipation) {
-            	quizText += "\nUnique participation.";
+            	quizText += "\n Unique participation.";
             } 
             else {
-                quizText += "\nNo unique participation.";
+                quizText += "\n No unique participation.";
             }
             
             quizText += "\nStatus: ";
