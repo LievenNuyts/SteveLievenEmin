@@ -1,3 +1,21 @@
-S ; Wat is mijn Voornaam ; Emin ; [kort, 4] ; Bakker ; Nederlands ; 30 ; 2 ; 1 oktober 2013 ; 50 , 1 , 1 ; 50 , 2 , 1 ; 
-S ; Wat is mijn Naam ; Iandyrhanov ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 20 , 2 , 2 ; 
-S ; Hoofdstad van België? ; Brussel ; [kort, 4] ; Bakker ; Aardrijkskunde ; 30 ; 2 ; 1 oktober 2013 ; 10 , 1 , 3 ; 
+S > Wat is de voornaam van de Belgische koning > Filip > [niet Albert] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 2 , 1 , 1 > 
+S > Wat is familienaam van de koning > Van Saksen Coburg > [kort, 4] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 3 , 2 , 2 >
+S > Hoofdstad van België? > Brussel > [manneke pis] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 3 , 2 , 3 >
+S > Hoofdstad van Europa? > Brussel > [België] > Bakker > Aardrijkskunde > 30 > 2 > 1 december 2013 > 2 , 1 , 4 >
+S > Som van 2 en 3? > 5 > [optellen] > Mulder > Wiskunde > 30 > 2 > 1 december 2013 > 2 , 1 , 5 > 3 , 3 , 5 > 1 , 5 , 5 >
+S > Kwadraat van 13? > 169 > [maal zichzelf] > Mulder > Wiskunde > 30 > 2 > 1 december 2013 > 2 , 5 , 6 >
+S > Hoe heet een legering van koper en tin? > brons > [roodachtige tot gelige kleur] > Smit > Wetenschappen > 30 > 2 > 1 december 2013 > 2 , 4 , 7 >
+E > Geef de dagen van de week in de juiste volgorde. > maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag > [7, ] > Leeuwen > Nederlands > 60 > 1 > 1 november 2013 > 1 , 5 , 8 > true
+E > Geef de maanden in een jaar in de correcte volgorde. > januari;februari;maart;april;mei;juni;juli;augustus;september;oktober;november;december > [12] > Leeuwen > Nederlands > 90 > 1 > 1 november 2013 > 1 , 5 , 9 > true
+E > Wat zijn de delers van het getal 20? > 20;10;5;4;2;1 > [6] > Mulder > Wiskunde > 60 > 1 > 12 november 2013 > 2 , 1 , 10 > 3 , 3 , 10 > false
+E > Wat zijn de hoofdkleuren? > geel;rood;blauw > [3, vlag van Roemenië] > Smit > Wetenschappen > 30 > 2 > 1 november 2013 > 2 , 4 , 11 > false
+E > Wie hebben er baarden? > Jan;Piet;Joris;Korneel > [4, zij varen veel] > Leeuwen > Nederlands > 60 > 3 > 1 november 2013 > 1 , 5 , 12 > false
+E > Wat zijn de landen van de Benelux? > België;Nederland;Luxemburg > [3, eerste letters] > Leeuwen > Aardrijkskunde > 30 > 3 > 1 november 2013 > 2 , 2 , 13 > false
+E > Uit welke atomen bestaat een water molecule? > waterstof;zuurstof > [H2O] > Smit > Wetenschappen > 60 > 2 > 1 november 2013 > 3 , 4 , 14 > false
+M > Welk dier uit de lijst is een zoogdier? > koe > [heeft geen schubben] > Smit > Wetenschappen > 20 > 2 > 1 december 2013 > 2 , 1 , 15 > 2 , 4 , 15 > arend;koe;krokodil;karper
+M > Welk getal is een priemgetal? > 13 > [] > Mulder > Wiskunde > 20 > 1 > 1 december 2013 > 2 , 3 , 16 > 10;50;9;13
+M > Wat is een vloeistof? > melk > [is niet vast] > Smit > Wetenschappen > 20 > 2 > 1 december 2013 > 3 , 4 , 17 > steen;ijs;melk;hout;helium
+M > Welke figuur heeft vier hoeken? > rechthoek > [met rechte hoeken] > Smit > Wiskunde > 20 > 2 > 1 december 2013 > 3 , 3 , 18 > driehoek;cirkel;rechthoek;lijn;ellips
+M > Welk land is geen Europees land? > Congo > [Afrika] > Leeuwen > Aardrijkskunde > 20 > 2 > 1 december 2013 > 3 , 2 , 19 > 2 , 5 , 19 > Congo;Nederland,Italië;Spanje
+M > Welk land is ook een schiereiland? >  > [laars] > Leeuwen > Aardrijkskunde > 20 > 2 > 1 december 2013 > 2 , 2 , 20 > België;Italië;Congo;Duitsland 
+M > Wat is geen werkwoord? > flessenopener > [kan je niet doen] > Bakker > Nederlands > 20 > 2 > 3 december 2013 > 1 , 5 , 21 > hardlopen;spelen;flessenopener;rekenen;slapen

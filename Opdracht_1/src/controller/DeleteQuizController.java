@@ -195,7 +195,7 @@ public class DeleteQuizController {
 		}
 	}
 	
-	/*
+	
 	// STATIC VOID MAIN
 	
 	public static void main(String[] args) {
@@ -204,7 +204,7 @@ public class DeleteQuizController {
 		ExerciseCatalog eCatalog = new ExerciseCatalog();
 		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);	
 		controller.window.setVisible(true);
-	}*/
+	}
 	
 }
 
