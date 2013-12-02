@@ -137,16 +137,16 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 				
 				// Line that will be saved in the file per(per exercises)
 				String line = 
-						exercise.getDiscriminator() + " ; " + exercise.getQuestion() +
-						" ; " + exercise.getCorrectAnswer() + " ; " + Arrays.toString(exercise.getAnswerHints()) + " ; " + exercise.getAuthor() +
-						" ; " + exercise.getCategory() + " ; " + exercise.getMaxAnswerTime() + " ; " + exercise.getMaxNumberOfAttempts() +
-						" ; " + exercise.getDateRegistration() + " ; ";
+						exercise.getDiscriminator() + " > " + exercise.getQuestion() +
+						" > " + exercise.getCorrectAnswer() + " > " + Arrays.toString(exercise.getAnswerHints()) + " > " + exercise.getAuthor() +
+						" > " + exercise.getCategory() + " > " + exercise.getMaxAnswerTime() + " > " + exercise.getMaxNumberOfAttempts() +
+						" > " + exercise.getDateRegistration() + " > ";
 				
 				if (exercise.getQuizExercises() != null){
 					for (int j = 0; j < exercise.getQuizExercises().size(); j++) {
 						line += exercise.getQuizExercises().get(j).getMaxScore() +
 								" , " + exercise.getQuizExercises().get(j).getQuiz().getQuizId() +
-								" , " + exercise.getQuizExercises().get(j).getExercise().getExerciseId() + " ; ";
+								" , " + exercise.getQuizExercises().get(j).getExercise().getExerciseId() + " > ";
 					}
 				}
 				
@@ -157,12 +157,12 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 						break;
 					case 'E':
 						EnumerationExercise eExercise = (EnumerationExercise)exercise;
-						line += " ; " + eExercise.getInCorrectOrder();
+						line += " > " + eExercise.getInCorrectOrder();
 						writer.println(line);
 						break;
 					case 'M':
 						MultipleChoiceExercise mExercise = (MultipleChoiceExercise)exercise;
-						line += " ; " + mExercise.getMultipleChoice();
+						line += " > " + mExercise.getMultipleChoice();
 						writer.println(line);
 						break;
 					}
@@ -210,7 +210,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			// Loop through each String object in tempExercises
 			for (int i = 0; i < tempExercises.size(); i++) {
 				Scanner scanner2 = new Scanner(tempExercises.get(i));
-				scanner2.useDelimiter("\\s*;\\s*");
+				scanner2.useDelimiter("\\s*>\\s*");
 				
 				String descriminator = scanner2.next();
 				
@@ -322,7 +322,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			// Loop through each String object in tempExercises
 			for (int i = 0; i < tempExercises.size(); i++) {
 				Scanner scanner2 = new Scanner(tempExercises.get(i));
-				scanner2.useDelimiter("\\s*;\\s*");
+				scanner2.useDelimiter("\\s*>\\s*");
 				
 				// Skip unused parameters
 				for (int j = 0; j < 9; j++) {
