@@ -122,17 +122,17 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 					
 					// Line that will be saved in the file per(per exercises)
 					String line = 
-							quiz.getSubject() + " ; " + quiz.getLeerJaren() +
-							" ; " + quiz.getTeacher() + " ; " + quiz.getStatus() +
-							" ; " + quiz.isTest() + " ; " + quiz.isUniqueParticipation() +
-							" ; " + quiz.getDate().getYear() + " / " + quiz.getDate().getMonth() + 
-							" / " + quiz.getDate().getDay() + " ; ";
+							quiz.getSubject() + " > " + quiz.getLeerJaren() +
+							" > " + quiz.getTeacher() + " > " + quiz.getStatus() +
+							" > " + quiz.isTest() + " > " + quiz.isUniqueParticipation() +
+							" > " + quiz.getDate().getYear() + " / " + quiz.getDate().getMonth() + 
+							" / " + quiz.getDate().getDay() + " > ";
 					
 					if (quiz.getQuizExercises() != null){
 						for (int j = 0; j < quiz.getQuizExercises().size(); j++) {
 							line += quiz.getQuizExercises().get(j).getMaxScore() +
 									" , " + quiz.getQuizExercises().get(j).getQuiz().getQuizId() +
-									" , " + quiz.getQuizExercises().get(j).getExercise().getExerciseId() + " ; ";
+									" , " + quiz.getQuizExercises().get(j).getExercise().getExerciseId() + " > ";
 						}
 					}
 					
@@ -176,7 +176,7 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 				// Loop through each String object in tempQuizzes
 				for (int i = 0; i < tempQuizzes.size(); i++) {
 					Scanner scanner2 = new Scanner(tempQuizzes.get(i));
-					scanner2.useDelimiter("\\s*;\\s*");
+					scanner2.useDelimiter("\\s*>\\s*");
 					
 					Quiz qz = new Quiz();
 					
