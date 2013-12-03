@@ -48,8 +48,6 @@ public class DeleteQuizController {
 	}
 
 	//METHODS
-	//zien dat de relaties ook verwijderd zijn (in exercise en quizcatalog klasses
-	
 	
 	//make window visible or invisible
 	public void makeWindowVisible(){
@@ -87,35 +85,41 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);
-					
-				for(Quiz quiz : window.getQuizCatalog().getQuizCatalogs()){
+				String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);	
+				
+				for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
 					
 					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-						
+						System.out.println("0");	
 						//loop through all QuizExercises in the quiz that will be deleted
-						for(QuizExercise qE : quiz.getQuizExercises()){						
+						
+						for(QuizExercise qE : quiz.getQuizExercises()){	
+							System.out.println("1");
 							//loop through all exercises in ExerciseCatalog
 							for(Exercise exercise : exerciseCatalog.getExercises()){
+								System.out.println("2");
 								//lookup the exercise which is linked to the QuizExercise
 								//and look for the same exercise in the ExerciseCatalog
 								if(qE.getExercise().equals(exercise)){
+									System.out.println("3");
 									//loop through QuizExercise list of the exercise
-									for(QuizExercise qE2 : exercise.getQuizExercises()){						
+									for(QuizExercise qE2 : exercise.getQuizExercises()){
+										System.out.println("4");
 										//look for QuizExercise that matches the above QuizExercise
 										if(qE.equals(qE2)){
+											System.out.println("5");
 											//matching QuizExercise can be deleted
 											exercise.removeQuizExercise(qE2);
-											//break;//to stop the loop if found, no need to check the others
+											break;//to stop the loop if found, no need to check the others
 										}
 									}	
-									//break;//to stop the loop if found, no need to check the others
+									break;//to stop the loop if found, no need to check the others
 								}
 							}								
-						}						
+						}					
 						
 						window.getQuizCatalog().deleteQuiz(quiz);				
-						//break; //to stop the loop if found, no need to check the others
+						break; //to stop the loop if found, no need to check the others
 					}
 				}
 				window.resetTable();
@@ -202,7 +206,7 @@ public class DeleteQuizController {
 	    
 		QuizCatalog qCatalog = new QuizCatalog();
 		ExerciseCatalog eCatalog = new ExerciseCatalog();
-		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);	
+		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);
 		controller.window.setVisible(true);
 	}
 	
