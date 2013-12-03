@@ -329,9 +329,8 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					scanner2.next();
 				}
 				
-				while (scanner2.hasNext()){
+				while (scanner2.hasNext("(.*?)\\s*,\\s*(.*?)s*,\\s*(.*?)")){
 					Scanner scanner3 = new Scanner(scanner2.next());
-					if (scanner2.hasNext("\\s*,\\s*")){
 					scanner3.useDelimiter("\\s*,\\s*");
 					
 					int tempScore = scanner3.nextInt();
@@ -341,7 +340,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					
 					quizzes.get(tempQuizId - 1).addQuizExercise(qe);
 					exercises.get(tempExerciseID - 1).addQuizExercise(qe);
-					}
+					
 					if (scanner2!=null){
 						scanner3.close();
 					}
