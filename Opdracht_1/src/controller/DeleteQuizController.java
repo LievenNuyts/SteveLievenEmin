@@ -37,14 +37,16 @@ public class DeleteQuizController {
 		this.quizCatalog.readQuizzesFromFile();
 		this.setExerciseCatalog(exerciseCatalog);
 		this.exerciseCatalog.readExercisesFromFile();
+		this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
 		
-		this.window = new DeleteQuizView(quizCatalog);
+		this.window = new DeleteQuizView(quizCatalog, exerciseCatalog);
 		this.window.setQuizCatalog(quizCatalog);
 		this.window.addDeleteQuizListener(new DeleteQuizListener());
 		this.window.addCloseWindowListener(new CloseWindowListener());
 		this.window.addButtonUpListener(new ButtonUpListener());
 		this.window.addButtonDownListener(new ButtonDownListener());
 		this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
+		this.window.addSelectionChangedListener(new SelectionChangedListener());
 	}
 
 	//METHODS
@@ -78,59 +80,75 @@ public class DeleteQuizController {
 	
 	//EVENT LISTENERS
 	
-	
-	//EUUUUJ BEZIET DEES EENS MANNEN ! NO IDEA OF DA GA WERKEN
 	class DeleteQuizListener implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) throws IllegalArgumentException{
 		
 			try {
-				String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);	
 				
-				for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
+				if(window.getJTable().getRowCount() != 0){
+				
+					String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);	
+				
+					for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
 					
-					if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-						System.out.println("0");	
-						//loop through all QuizExercises in the quiz that will be deleted
-						
-						for(QuizExercise qE : quiz.getQuizExercises()){	
-							System.out.println("1");
-							//loop through all exercises in ExerciseCatalog
-							for(Exercise exercise : exerciseCatalog.getExercises()){
-								System.out.println("2");
-								//lookup the exercise which is linked to the QuizExercise
-								//and look for the same exercise in the ExerciseCatalog
-								if(qE.getExercise().equals(exercise)){
-									System.out.println("3");
-									//loop through QuizExercise list of the exercise
-									for(QuizExercise qE2 : exercise.getQuizExercises()){
-										System.out.println("4");
-										//look for QuizExercise that matches the above QuizExercise
-										if(qE.equals(qE2)){
-											System.out.println("5");
-											//matching QuizExercise can be deleted
-											exercise.removeQuizExercise(qE2);
+						if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
+							System.out.println("0");	
+							
+							//check the status of the quiz that will be deleted
+							if(quiz.getStatus().toString() == "Under Construction" || quiz.getStatus().toString() == "Completed"){
+							
+								//loop through all QuizExercises in the quiz that will be deleted
+								for(QuizExercise qE : quiz.getQuizExercises()){	
+									System.out.println("1");
+									//loop through all exercises in ExerciseCatalog
+									for(Exercise exercise : exerciseCatalog.getExercises()){
+										System.out.println("2");
+										//lookup the exercise which is linked to the QuizExercise
+										//and look for the same exercise in the ExerciseCatalog
+										if(qE.getExercise().equals(exercise)){
+											System.out.println("3");
+											//loop through QuizExercise list of the exercise
+											for(QuizExercise qE2 : exercise.getQuizExercises()){
+												System.out.println("4");
+												//look for QuizExercise that matches the above QuizExercise
+												if(qE.equals(qE2)){
+													System.out.println("5");
+													//matching QuizExercise can be deleted
+													exercise.removeQuizExercise(qE2);
+													break;//to stop the loop if found, no need to check the others
+												}
+											}	
 											break;//to stop the loop if found, no need to check the others
 										}
-									}	
-									break;//to stop the loop if found, no need to check the others
-								}
-							}								
-						}					
-						
-						window.getQuizCatalog().deleteQuiz(quiz);				
-						break; //to stop the loop if found, no need to check the others
-					}
-				}
-				window.resetTable();
-				window.loadJTable();
-			}
+									}								
+								}					
+							
+								window.getQuizCatalog().deleteQuiz(quiz);				
+								break; //to stop the loop if found, no need to check the others
+							}
+							else{
+								window.showPopup("!! Deze quiz kan niet meer verwijderd worden !!\n"
+										+ "Enkel een quiz met status 'Under Construction of 'Completed' kan verwijderd worden.");
+							}		
+						}//end of if to check ID of quiz
+					}//end of for loop through all quizzeslist
+					
+					
+					//opnieuw inladen va de JTABLE
+					window.resetTable();
+					window.loadJTable();
+					window.resetExTable();
+					window.loadExTable();
+					
+				}//end of if list not empty
+			}//end of try
 
 			catch (Exception exc) {
 				System.out.println(exc);
-			}
-		}
-	}
+			}//end of catch
+		}//end of action performed
+	}//end of class
 
 	class SaveAndCloseWindowListener implements ActionListener {
 		@Override
@@ -168,7 +186,12 @@ public class DeleteQuizController {
 			try {
 				int rowIndex = window.getJTable().getSelectedRow();
 				
-				if(rowIndex > 0){
+				if(rowIndex == 0){	
+					rowIndex = window.getJTable().getRowCount();
+					System.out.println(rowIndex);
+					window.getJTable().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
+				}			
+				else{
 					rowIndex--;
 					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
@@ -190,7 +213,25 @@ public class DeleteQuizController {
 				if(rowIndex < window.getJTable().getRowCount()-1){
 					rowIndex++;
 					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
-				}		
+				}	
+				else{
+					window.getJTable().setRowSelectionInterval(0, 0);
+				}
+			}
+
+			catch (Exception exc) {
+				System.out.println(exc);
+			}
+		}
+	}
+	
+	class SelectionChangedListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		
+			try {
+				window.resetExTable();
+				window.loadExTable();
 			}
 
 			catch (Exception exc) {

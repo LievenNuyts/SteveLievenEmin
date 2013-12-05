@@ -12,13 +12,17 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 import controller.StartAppController;
+import model.Exercise;
+import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
+import model.QuizExercise;
 
 
 public class DeleteQuizView extends JFrame{
@@ -27,23 +31,25 @@ public class DeleteQuizView extends JFrame{
 	
 	private JButton btn_up, btn_down, btn_delete, btn_exit, btn_save;
 	
-	private JTable table;
-	private DefaultTableModel model;
+	private JTable table, exerciseTable;
+	private DefaultTableModel model, model2;
 	
-	private JScrollPane pane;
+	private JScrollPane pane, pane2;
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
+	private String[] columnNames2 = {"Exercises"};
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
 		this.defineLayout();
 	}
 	
-	public DeleteQuizView(QuizCatalog catalog){
+	public DeleteQuizView(QuizCatalog catalog, ExerciseCatalog exCatalog){
 		
 		super("Delete quiz");
 		this.catalog = catalog;
+		
 		this.defineLayout();
 		
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -61,16 +67,27 @@ public class DeleteQuizView extends JFrame{
 		model.setRowCount(0);
 	}
 	
+	public void resetExTable(){
+		model2.setRowCount(0);
+	}
+	
 	
 	public void loadJTable(){
 		
 		if(table == null){
 			table = new JTable();
+			
+			//Remove mouse click possibility on JTABLE
+			MouseListener[] listeners = table.getMouseListeners();
+			for (MouseListener l : listeners)
+			{
+			    table.removeMouseListener(l);
+			}		
 		}
 	
 		if(model == null){
 			model = new DefaultTableModel();
-			model.setColumnIdentifiers(columnNames);
+			model.setColumnIdentifiers(columnNames);	
 		}
 		
 		for(Quiz quiz : catalog.getQuizCatalogs()){
@@ -92,6 +109,40 @@ public class DeleteQuizView extends JFrame{
 		if(table.getRowCount() != 0){
 			table.setRowSelectionInterval(0, 0);
 		}
+	}
+	
+	public void loadExTable(){
+		
+		if(exerciseTable == null){
+			exerciseTable = new JTable();
+		}
+	
+		if(model2 == null){
+			model2 = new DefaultTableModel();
+			model2.setColumnIdentifiers(columnNames2);
+		}
+		
+		if(this.table.getRowCount() != 0){
+		
+			//Select QuizID from the JTABLE
+			String quizIDtoLookup = (String) this.getJTable().getValueAt(this.getJTable().getSelectedRow(), 0);	
+			//loop through the quizzes
+			for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
+				//Find the quiz object via the ID of the selected JTable row
+				if(quiz.getQuizId() == Integer.parseInt(quizIDtoLookup)){
+							
+					for(QuizExercise qe : quiz.getQuizExercises()){
+						
+						String[] dataBuilder = new String[1];
+						
+						dataBuilder[0] = qe.getExercise().getQuestion();
+						
+						model2.addRow(dataBuilder);
+					}	
+				}
+			}		
+		}
+		exerciseTable.setModel(model2);
 	}
 	
 	private void defineLayout(){
@@ -119,10 +170,21 @@ public class DeleteQuizView extends JFrame{
 		//TABLE
 		loadJTable();
 			
-		table.setPreferredScrollableViewportSize(new Dimension(400,450));
-		table.setFillsViewportHeight(true);	
+		table.setPreferredScrollableViewportSize(new Dimension(400,200));
+		table.setFillsViewportHeight(true);
+		table.setFocusable(false);
+		
 		pane = new JScrollPane(table);
-				     
+			
+		//EXERCISETABLE
+		loadExTable();
+		
+		exerciseTable.setPreferredScrollableViewportSize(new Dimension(400,200));
+		exerciseTable.setFillsViewportHeight(true);	
+		exerciseTable.setFocusable(false);
+		exerciseTable.setRowSelectionAllowed(false);
+		pane2 = new JScrollPane(exerciseTable);
+		
 		//BUTTONS
 	    btn_up = new JButton("↑");
 	    btn_down = new JButton("↓");	    
@@ -157,10 +219,19 @@ public class DeleteQuizView extends JFrame{
 		panelConstraints.gridx = 0;
 		panelConstraints.gridy = 4;
 		pnl_one.add(btn_exit, panelConstraints);
-	
-		//ADD PANE(WITH TABLE) TO PANEL TWO	
-		pnl_two.add(pane);	
-				
+		
+		//ADD PANE(WITH TABLE) AND EXERCISE JLIST TO PANEL TWO	
+		
+		panelConstraints.gridx = 0;
+		panelConstraints.gridy = 1;
+		pnl_two.add(pane, panelConstraints);
+		
+		
+		panelConstraints.gridx = 0;
+		panelConstraints.gridy = 2;
+		pnl_two.add(pane2, panelConstraints);
+			
+		
 		//ADD PANELS TO JFRAME
 		setLayout(new GridBagLayout());
 		GridBagConstraints frameConstraints = new GridBagConstraints();
@@ -210,5 +281,15 @@ public class DeleteQuizView extends JFrame{
 	public void addSaveAndCloseListener(ActionListener listener){
 
 		btn_save.addActionListener(listener);
-	}	
+	}
+	
+	public void addSelectionChangedListener(ActionListener listener){
+		
+		btn_down.addActionListener(listener);
+		btn_up.addActionListener(listener);
+	}
+	
+	public void showPopup(String text){
+	       JOptionPane.showMessageDialog(this, text);
+	    }
 }
