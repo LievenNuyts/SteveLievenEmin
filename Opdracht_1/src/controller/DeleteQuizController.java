@@ -39,14 +39,13 @@ public class DeleteQuizController {
 		this.exerciseCatalog.readExercisesFromFile();
 		this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
 		
-		this.window = new DeleteQuizView(quizCatalog, exerciseCatalog);
+		this.window = new DeleteQuizView(quizCatalog);
 		this.window.setQuizCatalog(quizCatalog);
 		this.window.addDeleteQuizListener(new DeleteQuizListener());
 		this.window.addCloseWindowListener(new CloseWindowListener());
 		this.window.addButtonUpListener(new ButtonUpListener());
 		this.window.addButtonDownListener(new ButtonDownListener());
 		this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
-		this.window.addSelectionChangedListener(new SelectionChangedListener());
 	}
 
 	//METHODS
@@ -122,33 +121,29 @@ public class DeleteQuizController {
 											break;//to stop the loop if found, no need to check the others
 										}
 									}								
-								}					
-							
-								window.getQuizCatalog().deleteQuiz(quiz);				
+								}							
+								window.getQuizCatalog().deleteQuiz(quiz);
+								window.showPopup("Quiz \"" + quiz.getSubject() + "\" verwijderd");
 								break; //to stop the loop if found, no need to check the others
 							}
 							else{
 								window.showPopup("!! Deze quiz kan niet meer verwijderd worden !!\n"
 										+ "Enkel een quiz met status 'Under Construction of 'Completed' kan verwijderd worden.");
 							}		
-						}//end of if to check ID of quiz
-					}//end of for loop through all quizzeslist
-					
-					
-					//opnieuw inladen va de JTABLE
+						}
+					}
+							
+					//reload both JTables
 					window.resetTable();
-					window.loadJTable();
 					window.resetExTable();
-					window.loadExTable();
-					
-				}//end of if list not empty
-			}//end of try
+				}
+			}
 
 			catch (Exception exc) {
 				System.out.println(exc);
-			}//end of catch
-		}//end of action performed
-	}//end of class
+			}
+		}
+	}
 
 	class SaveAndCloseWindowListener implements ActionListener {
 		@Override
@@ -195,6 +190,7 @@ public class DeleteQuizController {
 					rowIndex--;
 					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
+				window.resetExTable();
 			}
 
 			catch (Exception exc) {
@@ -217,21 +213,7 @@ public class DeleteQuizController {
 				else{
 					window.getJTable().setRowSelectionInterval(0, 0);
 				}
-			}
-
-			catch (Exception exc) {
-				System.out.println(exc);
-			}
-		}
-	}
-	
-	class SelectionChangedListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-		
-			try {
 				window.resetExTable();
-				window.loadExTable();
 			}
 
 			catch (Exception exc) {
@@ -239,8 +221,7 @@ public class DeleteQuizController {
 			}
 		}
 	}
-	
-	
+
 	// STATIC VOID MAIN
 	
 	public static void main(String[] args) {
@@ -250,7 +231,6 @@ public class DeleteQuizController {
 		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);
 		controller.window.setVisible(true);
 	}
-	
 }
 
 

@@ -38,14 +38,14 @@ public class DeleteQuizView extends JFrame{
 	private JPanel pnl_one, pnl_two;
 	
 	private String[] columnNames = {"QuizID","Author","Subject","Grade","Status"};
-	private String[] columnNames2 = {"Exercises"};
+	private String[] columnNames2 = {"Exercises from selected quiz:"};
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
 		this.defineLayout();
 	}
 	
-	public DeleteQuizView(QuizCatalog catalog, ExerciseCatalog exCatalog){
+	public DeleteQuizView(QuizCatalog catalog){
 		
 		super("Delete quiz");
 		this.catalog = catalog;
@@ -65,10 +65,12 @@ public class DeleteQuizView extends JFrame{
 	//method to reset the DefaultTableModel
 	public void resetTable(){
 		model.setRowCount(0);
+		loadJTable(); //adj
 	}
 	
 	public void resetExTable(){
 		model2.setRowCount(0);
+		loadExTable(); //adj
 	}
 	
 	
@@ -170,16 +172,22 @@ public class DeleteQuizView extends JFrame{
 		//TABLE
 		loadJTable();
 			
-		table.setPreferredScrollableViewportSize(new Dimension(400,200));
+		table.setPreferredScrollableViewportSize(new Dimension(500,200));
 		table.setFillsViewportHeight(true);
 		table.setFocusable(false);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.getColumnModel().getColumn(0).setPreferredWidth(50);
+		table.getColumnModel().getColumn(1).setPreferredWidth(80);
+		table.getColumnModel().getColumn(2).setPreferredWidth(160);
+		table.getColumnModel().getColumn(3).setPreferredWidth(50);
+		table.getColumnModel().getColumn(4).setPreferredWidth(160);
 		
 		pane = new JScrollPane(table);
 			
 		//EXERCISETABLE
 		loadExTable();
 		
-		exerciseTable.setPreferredScrollableViewportSize(new Dimension(400,200));
+		exerciseTable.setPreferredScrollableViewportSize(new Dimension(500,200));
 		exerciseTable.setFillsViewportHeight(true);	
 		exerciseTable.setFocusable(false);
 		exerciseTable.setRowSelectionAllowed(false);
@@ -257,6 +265,10 @@ public class DeleteQuizView extends JFrame{
 		return this.table;
 	}
 	
+	public JTable getJTableExercises(){
+		return this.exerciseTable;
+	}
+	
 	//ADD LISTENERES TO BUTTONS
 	public void addDeleteQuizListener(ActionListener listener){
 
@@ -283,13 +295,7 @@ public class DeleteQuizView extends JFrame{
 		btn_save.addActionListener(listener);
 	}
 	
-	public void addSelectionChangedListener(ActionListener listener){
-		
-		btn_down.addActionListener(listener);
-		btn_up.addActionListener(listener);
-	}
-	
 	public void showPopup(String text){
 	       JOptionPane.showMessageDialog(this, text);
-	    }
+	}
 }
