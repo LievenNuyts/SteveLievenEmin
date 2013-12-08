@@ -151,6 +151,7 @@ public class DeleteQuizController {
 		
 			try {
 				quizCatalog.writeQuizzesToFile();
+				exerciseCatalog.writeExercisesToFile();
 				window.dispose();	
 			}
 
