@@ -1,8 +1,6 @@
 package collections;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Collections;
 import java.util.TreeSet;
 
 import model.ExerciseCatalog;
@@ -49,13 +47,28 @@ public class MostExercises {
 		this.treeSet = treeSet;
 	}
 
+	// using the TreeSet
+	
 	public static void main(String[] args) {
 		
 		MostExercises mO = new MostExercises();
 		
 		for(Quiz quiz : mO.getTreeSet()){
-			System.out.println("#Exercises: " + quiz.getQuizExercises().size() + " Subject: " + quiz.getSubject());
+			System.out.println("#Exercises: " + quiz.getQuizExercises().size() + " - Subject: " + quiz.getSubject());
 		}
 	}
+	
+	// using the original ArrayList of the QuizCatalog
+	/*
+	public static void main(String[] args) {
+		
+		MostExercises mO = new MostExercises();
+		
+		Collections.sort(mO.qCatalog.getQuizCatalogs(), new MyExerciseComparator());
+		
+		for(Quiz quiz : mO.qCatalog.getQuizCatalogs()){
+			System.out.println("#Exercises: " + quiz.getQuizExercises().size() + " - Subject: " + quiz.getSubject());
+		}
+	}*/
 }
 
