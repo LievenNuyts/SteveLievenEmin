@@ -102,17 +102,17 @@ public class CreateQuizController {
 				
 				// Iterate through each row and add QuizExercises to corresponding quizzes and exercises
 				for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
-					for (Exercise ex : exModel.getExercises()){
-						if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
-							
-							QuizExercise tempQE = new QuizExercise(
-									Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
-									quiz, ex);
-							
-							quiz.addQuizExercise(tempQE);
-							ex.addQuizExercise(tempQE);
+						for (Exercise ex : exModel.getExercises()){
+							if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
+								
+								QuizExercise tempQE = new QuizExercise(
+										Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
+										quiz, ex);
+								
+								quiz.addQuizExercise(tempQE);
+								ex.addQuizExercise(tempQE);
+							}
 						}
-					}
 				}
 				quModel.addQuiz(quiz);
 				
@@ -122,13 +122,6 @@ public class CreateQuizController {
 				view.displayErrorMessage("Quiz is toegevoegd");
 				
 				view.reset();
-				
-				// Load exercises and quizzes
-				exModel.readExercisesFromFile();
-				quModel.readQuizzesFromFile();
-				exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
-				
-				
 			}
 			catch (NumberFormatException ex) {
 				view.displayErrorMessage(ex.getMessage());

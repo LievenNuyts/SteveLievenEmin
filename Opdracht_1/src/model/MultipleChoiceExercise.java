@@ -17,7 +17,7 @@ import utils.DateGC;
  *
  */
 
-public class MultipleChoiceExercise extends Exercise implements Validatable {
+public class MultipleChoiceExercise extends Exercise implements Validatable{
         
         private String multipleChoice;
         
@@ -91,17 +91,7 @@ public class MultipleChoiceExercise extends Exercise implements Validatable {
         }
         */
         
-        @Override
-    	public void setCorrectAnswer(String correctAnswer) throws IllegalArgumentException{
-    		if (correctAnswer == null){
-    			throw new IllegalArgumentException("Juiste antwoord is null!");
-    		}
-    		if (correctAnswer.isEmpty()){
-    			throw new IllegalArgumentException("Gelieve een antwoord in te vullen!");
-    		}
-    		
-    		correctAnswer = getCorrectAnswer();
-    	}
+        
     	
     	
     	

@@ -84,7 +84,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		if (exercises.size() >0)
 		{
 			Exercise tempEx = exercises.get(exercises.size()-1);
-			exercise.setExerciseId(tempEx.getExerciseId()+2);
+			exercise.setExerciseId(tempEx.getExerciseId()+1);
 		}
 		else{
 			exercise.setExerciseId(1);
@@ -157,12 +157,12 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 						break;
 					case 'E':
 						EnumerationExercise eExercise = (EnumerationExercise)exercise;
-						line += " > " + eExercise.getInCorrectOrder();
+						line += eExercise.getInCorrectOrder();
 						writer.println(line);
 						break;
 					case 'M':
 						MultipleChoiceExercise mExercise = (MultipleChoiceExercise)exercise;
-						line += " > " + mExercise.getMultipleChoice();
+						line += mExercise.getMultipleChoice();
 						writer.println(line);
 						break;
 					}
@@ -269,7 +269,10 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 				}
 				// Add result to dateRegistration parameter
 				ex.setDateRegistration(new DateGC(year, month, day));
-				
+				// Skip QuizExercises
+				while (scanner2.hasNext("(.*?)\\s*,\\s*(.*?)s*,\\s*(.*?)")){
+					scanner2.next();
+				}
 				// Add to exercises based on corresponding subclass
 				if (descriminator.equals("S")){
 					SimpleExercise exS = (SimpleExercise)ex;
@@ -383,19 +386,15 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 //			exercise1.addExercise(qe2);
 //			
 //			
-			ExerciseCatalog ec = new ExerciseCatalog();
-			QuizCatalog qc = new QuizCatalog();
-//			ec.addExercise(exercise1);
-//			ec.addExercise(exercise2);
-//			ec.addExercise(exercise3);
-//			
-//			ec.writeExercisesToFile();
-			ec.readExercisesFromFile();
-			qc.readQuizzesFromFile();
-			//System.out.println(ec.exercises.size() + "  " + qc.getQuizCatalogs().size());
-			ec.createQuizExercises(ec.getExercises(), qc.getQuizCatalogs());
+			ExerciseCatalog ez = new ExerciseCatalog();
+			ez.addExercise(new SimpleExercise());
+			ez.addExercise(new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
+					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
+					new DateGC(2013,10,1), 'S'));
 			
-			System.out.println(ec.exercises.get(0).getQuizExercises().get(0).getMaxScore());
+			for (Exercise e : ez.getExercises()){
+				System.out.println(e.getExerciseId());
+			}
 			
 			
 			
