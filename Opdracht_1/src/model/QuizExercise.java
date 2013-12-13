@@ -126,8 +126,9 @@ public class QuizExercise implements Comparable<QuizExercise>, Cloneable{
 
 	@Override
 	public String toString() {
-		return "QuizExercise [maxScore=" + maxScore + ", quiz=" + quiz
-				+ ", exercise=" + exercise + "]";
+		/*return "QuizExercise [maxScore=" + maxScore + ", quiz=" + quiz
+				+ ", exercise=" + exercise + "]";*/ 
+		return exercise.getQuestion();
 	}
 
 	@Override

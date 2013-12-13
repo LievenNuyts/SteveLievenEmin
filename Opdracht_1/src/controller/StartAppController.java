@@ -33,7 +33,7 @@ public class StartAppController extends JFrame{
 	
 	public StartAppController() {
 		
-		startMenu = new Menu("Add quiz","Update quiz","Delete quiz");
+		startMenu = new Menu("Add quiz to Database" ,"Add quiz to TextFile", "Update quiz","Delete quiz");
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -49,20 +49,27 @@ public class StartAppController extends JFrame{
 		
 		switch (choice) {
 		case 1:
-			//Voeg quiz toe
+			//Voeg quiz toe aan DB
+			createView = new CreateQuizView();
+			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
+			createView.setVisible(true);
+			break;
+			
+		case 2:
+			//Voeg quiz toe aan textfile
 			createView = new CreateQuizView();
 			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
 			createView.setVisible(true);
 			break;
 		
-		case 2:
+		case 3:
 			//Update quiz
 			changeView = new ChangeQuizView();
 			changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
 			changeView.setVisible(true);
 			break;
 		
-		case 3:
+		case 4:
 			//Delete quiz
 			deleteQuizController = new DeleteQuizController(quizCatalog, exerciseCatalog);
 			deleteQuizController.makeWindowVisible();

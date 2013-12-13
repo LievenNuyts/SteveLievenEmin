@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
+import model.QuizExercise;
 import model.QuizCatalog;
 import view.ChangeQuizView;
 
@@ -41,7 +42,7 @@ public class ChangeQuizController {
 		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
 				quizModel.getQuizCatalogs());
 
-		// Load exercises in exercisesList (JList)
+		// Load exercises & quizzes in exercisesList & quizList (JList)
 				loadExercisesPerCategory(exerciseModel.getExercises());
 				loadQuizzes(quizModel.getQuizCatalogs());
 
@@ -64,6 +65,11 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Addbutton");
+				addToQuiz(view.getSelectedQuizValueFromList(), view.getSelectedExerciseValueFromList());
+
+				
+				//reload list
+				//loadExercisesPerCategory(exerciseModel.getExercises());
 
 			} 
 
@@ -82,20 +88,14 @@ public class ChangeQuizController {
 
 			// dataMembers
 
-			String quizTitle;
-			String status;
-			Integer grade;
-			String category;
-
-
 			try {
 
 				System.out.println("Updatebutton");
+			
 
-				quizTitle = view.getQuizTitle();
-				status = view.getStatus();
-				grade = view.getGrade();
-				category = view.getCategory();
+				quizModel.writeQuizzesToFile();
+				
+				view.displayErrorMessage("Quiz is geüpdatet");
 
 			} 
 
@@ -117,7 +117,10 @@ public class ChangeQuizController {
 			try {
 
 				System.out.println("Deletebutton");
-				removeFromQuiz(view.getSelectedQuizValueFromList(), view.getSelectedExerciseValueFromList());
+				removeFromQuiz(view.getSelectedQuizValueFromList(), view.getSelectedQuizExerciseValueFromList());
+				
+				//reload list
+				//loadExercisesPerCategory(exerciseModel.getExercises());
 			}
 			catch(IllegalArgumentException ex){
 				System.out.println(ex);
@@ -152,6 +155,8 @@ public class ChangeQuizController {
 			public void actionPerformed(ActionEvent e) {
 
 				try {
+					
+					view.getSelectedCategory();
 					System.out.println("Showbutton");
 					
 				}
@@ -190,13 +195,45 @@ public class ChangeQuizController {
 			this.view.setQuizList(quizzes);
 		}
 		
-		public void removeFromQuiz(Quiz quiz, Exercise exercise) throws IllegalArgumentException{
+		public void removeFromQuiz(Quiz quiz, QuizExercise quizExercise) throws IllegalArgumentException{
 
 			//remove from list
-			quiz.getQuizExercises().remove(exercise);
-			System.out.println("Removed.");
+			quiz.getQuizExercises().remove(quizExercise);
+			
+			//test
+			System.out.println(quizExercise);
+			System.out.println(quiz);
 			
 		}
+		
+		public void addToQuiz(Quiz quiz, Exercise exercise) throws IllegalArgumentException{
+			
+			//add to quiz
+			int maxScore = 5;   //Integer.parseInt(view.getMaxScore());
+
+			QuizExercise qe = new QuizExercise(maxScore, quiz, exercise);
+			quiz.addQuizExercise(qe);
+			
+			//test
+			for(int index = 0; index < quizModel.getQuizCatalogs().size(); index++){
+			      System.out.println(quizModel.getQuizCatalogs().get(index));   			      
+			}
+			
+			for(Quiz q : quizModel.getQuizCatalogs()){
+				if(q.getSubject().equalsIgnoreCase(quiz.getSubject())){
+					
+					int indexPos = getIndexPosition(q);
+					System.out.println(indexPos);
+					quizModel.getQuizCatalogs().set(indexPos, quiz);
+				}
+				
+			}	
+			quizModel.writeQuizzesToFile();
+		}
+		
+		private int getIndexPosition(Quiz quiz) {
+			  return quizModel.getQuizCatalogs().indexOf(quiz);
+			}
 		
 		//Searchmethod
 		

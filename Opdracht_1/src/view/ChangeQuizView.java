@@ -59,7 +59,7 @@ public class ChangeQuizView extends JFrame {
         private JComboBox comboStatus;
         private JComboBox comboAuthor;
         private JComboBox<Integer> comboLeerjaar;
-		private JComboBox<String> comboSortExercises;
+		private JComboBox<Integer> comboScore;
         
 		private DefaultListModel<Exercise> listModelEx;
 		private DefaultListModel<Quiz> listModelQuiz;	
@@ -69,11 +69,9 @@ public class ChangeQuizView extends JFrame {
 		
 		private JTable addedToTableExercises;
 		
-		private String col[] = {"Opdracht", "MaxScore"}; 
-		
 		private JScrollPane paneTable;
 		
-		private String[] sort;
+		private Integer[] score;
 		
         private final JScrollPane paneExercise;
         private final JScrollPane paneQuiz;
@@ -205,13 +203,13 @@ public class ChangeQuizView extends JFrame {
 			getContentPane().add(lb_03);
 			comboAuthor = new JComboBox(Teacher.values());
 			
-			//Sort
-			/*
-			lb_04 = new JLabel(" Sort: ");
+			//MaxScore
+			
+			lb_04 = new JLabel(" Score: ");
 			getContentPane().add(lb_04);
-			sort = new String[]{ "Geen", "Categorie", "Vraag"};
-			comboSortExercises = new JComboBox<String>(sort);
-			*/
+			score = new Integer[]{ 1,2,3,4,5,6,7,8,9,10};
+			comboScore = new JComboBox<Integer>(score);
+			
 			
 			//Panel 03
 			
@@ -319,7 +317,8 @@ public class ChangeQuizView extends JFrame {
 			            
 			            QuizExercise selected = (QuizExercise)source.getSelectedValue();
 			            
-			            System.out.println(selected.getExercise().getQuestion());
+			            getExercise(selected.getExercise());
+			            
 			            
 
 			        }
@@ -342,6 +341,9 @@ public class ChangeQuizView extends JFrame {
 			panel_07.add(comboCategory);
 			
 			panel_07.add(btn_show);
+			
+			panel_07.add(lb_04);
+			panel_07.add(comboScore);
 			
 			panel_05.add(lb_03);
 			panel_05.add(comboAuthor);	
@@ -400,7 +402,9 @@ public class ChangeQuizView extends JFrame {
 			return String.valueOf(comboAuthor.getSelectedItem());
 		}
 		
-
+		public String getMaxScore(){
+			return String.valueOf((String)comboScore.getSelectedItem());
+		}
 		
 		/**
 		 * @return
@@ -437,15 +441,7 @@ public class ChangeQuizView extends JFrame {
 		 */
 		public String getSelectedCategory(){
 			return String.valueOf(comboCategory.getSelectedItem());
-		}
-		
-		/**
-		 * @return
-		 */
-		public String getSelectedSortByValue(){
-			return String.valueOf(comboSortExercises.getSelectedItem());
-		}
-		
+		}		
 		
 		public String getQuizTitle() {
 			return txt_01.getText();
@@ -482,6 +478,10 @@ public class ChangeQuizView extends JFrame {
 			this.listExercise.setModel(listModel);
 		}
 		
+		public JList<Exercise> getExercisesList() {
+			return listExercise;
+		}
+		
 		//setQuizzes
 		
 		public void setQuizList(List<Quiz> quizList){
@@ -500,7 +500,7 @@ public class ChangeQuizView extends JFrame {
 			
 			for (QuizExercise ex : exInQuizList){
 
-				listModel.addElement(ex.getExercise().getQuestion());
+				listModel.addElement(ex);
 			}
 			this.listExercisesInQuiz.setModel(listModel);
 		}
@@ -510,9 +510,6 @@ public class ChangeQuizView extends JFrame {
 			
 		}
 		
-		public void getQuizExercise(QuizExercise ex){
-			System.out.println(ex.getExercise().toString());
-		}
 		
 
 		// events

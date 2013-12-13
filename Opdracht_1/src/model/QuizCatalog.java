@@ -61,6 +61,8 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 		quizCatalogs.add(quiz);
 	}
 	
+	
+	
 	//verwijderen
 	
 	public void deleteQuiz(Quiz quiz) throws IllegalArgumentException{
