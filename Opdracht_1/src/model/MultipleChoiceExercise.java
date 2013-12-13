@@ -118,7 +118,7 @@ public class MultipleChoiceExercise extends Exercise implements Validatable{
     	
     	@Override
     	public String toString() {
-    		return "Exercise [getExerciseId()=" + getExerciseId()
+    		/*return "Exercise [getExerciseId()=" + getExerciseId()
     				+ ", getQuestion()=" + getQuestion() 
     				+ ", getCorrectAnswer()=" + getCorrectAnswer() 
     				+ ", getAnswerHints()=" + Arrays.toString(getAnswerHints())
@@ -131,7 +131,8 @@ public class MultipleChoiceExercise extends Exercise implements Validatable{
     				+ ", getDiscriminator()=" + getDiscriminator()
     				+ ", hashCode()=" + hashCode() 
     				+ ", MultipleChoice()=" + getMultipleChoice()
-    				+ "]";
+    				+ "]";*/
+    		return getQuestion();
     	}
     	
     	@Override

@@ -186,7 +186,7 @@ public class EnumerationExercise extends Exercise implements Validatable{
 	
 	@Override
 	public String toString() {
-		return "Exercise [getExerciseId()=" + getExerciseId()
+		/*return "Exercise [getExerciseId()=" + getExerciseId()
 				+ ", getQuestion()=" + getQuestion() 
 				+ ", getCorrectAnswer()=" + getCorrectAnswer() 
 				+ ", getAnswerHints()=" + Arrays.toString(getAnswerHints())
@@ -199,10 +199,9 @@ public class EnumerationExercise extends Exercise implements Validatable{
 				+ ", getDiscriminator()=" + getDiscriminator()
 				+ ", hashCode()=" + hashCode() 
 				+ ", inCorrectOrder()=" + getInCorrectOrder()
-				+ "]";
+				+ "]";*/
+		return getQuestion();
 	}
-	
-	
 
 	
 	@Override

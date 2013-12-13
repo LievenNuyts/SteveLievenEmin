@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -45,12 +47,35 @@ public class ChangeQuizController {
 
 		// Add listeners
 		
-		this.view.addUpdateListener(new QuizListener());
+		this.view.addAddListener(new QuizListener());
+		this.view.addUpdateListener(new UpdateListener());
 		this.view.addDeleteListener(new DeleteListener());
 		this.view.addSearchListener(new SearchListener());
+		this.view.addShowListener(new ShowListener());
 	}
 
 	class QuizListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			// dataMembers
+
+			try {
+
+				System.out.println("Addbutton");
+
+			} 
+
+			catch(IllegalArgumentException ex){
+				System.out.println(ex);
+				view.displayErrorMessage(ex.getMessage());
+			}
+		}
+
+	}
+	
+	class UpdateListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -120,7 +145,26 @@ public class ChangeQuizController {
 				}
 			}
 		}
-		
+
+		class ShowListener implements ActionListener {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				try {
+					System.out.println("Showbutton");
+					
+				}
+
+				catch (Exception ex) {
+
+					System.out.println(ex);
+
+					view.displayErrorMessage("Error.");
+
+				}
+			}
+		}
 		
 		
 		public void loadExercisesPerCategory(List<Exercise> exercises){
@@ -154,25 +198,36 @@ public class ChangeQuizController {
 			
 		}
 		
-		//Searchmethod add to resultlist werkt niet. 
+		//Searchmethod
 		
 		public void Search(List<Quiz> quizList) throws IllegalArgumentException{
+
+			String searchString = view.getQuizTitle().toLowerCase();
+
+			if (searchString.isEmpty()){
 				
-			
-				String searchString = view.getQuizTitle();
-				
+				this.view.setQuizList(quizList);
+				JOptionPane.showMessageDialog(null, "Niets ingegeven. \nVolledige lijst.");
+			}
+			else
+			{
+
 				for (Quiz curVal : quizList){
-				  if (curVal.getSubject() != null && curVal.getSubject().equals(searchString)){
-					  System.out.println(curVal.getSubject() + " test");
-					  resultList.add(curVal);
-				  }
-				  
-				  this.view.setQuizList(resultList);
+					if (curVal.getSubject() != null && curVal.getSubject().toLowerCase().contains(searchString)){
+
+						resultList.add(curVal);					  
+					}
 				}
-			
-			
-			
-		}
+
+				this.view.setQuizList(resultList);
+				resultList.clear();
+			}
+
+	}
+
+
+
+
 		
 
 		public static void main(String[] args) {

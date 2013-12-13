@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
+
 import utils.DateGC;
 
 /**
@@ -392,7 +394,7 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	
 	@Override
 	public String toString() {
-		return /*"Exercise [getExerciseId()=" + getExerciseId()
+		/*return "Exercise [getExerciseId()=" + getExerciseId()
 				+ ", getQuestion()=" + getQuestion() + ", getCorrectAnswer()="
 				+ getCorrectAnswer() + ", getAnswerHints()="
 				+ Arrays.toString(getAnswerHints())
@@ -402,8 +404,10 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 				+ getAuthor() + ", getQuizExercises()=" + getQuizExercises()
 				+ ", getDateRegistration()=" + getDateRegistration()
 				+ ", getDiscriminator()=" + getDiscriminator()
-				+ ", hashCode()=" + hashCode() + "]"*/ getQuestion();
+				+ ", hashCode()=" + hashCode() + "]";*/
+		return getQuestion();
 	}
+	
 
 	@Override
 	public int hashCode() {

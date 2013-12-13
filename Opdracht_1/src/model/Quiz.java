@@ -117,7 +117,7 @@ public class Quiz implements Comparable<Quiz>{
 
 	@Override
     public String toString() {
-            String quizText = "";
+            /*String quizText = "";
             if (isTest) {
             	quizText = "\n This is a test.";
             } 
@@ -142,7 +142,8 @@ public class Quiz implements Comparable<Quiz>{
                             + "\n" + quizText 
                             + "\nStatus: " + status;
             
-            return quizSummary;
+            return quizSummary;*/
+			return getSubject();
     }
 	
 	//get & set
