@@ -9,6 +9,10 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import model.Exercise;
 import model.ExerciseCatalog;
@@ -77,6 +81,12 @@ public class DeleteQuizController {
 		return this.exerciseCatalog;	
 	}
 	
+	
+	//LOAD METHODS
+	
+
+	
+	
 	//EVENT LISTENERS
 	
 	class DeleteQuizListener implements ActionListener {
@@ -85,9 +95,9 @@ public class DeleteQuizController {
 		
 			try {
 				
-				if(window.getJTable().getRowCount() != 0){
+				if(window.getJTableQuiz().getRowCount() != 0){
 				
-					String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);	
+					String quizIDtoDelete = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
 				
 					for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
 					
@@ -180,16 +190,16 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.getJTable().getSelectedRow();
+				int rowIndex = window.getJTableQuiz().getSelectedRow();
 				
 				if(rowIndex == 0){	
-					rowIndex = window.getJTable().getRowCount();
+					rowIndex = window.getJTableQuiz().getRowCount();
 					System.out.println(rowIndex);
-					window.getJTable().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
 				}			
 				else{
 					rowIndex--;
-					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
 				window.resetExTable();
 			}
@@ -205,14 +215,14 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.getJTable().getSelectedRow();
+				int rowIndex = window.getJTableQuiz().getSelectedRow();
 				
-				if(rowIndex < window.getJTable().getRowCount()-1){
+				if(rowIndex < window.getJTableQuiz().getRowCount()-1){
 					rowIndex++;
-					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);
 				}	
 				else{
-					window.getJTable().setRowSelectionInterval(0, 0);
+					window.getJTableQuiz().setRowSelectionInterval(0, 0);
 				}
 				window.resetExTable();
 			}
