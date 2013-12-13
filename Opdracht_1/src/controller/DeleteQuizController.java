@@ -9,6 +9,10 @@ package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 import model.Exercise;
 import model.ExerciseCatalog;
@@ -39,17 +43,41 @@ public class DeleteQuizController {
 		this.exerciseCatalog.readExercisesFromFile();
 		this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
 		
-		this.window = new DeleteQuizView(quizCatalog);
-		this.window.setQuizCatalog(quizCatalog);
+		this.window = new DeleteQuizView();
+		
 		this.window.addDeleteQuizListener(new DeleteQuizListener());
 		this.window.addCloseWindowListener(new CloseWindowListener());
 		this.window.addButtonUpListener(new ButtonUpListener());
 		this.window.addButtonDownListener(new ButtonDownListener());
 		this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
+		
+		//load JTables in the windows
+		this.loadQuizTable();
+		this.loadExTable();
+		
+		//set column width of JTABLE for quizzes
+		this.window.setColumnWidth();
 	}
 
-	//METHODS
+	//GETTERS & SETTERS
 	
+	public void setQuizCatalog(QuizCatalog quizCatalog){
+		this.quizCatalog = quizCatalog;
+	}
+		
+	public QuizCatalog getQuizCatalog(){
+		return this.quizCatalog;	
+	}	
+
+	public void setExerciseCatalog(ExerciseCatalog exerciseCatalog){
+		this.exerciseCatalog = exerciseCatalog;
+	}
+		
+	public ExerciseCatalog getExerciseCatalog(){
+		return this.exerciseCatalog;	
+	}
+	
+	//METHODS
 	//make window visible or invisible
 	public void makeWindowVisible(){
 		this.window.setVisible(true);
@@ -59,23 +87,69 @@ public class DeleteQuizController {
 		this.window.setVisible(false);
 	}
 	
-	//GETTERS & SETTERS
 	
-	public void setQuizCatalog(QuizCatalog quizCatalog){
-		this.quizCatalog = quizCatalog;
+	//LOAD JTABLE METHODS
+	
+	public void loadQuizTable(){
+		
+		for(Quiz quiz : quizCatalog.getQuizCatalogs()){
+	
+			String[] dataBuilder = new String[5];
+			
+			dataBuilder[0] = Integer.toString(quiz.getQuizId());
+			dataBuilder[1] = quiz.getTeacher().toString();
+			dataBuilder[2] = quiz.getSubject();
+			dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
+			dataBuilder[4] = quiz.getStatus().toString();
+			
+			window.getQModel().addRow(dataBuilder);
+		}
+		
+		window.getJTableQuiz().setModel(window.getQModel());
+		window.getJTableQuiz().setAutoCreateRowSorter(true);
+		
+		if(window.getJTableQuiz().getRowCount() != 0){
+			window.getJTableQuiz().setRowSelectionInterval(0, 0);
+		}
 	}
 	
-	public QuizCatalog getQuizCatalog(){
-		return this.quizCatalog;	
-	}	
-
-	public void setExerciseCatalog(ExerciseCatalog exerciseCatalog){
-		this.exerciseCatalog = exerciseCatalog;
+	public void loadExTable(){
+		
+		if(window.getJTableQuiz().getRowCount() != 0){
+		
+			//Select QuizID from the JTABLE
+			String quizIDtoLookup = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
+			//loop through the quizzes
+			for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
+				//Find the quiz object via the ID of the selected JTable row
+				if(quiz.getQuizId() == Integer.parseInt(quizIDtoLookup)){
+							
+					for(QuizExercise qe : quiz.getQuizExercises()){
+						
+						String[] dataBuilder = new String[1];
+						
+						dataBuilder[0] = qe.getExercise().getQuestion();
+						
+						window.getEModel().addRow(dataBuilder);
+					}	
+				}
+			}		
+		}
+		window.getJTableExercises().setModel(window.getEModel());
 	}
 	
-	public ExerciseCatalog getExerciseCatalog(){
-		return this.exerciseCatalog;	
+	
+	//methods to reset the DefaultTableModels and reload data
+	public void resetTable(){
+		window.getQModel().setRowCount(0);
+		this.loadQuizTable();
 	}
+		
+	public void resetExTable(){
+		window.getEModel().setRowCount(0);
+		this.loadExTable();
+	}
+	
 	
 	//EVENT LISTENERS
 	
@@ -85,9 +159,9 @@ public class DeleteQuizController {
 		
 			try {
 				
-				if(window.getJTable().getRowCount() != 0){
+				if(window.getJTableQuiz().getRowCount() != 0){
 				
-					String quizIDtoDelete = (String) window.getJTable().getValueAt(window.getJTable().getSelectedRow(), 0);	
+					String quizIDtoDelete = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
 				
 					for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
 					
@@ -122,7 +196,7 @@ public class DeleteQuizController {
 										}
 									}								
 								}							
-								window.getQuizCatalog().deleteQuiz(quiz);
+								getQuizCatalog().deleteQuiz(quiz);
 								window.showPopup("Quiz \"" + quiz.getSubject() + "\" verwijderd");
 								break; //to stop the loop if found, no need to check the others
 							}
@@ -134,8 +208,8 @@ public class DeleteQuizController {
 					}
 							
 					//reload both JTables
-					window.resetTable();
-					window.resetExTable();
+					resetTable();
+					resetExTable();
 				}
 			}
 
@@ -180,18 +254,18 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.getJTable().getSelectedRow();
+				int rowIndex = window.getJTableQuiz().getSelectedRow();
 				
 				if(rowIndex == 0){	
-					rowIndex = window.getJTable().getRowCount();
+					rowIndex = window.getJTableQuiz().getRowCount();
 					System.out.println(rowIndex);
-					window.getJTable().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
 				}			
 				else{
 					rowIndex--;
-					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);		
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
-				window.resetExTable();
+				resetExTable();
 			}
 
 			catch (Exception exc) {
@@ -205,16 +279,16 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				int rowIndex = window.getJTable().getSelectedRow();
+				int rowIndex = window.getJTableQuiz().getSelectedRow();
 				
-				if(rowIndex < window.getJTable().getRowCount()-1){
+				if(rowIndex < window.getJTableQuiz().getRowCount()-1){
 					rowIndex++;
-					window.getJTable().setRowSelectionInterval(rowIndex, rowIndex);
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);
 				}	
 				else{
-					window.getJTable().setRowSelectionInterval(0, 0);
+					window.getJTableQuiz().setRowSelectionInterval(0, 0);
 				}
-				window.resetExTable();
+				resetExTable();
 			}
 
 			catch (Exception exc) {

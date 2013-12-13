@@ -27,12 +27,10 @@ import model.QuizExercise;
 
 public class DeleteQuizView extends JFrame{
 	
-	private QuizCatalog catalog;
-	
 	private JButton btn_up, btn_down, btn_delete, btn_exit, btn_save;
 	
-	private JTable table, exerciseTable;
-	private DefaultTableModel model, model2;
+	private JTable quizTable, exerciseTable;
+	private DefaultTableModel qModel, eModel;
 	
 	private JScrollPane pane, pane2;
 	private JPanel pnl_one, pnl_two;
@@ -42,13 +40,6 @@ public class DeleteQuizView extends JFrame{
 	
 	public DeleteQuizView(){	
 		super("Delete quiz");
-		this.defineLayout();
-	}
-	
-	public DeleteQuizView(QuizCatalog catalog){
-		
-		super("Delete quiz");
-		this.catalog = catalog;
 		
 		this.defineLayout();
 		
@@ -59,92 +50,7 @@ public class DeleteQuizView extends JFrame{
 		    {	
 		    	new StartAppController().startApp();
 		    }
-		});
-	}
-	
-	//method to reset the DefaultTableModel
-	public void resetTable(){
-		model.setRowCount(0);
-		loadJTable(); //adj
-	}
-	
-	public void resetExTable(){
-		model2.setRowCount(0);
-		loadExTable(); //adj
-	}
-	
-	
-	public void loadJTable(){
-		
-		if(table == null){
-			table = new JTable();
-			
-			//Remove mouse click possibility on JTABLE
-			MouseListener[] listeners = table.getMouseListeners();
-			for (MouseListener l : listeners)
-			{
-			    table.removeMouseListener(l);
-			}		
-		}
-	
-		if(model == null){
-			model = new DefaultTableModel();
-			model.setColumnIdentifiers(columnNames);	
-		}
-		
-		for(Quiz quiz : catalog.getQuizCatalogs()){
-	
-			String[] dataBuilder = new String[5];
-			
-			dataBuilder[0] = Integer.toString(quiz.getQuizId());
-			dataBuilder[1] = quiz.getTeacher().toString();
-			dataBuilder[2] = quiz.getSubject();
-			dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
-			dataBuilder[4] = quiz.getStatus().toString();
-			
-			model.addRow(dataBuilder);
-		}
-		
-		table.setModel(model);
-		table.setAutoCreateRowSorter(true);
-		
-		if(table.getRowCount() != 0){
-			table.setRowSelectionInterval(0, 0);
-		}
-	}
-	
-	public void loadExTable(){
-		
-		if(exerciseTable == null){
-			exerciseTable = new JTable();
-		}
-	
-		if(model2 == null){
-			model2 = new DefaultTableModel();
-			model2.setColumnIdentifiers(columnNames2);
-		}
-		
-		if(this.table.getRowCount() != 0){
-		
-			//Select QuizID from the JTABLE
-			String quizIDtoLookup = (String) this.getJTable().getValueAt(this.getJTable().getSelectedRow(), 0);	
-			//loop through the quizzes
-			for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
-				//Find the quiz object via the ID of the selected JTable row
-				if(quiz.getQuizId() == Integer.parseInt(quizIDtoLookup)){
-							
-					for(QuizExercise qe : quiz.getQuizExercises()){
-						
-						String[] dataBuilder = new String[1];
-						
-						dataBuilder[0] = qe.getExercise().getQuestion();
-						
-						model2.addRow(dataBuilder);
-					}	
-				}
-			}		
-		}
-		exerciseTable.setModel(model2);
+		});	
 	}
 	
 	private void defineLayout(){
@@ -170,22 +76,30 @@ public class DeleteQuizView extends JFrame{
 		pnl_two.setBorder(BorderFactory.createTitledBorder("Quiz List"));
 				
 		//TABLE
-		loadJTable();
-			
-		table.setPreferredScrollableViewportSize(new Dimension(500,200));
-		table.setFillsViewportHeight(true);
-		table.setFocusable(false);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.getColumnModel().getColumn(0).setPreferredWidth(50);
-		table.getColumnModel().getColumn(1).setPreferredWidth(80);
-		table.getColumnModel().getColumn(2).setPreferredWidth(160);
-		table.getColumnModel().getColumn(3).setPreferredWidth(50);
-		table.getColumnModel().getColumn(4).setPreferredWidth(160);
+		quizTable = new JTable();
 		
-		pane = new JScrollPane(table);
+		//Remove mouse click possibility on JTABLE
+		MouseListener[] listeners = quizTable.getMouseListeners();
+		for (MouseListener l : listeners)
+		{
+			quizTable.removeMouseListener(l);
+		}	
+			
+		qModel = new DefaultTableModel();
+		qModel.setColumnIdentifiers(columnNames);	
+		
+		quizTable.setPreferredScrollableViewportSize(new Dimension(500,200));
+		quizTable.setFillsViewportHeight(true);
+		quizTable.setFocusable(false);
+		quizTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+		pane = new JScrollPane(quizTable);
 			
 		//EXERCISETABLE
-		loadExTable();
+		exerciseTable = new JTable();
+		
+		eModel = new DefaultTableModel();
+		eModel.setColumnIdentifiers(columnNames2);
 		
 		exerciseTable.setPreferredScrollableViewportSize(new Dimension(500,200));
 		exerciseTable.setFillsViewportHeight(true);	
@@ -228,6 +142,7 @@ public class DeleteQuizView extends JFrame{
 		panelConstraints.gridy = 4;
 		pnl_one.add(btn_exit, panelConstraints);
 		
+		
 		//ADD PANE(WITH TABLE) AND EXERCISE JLIST TO PANEL TWO	
 		
 		panelConstraints.gridx = 0;
@@ -248,25 +163,50 @@ public class DeleteQuizView extends JFrame{
 				
 		add(pnl_one,frameConstraints);
 		add(pnl_two,frameConstraints);
+		
 	}
 
+	//define column width of JTABLE for quizzes
+	public void setColumnWidth(){
+		quizTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+		quizTable.getColumnModel().getColumn(1).setPreferredWidth(80);
+		quizTable.getColumnModel().getColumn(2).setPreferredWidth(160);
+		quizTable.getColumnModel().getColumn(3).setPreferredWidth(50);
+		quizTable.getColumnModel().getColumn(4).setPreferredWidth(160);
+	}
 	
 	// GETTERS & SETTERS
 	
-	public void setQuizCatalog(QuizCatalog catalog){	
-		this.catalog = catalog;
+	public JTable getJTableQuiz(){
+		return this.quizTable;
 	}
 	
-	public QuizCatalog getQuizCatalog(){	
-		return this.catalog;
-	}
-	
-	public JTable getJTable(){
-		return this.table;
+	public void setJTableQuiz(JTable table){
+		this.quizTable = table;
 	}
 	
 	public JTable getJTableExercises(){
 		return this.exerciseTable;
+	}
+	
+	public void setJTableExercises(JTable exTable){
+		this.exerciseTable = exTable;
+	}
+	
+	public DefaultTableModel getQModel(){
+		return qModel;
+	}
+	
+	public void setQModel(DefaultTableModel qModel){
+		this.qModel = qModel;
+	}
+	
+	public DefaultTableModel getEModel(){
+		return eModel;
+	}
+	
+	public void setEModel(DefaultTableModel eModel){
+		this.eModel = eModel;
 	}
 	
 	//ADD LISTENERES TO BUTTONS
