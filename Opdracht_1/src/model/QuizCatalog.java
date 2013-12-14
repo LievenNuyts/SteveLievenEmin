@@ -129,7 +129,8 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 				
 				// Line that will be saved in the file per(per exercises)
 				String line = 
-						quiz.getSubject() + " > " + quiz.getLeerJaren() +
+						quiz.getQuizId() +
+						" > " + quiz.getSubject() + " > " + quiz.getLeerJaren() +
 						" > " + quiz.getTeacher() + " > " + quiz.getStatus() +
 						" > " + quiz.isTest() + " > " + quiz.isUniqueParticipation() +
 						" > " + quiz.getDate().getYear() + " / " + quiz.getDate().getMonth() + 
@@ -177,18 +178,17 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 			  scanner.close();
 			}
 			
-			// Counter to assign quizId
-			int count = 1;
-			
 			// Loop through each String object in tempQuizzes
 			for (int i = 0; i < tempQuizzes.size(); i++) {
 				Scanner scanner2 = new Scanner(tempQuizzes.get(i));
 				scanner2.useDelimiter("\\s*>\\s*");
 				
+				int quizId = scanner2.nextInt();
+				
 				Quiz qz = new Quiz();
 				
 				// Add parameters
-				qz.setQuizId(count);
+				qz.setQuizId(quizId);
 				qz.setSubject(scanner2.next());
 				qz.setLeerJaren(scanner2.nextInt());
 				qz.setTeacher(Teacher.valueOf(scanner2.next().toUpperCase()));
@@ -214,7 +214,6 @@ public class QuizCatalog implements Comparable<QuizCatalog>, Cloneable{
 				if (scanner2!=null){
 					scanner2.close();
 				}
-				count++;
 			}
 		} catch(FileNotFoundException ex){
 			System.out.println("Bestand niet gevonden!");

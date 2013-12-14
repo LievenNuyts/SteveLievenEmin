@@ -52,7 +52,7 @@ public class CreateQuizController {
 		
 		// Load exercises and quizzes
 		this.exModel.readExercisesFromFile();
-		this.quModel.readQuizzesFromFile();
+		this.quModel.readQuizzesFromFile();		
 		this.exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
 		
 		// Load exercises in exercisesList (JList)

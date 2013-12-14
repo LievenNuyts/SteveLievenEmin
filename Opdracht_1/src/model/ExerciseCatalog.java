@@ -137,7 +137,8 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 				
 				// Line that will be saved in the file per(per exercises)
 				String line = 
-						exercise.getDiscriminator() + " > " + exercise.getQuestion() +
+						exercise.getExerciseId()  +
+						" > " + exercise.getDiscriminator() + " > " + exercise.getQuestion() +
 						" > " + exercise.getCorrectAnswer() + " > " + Arrays.toString(exercise.getAnswerHints()) + " > " + exercise.getAuthor() +
 						" > " + exercise.getCategory() + " > " + exercise.getMaxAnswerTime() + " > " + exercise.getMaxNumberOfAttempts() +
 						" > " + exercise.getDateRegistration() + " > ";
@@ -204,14 +205,12 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 			  scanner.close();
 			}
 			
-			// Counter to assign exerciseId
-			int count = 1;
-			
 			// Loop through each String object in tempExercises
 			for (int i = 0; i < tempExercises.size(); i++) {
 				Scanner scanner2 = new Scanner(tempExercises.get(i));
 				scanner2.useDelimiter("\\s*>\\s*");
 				
+				int exId = scanner2.nextInt();
 				String descriminator = scanner2.next();
 				
 				// Create corresponding exercise based on discriminator
@@ -219,7 +218,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					(descriminator.equals("M")) ? new MultipleChoiceExercise() : new EnumerationExercise();
 				
 				// Add parameters
-				ex.setExerciseId(count);
+				ex.setExerciseId(exId);
 				ex.setDiscriminator(descriminator.charAt(0));
 				ex.setQuestion(scanner2.next());
 				ex.setCorrectAnswer(scanner2.next());
@@ -291,7 +290,6 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 				if (scanner2!=null){
 					scanner2.close();
 				}
-				count++;
 			}
 		} catch(FileNotFoundException ex){
 			System.out.println("Bestand niet gevonden!");
@@ -328,7 +326,7 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 				scanner2.useDelimiter("\\s*>\\s*");
 				
 				// Skip unused parameters
-				for (int j = 0; j < 9; j++) {
+				for (int j = 0; j < 10; j++) {
 					scanner2.next();
 				}
 				
@@ -339,10 +337,20 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					int tempScore = scanner3.nextInt();
 					int tempQuizId = scanner3.nextInt();
 					int tempExerciseID= scanner3.nextInt();
-					QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+					//System.out.println(tempQuizId + " " + quizzes.get(4).getQuizId());
 					
-					quizzes.get(tempQuizId - 1).addQuizExercise(qe);
-					exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+					if (tempQuizId > quizzes.size()){
+						QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1 - (tempQuizId - quizzes.size())), exercises.get(tempExerciseID - 1));
+						
+						quizzes.get(tempQuizId - 1 - (tempQuizId - quizzes.size())).addQuizExercise(qe);
+						exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+					}
+					else{
+						QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+						
+						quizzes.get(tempQuizId - 1).addQuizExercise(qe);
+						exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+					}
 					
 					if (scanner2!=null){
 						scanner3.close();
