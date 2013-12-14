@@ -10,7 +10,7 @@ public class TextToSql {
 
 	public static Connection getConnection() throws Exception {
 		String driver = "org.gjt.mm.mysql.Driver";
-		String url = "jdbc:mysql://localhost/databaseName";
+		String url = "jdbc:mysql://localhost/quizdb";
 		String username = "root";
 		String password = "root";
 
@@ -20,8 +20,8 @@ public class TextToSql {
 	}
 
 	public static void main(String[] args)throws Exception {
-		String id = "001";
-		String fileName = "fileName.txt";
+		String id = "01";
+		String fileName = "quizzes.txt";
 
 		FileInputStream fis = null;
 		PreparedStatement pstmt = null;
@@ -31,12 +31,17 @@ public class TextToSql {
 			conn.setAutoCommit(false);
 			File file = new File(fileName);
 			fis = new FileInputStream(file);
+			
+			//mapping input
 			pstmt = conn.prepareStatement("insert into DataFiles(id, fileName, fileBody) values (?, ?, ?)");
+			
 			pstmt.setString(1, id);
-			pstmt.setString(2, fileName);
+			pstmt.setString(2, fileName);		
 			pstmt.setAsciiStream(3, fis, (int) file.length());
+			
 			pstmt.executeUpdate();
 			conn.commit();
+		  
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
