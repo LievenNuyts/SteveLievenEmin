@@ -21,7 +21,7 @@ public class TextToSql {
 
 	public static void main(String[] args)throws Exception {
 		String id = "01";
-		String fileName = "quizzes.txt";
+		String fileName = "src/files/quizzes.txt";
 
 		FileInputStream fis = null;
 		PreparedStatement pstmt = null;
@@ -33,7 +33,7 @@ public class TextToSql {
 			fis = new FileInputStream(file);
 			
 			//mapping input
-			pstmt = conn.prepareStatement("insert into DataFiles(id, fileName, fileBody) values (?, ?, ?)");
+			pstmt = conn.prepareStatement("insert into Quiz(id, fileName, fileBody) values (?, ?, ?)");
 			
 			pstmt.setString(1, id);
 			pstmt.setString(2, fileName);		
