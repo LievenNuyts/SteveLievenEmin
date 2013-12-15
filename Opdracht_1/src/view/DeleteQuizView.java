@@ -175,6 +175,7 @@ public class DeleteQuizView extends JFrame{
 		quizTable.getColumnModel().getColumn(4).setPreferredWidth(160);
 	}
 	
+	
 	// GETTERS & SETTERS
 	
 	public JTable getJTableQuiz(){

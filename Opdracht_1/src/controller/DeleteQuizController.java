@@ -37,26 +37,33 @@ public class DeleteQuizController {
 	
 	public DeleteQuizController(QuizCatalog quizCatalog, ExerciseCatalog exerciseCatalog){
 	
-		this.setQuizCatalog(quizCatalog);
-		this.quizCatalog.readQuizzesFromFile();
-		this.setExerciseCatalog(exerciseCatalog);
-		this.exerciseCatalog.readExercisesFromFile();
-		this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
-		
-		this.window = new DeleteQuizView();
-		
-		this.window.addDeleteQuizListener(new DeleteQuizListener());
-		this.window.addCloseWindowListener(new CloseWindowListener());
-		this.window.addButtonUpListener(new ButtonUpListener());
-		this.window.addButtonDownListener(new ButtonDownListener());
-		this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
-		
-		//load JTables in the windows
-		this.loadQuizTable();
-		this.loadExTable();
-		
-		//set column width of JTABLE for quizzes
-		this.window.setColumnWidth();
+		try{
+			
+			this.setQuizCatalog(quizCatalog);
+			this.quizCatalog.readQuizzesFromFile();
+			this.setExerciseCatalog(exerciseCatalog);
+			this.exerciseCatalog.readExercisesFromFile();
+			this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
+			
+			this.window = new DeleteQuizView();
+			
+			this.window.addDeleteQuizListener(new DeleteQuizListener());
+			this.window.addCloseWindowListener(new CloseWindowListener());
+			this.window.addButtonUpListener(new ButtonUpListener());
+			this.window.addButtonDownListener(new ButtonDownListener());
+			this.window.addSaveAndCloseListener(new SaveAndCloseWindowListener());
+			
+			//load JTables in window
+			this.loadQuizTable();
+			this.loadExTable();
+			
+			//set column width of JTABLE for quizzes
+			this.window.setColumnWidth();
+		}
+		catch (Exception exc) {
+			System.out.println(exc);
+			window.showPopup(exc.getMessage());
+		}
 	}
 
 	//GETTERS & SETTERS
@@ -88,66 +95,93 @@ public class DeleteQuizController {
 	}
 	
 	
-	//LOAD JTABLE METHODS
+	//JTABLE METHODS
 	
+	//Load quizJTable from window with quiz elements: ID, Teacher, Subject, Grade, Status (per row)
 	public void loadQuizTable(){
 		
-		for(Quiz quiz : quizCatalog.getQuizCatalogs()){
-	
-			String[] dataBuilder = new String[5];
+		try{
+		
+			for(Quiz quiz : quizCatalog.getQuizCatalogs()){
+		
+				String[] dataBuilder = new String[5];
+				
+				dataBuilder[0] = Integer.toString(quiz.getQuizId());
+				dataBuilder[1] = quiz.getTeacher().toString();
+				dataBuilder[2] = quiz.getSubject();
+				dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
+				dataBuilder[4] = quiz.getStatus().toString();
+				
+				window.getQModel().addRow(dataBuilder);
+			}
 			
-			dataBuilder[0] = Integer.toString(quiz.getQuizId());
-			dataBuilder[1] = quiz.getTeacher().toString();
-			dataBuilder[2] = quiz.getSubject();
-			dataBuilder[3] = Integer.toString(quiz.getLeerJaren());
-			dataBuilder[4] = quiz.getStatus().toString();
+			window.getJTableQuiz().setModel(window.getQModel());
+			window.getJTableQuiz().setAutoCreateRowSorter(true);
 			
-			window.getQModel().addRow(dataBuilder);
+			if(window.getJTableQuiz().getRowCount() != 0){
+				window.getJTableQuiz().setRowSelectionInterval(0, 0);
+			}
 		}
-		
-		window.getJTableQuiz().setModel(window.getQModel());
-		window.getJTableQuiz().setAutoCreateRowSorter(true);
-		
-		if(window.getJTableQuiz().getRowCount() != 0){
-			window.getJTableQuiz().setRowSelectionInterval(0, 0);
+		catch (Exception exc) {
+			System.out.println(exc);
+			window.showPopup(exc.getMessage());
 		}
 	}
 	
+	//Load exerciseJTable from window with exercises of the selected quiz
 	public void loadExTable(){
 		
-		if(window.getJTableQuiz().getRowCount() != 0){
-		
-			//Select QuizID from the JTABLE
-			String quizIDtoLookup = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
-			//loop through the quizzes
-			for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
-				//Find the quiz object via the ID of the selected JTable row
-				if(quiz.getQuizId() == Integer.parseInt(quizIDtoLookup)){
+		try{
+			if(window.getJTableQuiz().getRowCount() != 0){
+			
+				//Select QuizID from the JTABLE
+				String quizIDtoLookup = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
+				//loop through the quizzes
+				for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
+					//Find the quiz object via the ID of the selected JTable row
+					if(quiz.getQuizId() == Integer.parseInt(quizIDtoLookup)){
+								
+						for(QuizExercise qe : quiz.getQuizExercises()){
 							
-					for(QuizExercise qe : quiz.getQuizExercises()){
-						
-						String[] dataBuilder = new String[1];
-						
-						dataBuilder[0] = qe.getExercise().getQuestion();
-						
-						window.getEModel().addRow(dataBuilder);
-					}	
-				}
-			}		
+							String[] dataBuilder = new String[1];
+							
+							dataBuilder[0] = qe.getExercise().getQuestion();
+							
+							window.getEModel().addRow(dataBuilder);
+						}	
+					}
+				}		
+			}
+			window.getJTableExercises().setModel(window.getEModel());
 		}
-		window.getJTableExercises().setModel(window.getEModel());
+		catch (Exception exc) {
+			System.out.println(exc);
+			window.showPopup(exc.getMessage());
+		}
 	}
 	
 	
 	//methods to reset the DefaultTableModels and reload data
 	public void resetTable(){
-		window.getQModel().setRowCount(0);
-		this.loadQuizTable();
+		try{
+			window.getQModel().setRowCount(0);
+			this.loadQuizTable();
+		}
+		catch (Exception exc) {
+			System.out.println(exc);
+			window.showPopup(exc.getMessage());
+		}
 	}
 		
 	public void resetExTable(){
-		window.getEModel().setRowCount(0);
-		this.loadExTable();
+		try{
+			window.getEModel().setRowCount(0);
+			this.loadExTable();
+		}
+		catch (Exception exc) {
+			System.out.println(exc);
+			window.showPopup(exc.getMessage());
+		}
 	}
 	
 	
@@ -165,28 +199,21 @@ public class DeleteQuizController {
 				
 					for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
 					
-						if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){
-							System.out.println("0");	
+						if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){	
 							
-							//check the status of the quiz that will be deleted
-							if(quiz.getStatus().toString() == "Under Construction" || quiz.getStatus().toString() == "Completed"){
-							
+							//check the status of the quiz that will be deleted. Only 'under constr' and 'completed' can be deleted
+							if(quiz.getStatus().toString() == "Under Construction" || quiz.getStatus().toString() == "Completed"){				
 								//loop through all QuizExercises in the quiz that will be deleted
 								for(QuizExercise qE : quiz.getQuizExercises()){	
-									System.out.println("1");
 									//loop through all exercises in ExerciseCatalog
 									for(Exercise exercise : exerciseCatalog.getExercises()){
-										System.out.println("2");
 										//lookup the exercise which is linked to the QuizExercise
 										//and look for the same exercise in the ExerciseCatalog
-										if(qE.getExercise().equals(exercise)){
-											System.out.println("3");
+										if(qE.getExercise().equals(exercise)){	
 											//loop through QuizExercise list of the exercise
 											for(QuizExercise qE2 : exercise.getQuizExercises()){
-												System.out.println("4");
 												//look for QuizExercise that matches the above QuizExercise
 												if(qE.equals(qE2)){
-													System.out.println("5");
 													//matching QuizExercise can be deleted
 													exercise.removeQuizExercise(qE2);
 													break;//to stop the loop if found, no need to check the others
@@ -212,9 +239,9 @@ public class DeleteQuizController {
 					resetExTable();
 				}
 			}
-
 			catch (Exception exc) {
 				System.out.println(exc);
+				window.showPopup(exc.getMessage());
 			}
 		}
 	}
@@ -301,10 +328,15 @@ public class DeleteQuizController {
 	
 	public static void main(String[] args) {
 	    
-		QuizCatalog qCatalog = new QuizCatalog();
-		ExerciseCatalog eCatalog = new ExerciseCatalog();
-		DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);
-		controller.window.setVisible(true);
+		try{
+			QuizCatalog qCatalog = new QuizCatalog();
+			ExerciseCatalog eCatalog = new ExerciseCatalog();
+			DeleteQuizController controller = new DeleteQuizController(qCatalog, eCatalog);
+			controller.window.setVisible(true);
+		}
+		catch(Exception exc){
+			System.out.println(exc);
+		}
 	}
 }
 
