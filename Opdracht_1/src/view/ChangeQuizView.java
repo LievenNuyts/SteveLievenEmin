@@ -505,6 +505,10 @@ public class ChangeQuizView extends JFrame {
 			this.listExercisesInQuiz.setModel(listModel);
 		}
 		
+		public void setListExercisesInQuiz(){
+			
+		}
+		
 		public void getExercise(Exercise ex){
 			System.out.println(ex.getQuestion());
 			

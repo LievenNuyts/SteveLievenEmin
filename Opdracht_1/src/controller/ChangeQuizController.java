@@ -5,8 +5,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
+import persistenty.PersistentyFacade;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -27,13 +29,19 @@ public class ChangeQuizController {
 	private QuizCatalog quizModel;
 	private ExerciseCatalog exerciseModel;
 	private List<Quiz> resultList;
+	private List<Quiz> tempQuizzes;
+	private List<Exercise> tempExercises;
+	private PersistentyFacade perFacade;
 
 	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
 			ExerciseCatalog exerciseModel) {
 		this.view = view;
 		this.quizModel = quizModel;
 		this.exerciseModel = exerciseModel;
-
+		
+		this.tempQuizzes = quizModel.getQuizCatalogs();
+		this.tempExercises = exerciseModel.getExercises();
+		this.perFacade = new PersistentyFacade();
 		// Load exercises and quizzes
 		
 		this.exerciseModel.readExercisesFromFile();
@@ -59,73 +67,23 @@ public class ChangeQuizController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			// dataMembers
-
-			try {
-
-				System.out.println("Addbutton");
-				addToQuiz(view.getSelectedQuizValueFromList(), view.getSelectedExerciseValueFromList());
-
-				
-				//reload list
-				//loadExercisesPerCategory(exerciseModel.getExercises());
-
-			} 
-
-			catch(IllegalArgumentException ex){
-				System.out.println(ex);
-				view.displayErrorMessage(ex.getMessage());
-			}
+			perFacade.addToQuiz(view, tempQuizzes, tempExercises, ChangeQuizController.this);
 		}
-
 	}
 	
 	class UpdateListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			// dataMembers
-
-			try {
-
-				System.out.println("Updatebutton");
-			
-
-				quizModel.writeQuizzesToFile();
-				
-				view.displayErrorMessage("Quiz is geüpdatet");
-
-			} 
-
-			catch(IllegalArgumentException ex){
-				System.out.println(ex);
-				view.displayErrorMessage(ex.getMessage());
-			}
+			perFacade.updateQuiz(view, exerciseModel, quizModel, tempQuizzes, tempExercises);
 		}
-
 	}
 
 	class DeleteListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
-			// dataMembers
-
-			try {
-
-				System.out.println("Deletebutton");
-				removeFromQuiz(view.getSelectedQuizValueFromList(), view.getSelectedQuizExerciseValueFromList());
-				
-				//reload list
-				//loadExercisesPerCategory(exerciseModel.getExercises());
-			}
-			catch(IllegalArgumentException ex){
-				System.out.println(ex);
-				view.displayErrorMessage(ex.getMessage());
-			}
+			perFacade.deleteFromQuiz(view, tempQuizzes, tempExercises);
 		}
 	}
 
@@ -195,45 +153,14 @@ public class ChangeQuizController {
 			this.view.setQuizList(quizzes);
 		}
 		
-		public void removeFromQuiz(Quiz quiz, QuizExercise quizExercise) throws IllegalArgumentException{
-
-			//remove from list
-			quiz.getQuizExercises().remove(quizExercise);
-			
-			//test
-			System.out.println(quizExercise);
-			System.out.println(quiz);
-			
-		}
-		
 		public void addToQuiz(Quiz quiz, Exercise exercise) throws IllegalArgumentException{
 			
-			//add to quiz
-			int maxScore = 5;   //Integer.parseInt(view.getMaxScore());
-
-			QuizExercise qe = new QuizExercise(maxScore, quiz, exercise);
-			quiz.addQuizExercise(qe);
 			
-			//test
-			for(int index = 0; index < quizModel.getQuizCatalogs().size(); index++){
-			      System.out.println(quizModel.getQuizCatalogs().get(index));   			      
-			}
-			
-			for(Quiz q : quizModel.getQuizCatalogs()){
-				if(q.getSubject().equalsIgnoreCase(quiz.getSubject())){
-					
-					int indexPos = getIndexPosition(q);
-					System.out.println(indexPos);
-					quizModel.getQuizCatalogs().set(indexPos, quiz);
-				}
-				
-			}	
-			quizModel.writeQuizzesToFile();
 		}
 		
-		private int getIndexPosition(Quiz quiz) {
+		public int getIndexPosition(Quiz quiz) {
 			  return quizModel.getQuizCatalogs().indexOf(quiz);
-			}
+		}
 		
 		//Searchmethod
 		

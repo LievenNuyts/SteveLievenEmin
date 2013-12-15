@@ -14,6 +14,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import persistenty.PersistentyFacade;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -27,7 +28,7 @@ public class DeleteQuizController {
 	private DeleteQuizView window;
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exerciseCatalog;
-	
+	private PersistentyFacade perFacade;
 	
 	//CLASS CONSTRUCTORS
 	
@@ -38,6 +39,7 @@ public class DeleteQuizController {
 	public DeleteQuizController(QuizCatalog quizCatalog, ExerciseCatalog exerciseCatalog){
 	
 		try{
+			this.perFacade = new PersistentyFacade();
 			
 			this.setQuizCatalog(quizCatalog);
 			this.quizCatalog.readQuizzesFromFile();
@@ -190,59 +192,7 @@ public class DeleteQuizController {
 	class DeleteQuizListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException{
-		
-			try {
-				
-				if(window.getJTableQuiz().getRowCount() != 0){
-				
-					String quizIDtoDelete = (String) window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0);	
-				
-					for(Quiz quiz : getQuizCatalog().getQuizCatalogs()){
-					
-						if(quiz.getQuizId() == Integer.parseInt(quizIDtoDelete)){	
-							
-							//check the status of the quiz that will be deleted. Only 'under constr' and 'completed' can be deleted
-							if(quiz.getStatus().toString() == "Under Construction" || quiz.getStatus().toString() == "Completed"){				
-								//loop through all QuizExercises in the quiz that will be deleted
-								for(QuizExercise qE : quiz.getQuizExercises()){	
-									//loop through all exercises in ExerciseCatalog
-									for(Exercise exercise : exerciseCatalog.getExercises()){
-										//lookup the exercise which is linked to the QuizExercise
-										//and look for the same exercise in the ExerciseCatalog
-										if(qE.getExercise().equals(exercise)){	
-											//loop through QuizExercise list of the exercise
-											for(QuizExercise qE2 : exercise.getQuizExercises()){
-												//look for QuizExercise that matches the above QuizExercise
-												if(qE.equals(qE2)){
-													//matching QuizExercise can be deleted
-													exercise.removeQuizExercise(qE2);
-													break;//to stop the loop if found, no need to check the others
-												}
-											}	
-											break;//to stop the loop if found, no need to check the others
-										}
-									}								
-								}							
-								getQuizCatalog().deleteQuiz(quiz);
-								window.showPopup("Quiz \"" + quiz.getSubject() + "\" verwijderd");
-								break; //to stop the loop if found, no need to check the others
-							}
-							else{
-								window.showPopup("!! Deze quiz kan niet meer verwijderd worden !!\n"
-										+ "Enkel een quiz met status 'Under Construction of 'Completed' kan verwijderd worden.");
-							}		
-						}
-					}
-							
-					//reload both JTables
-					resetTable();
-					resetExTable();
-				}
-			}
-			catch (Exception exc) {
-				System.out.println(exc);
-				window.showPopup(exc.getMessage());
-			}
+			perFacade.deleteQuiz(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
 		}
 	}
 

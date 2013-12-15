@@ -4,7 +4,10 @@
 package persistenty;
 
 import java.util.Properties;
+
 import javax.swing.JOptionPane;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,7 +38,7 @@ public class ManagementInitFile {
 	
 	public void setPersistentyMethod(String persistentyMethod){
 		try{
-			FileOutputStream out = new FileOutputStream("init.dat");
+			FileOutputStream out = new FileOutputStream("src" + File.separator + "files" + File.separator + "init.dat");
 			table.setProperty("persistentyMethod", persistentyMethod);
 			table.store(out,"init quizzes value");
 			out.close();
