@@ -53,10 +53,7 @@ public class CreateQuizController {
 		this.quModel = quModel;
 		this.perFacade = new PersistentyFacade();
 		
-		// Load exercises and quizzes
-		this.exModel.readExercisesFromFile();
-		this.quModel.readQuizzesFromFile();		
-		this.exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
+		this.perFacade.load(exModel, quModel);
 		
 		// Load exercises in exercisesList (JList)
 		loadPerCategory(exModel.getExercises());

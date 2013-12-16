@@ -23,6 +23,7 @@ import view.DeleteQuizView;
  */
 public interface Persistencable {
 	
+	public void load(ExerciseCatalog exModel, QuizCatalog quModel);
 	public void addQuiz(CreateQuizView view, ExerciseCatalog exModel, QuizCatalog quModel);
 	public void deleteQuiz(DeleteQuizView window, DeleteQuizController controller, ExerciseCatalog exerciseCatalog, QuizCatalog quizCatalog);
 	public void updateQuiz(ChangeQuizView view, ExerciseCatalog exerciseModel, QuizCatalog quizModel,

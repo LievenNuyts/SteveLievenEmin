@@ -44,6 +44,10 @@ public class PersistentyFacade {
 		}
 	}
 	
+	public void load(ExerciseCatalog exModel, QuizCatalog quModel){
+		persistencable.load(exModel, quModel);
+	}
+	
 	public void addQuiz(CreateQuizView view, ExerciseCatalog exModel, QuizCatalog quModel){
 		persistencable.addQuiz(view, exModel, quModel);
 	}

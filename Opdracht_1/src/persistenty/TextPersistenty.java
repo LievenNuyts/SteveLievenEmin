@@ -24,6 +24,14 @@ import model.Teacher;
  *
  */
 public class TextPersistenty implements Persistencable {
+
+	@Override
+	public void load(ExerciseCatalog exModel, QuizCatalog quModel) {
+		// Load exercises and quizzes
+		exModel.readExercisesFromFile();
+		quModel.readQuizzesFromFile();		
+		exModel.createQuizExercises(exModel.getExercises(), quModel.getQuizCatalogs());
+	}
 	
 	@Override
 	public void addQuiz(CreateQuizView view, ExerciseCatalog exModel, QuizCatalog quModel) {
@@ -189,6 +197,14 @@ public class TextPersistenty implements Persistencable {
 
 			QuizExercise qe = new QuizExercise(maxScore, view.getSelectedQuizValueFromList(), 
 					view.getSelectedExerciseValueFromList());
+			
+			for (QuizExercise qE : view.getSelectedQuizValueFromList().getQuizExercises()){
+				if (qE.getQuiz().getQuizId() == view.getSelectedQuizValueFromList().getQuizId() &&
+						qE.getExercise().getExerciseId() == view.getSelectedExerciseValueFromList().getExerciseId())
+					throw new IllegalArgumentException("Opdracht bestaat al.");
+			}
+			
+			
 			
 			view.getSelectedQuizValueFromList().addQuizExercise(qe);
 			
