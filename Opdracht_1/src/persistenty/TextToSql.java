@@ -12,6 +12,13 @@ import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 
+/**
+ * 
+ * @author Steve
+ * @version 4/12/2013
+ * 
+ */
+
 public class TextToSql {
 
 	private QuizCatalog quizModel;
