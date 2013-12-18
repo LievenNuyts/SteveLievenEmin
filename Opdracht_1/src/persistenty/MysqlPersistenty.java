@@ -3,6 +3,8 @@
  */
 package persistenty;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -11,17 +13,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Scanner;
 
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
+import model.EnumerationExercise;
 import model.Exercise;
 import model.ExerciseCatalog;
+import model.MultipleChoiceExercise;
 import model.Quiz;
 import model.QuizCatalog;
 import model.QuizExercise;
 import model.QuizStatus;
+import model.SimpleExercise;
 import model.Teacher;
+import model.Exercise.ExerciseCategory;
+import utils.DateGC;
+import utils.DateQuiz;
 import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.DeleteQuizView;
@@ -47,6 +57,9 @@ public class MysqlPersistenty implements Persistencable {
 	@Override
 	public void load(ExerciseCatalog exModel, QuizCatalog quModel) {
 		try {
+			
+			
+			// Get Exercises
 			Connection con = getConnection();
 			con.setAutoCommit(false);
 			
@@ -56,25 +69,142 @@ public class MysqlPersistenty implements Persistencable {
 			List<Exercise> tempExs = new ArrayList();
 			
 			while (tempExsSet.next()) {
+				int exId = tempExsSet.getInt("exercise_id");
+				String descriminator = tempExsSet.getString("descriminator");
 				
+				///////////System.out.println(descriminator);
 				
+				// Create corresponding exercise based on discriminator
+				Exercise ex = (descriminator.equals("S")) ? new SimpleExercise() :
+					(descriminator.equals("M")) ? new MultipleChoiceExercise() : new EnumerationExercise();
+				
+				// Add parameters
+				ex.setExerciseId(exId);
+				ex.setDiscriminator(descriminator.charAt(0));
+				ex.setQuestion(tempExsSet.getString("question"));
+				ex.setCorrectAnswer(tempExsSet.getString("correct_answer"));
+				
+				// Get answer hints
+				Scanner scanner = new Scanner(tempExsSet.getString("answer_hints"));
+			    scanner.useDelimiter("\\s*,\\s*");
+				// Temporary answerHints list 
+				List<String> tempHints = new ArrayList<String>();
+				// Add each String to temporary answerHints list
+				while (scanner.hasNext()){
+					tempHints.add(scanner.next());
+				}
+				if (scanner!=null){
+					scanner.close();
+				}
+				// Add result to answerHints parameter
+				ex.setAnswerHints(tempHints.toArray(new String[tempHints.size()]));
+				
+				ex.setAuthor(Teacher.valueOf(tempExsSet.getString("author").toUpperCase()));
+				ex.setCategory(ExerciseCategory.valueOf(tempExsSet.getString("category").toUpperCase()));
+				ex.setMaxAnswerTime(tempExsSet.getInt("max_answer_time"));
+				ex.setMaxNumberOfAttempts(tempExsSet.getInt("max_number_of_attempts"));
+				 
+			    DateGC tempDate = new DateGC(tempExsSet.getDate("date_registration"));
+				// Add result to dateRegistration parameter 
+				ex.setDateRegistration(tempDate);
+				// Add to exercises based on corresponding subclass
+				if (descriminator.equals("S")){
+					SimpleExercise exS = (SimpleExercise)ex;
+					tempExs.add(exS);
+				}
+				if (descriminator.equals("M")){
+					MultipleChoiceExercise exM = (MultipleChoiceExercise)ex;
+					
+					// Get MultipleChoiceExercise
+					PreparedStatement ps2 = con.prepareStatement("select * from multiple_choice_exercise");
+					ResultSet tempMulExsSet =  ps2.executeQuery();
+					
+					while (tempMulExsSet.next()) {
+						if (tempMulExsSet.getInt("exercise_id") == exId)
+							exM.setMultipleChoice(tempMulExsSet.getString("multiple_choice"));
+					}
+					
+					tempExs.add(exM);
+				}
+				if (descriminator.equals("E")){
+					EnumerationExercise exE = (EnumerationExercise)ex;
+					exE.setInCorrectOrder(false);
+					tempExs.add(exE);
+				}
 			}
 			
-//			for (Exercise ex : tempExs) {
-//				System.out.println(ex.getQuestion());
-//			}
 			exModel.setExercises(tempExs);
 			
 			ps.close();
 			
-			PreparedStatement ps2 = con.prepareStatement("select * from quiz");
-			List<Quiz> tempQus =  (List<Quiz>) ps2.executeQuery();
+			// Get Quizzes
+			PreparedStatement ps3 = con.prepareStatement("select * from quiz");
+			ResultSet tempQusSet = ps3.executeQuery();
+			
+			List<Quiz> tempQus= new ArrayList();
+			
+			while (tempExsSet.next()) {
+				
+					int quizId = tempQusSet.getInt("quiz_id");
+					
+					Quiz qz = new Quiz();
+					
+					// Add parameters
+					qz.setQuizId(quizId);
+					qz.setSubject(tempQusSet.getString("subject"));
+					qz.setLeerJaren(tempQusSet.getInt("grades"));
+					qz.setTeacher(Teacher.valueOf(tempQusSet.getString("teacher").toUpperCase()));
+					qz.setStatus(QuizStatus.valueOf(tempQusSet.getString("state").toUpperCase().replaceAll("\\s+","")));
+					qz.setTest(tempQusSet.getBoolean("is_test"));
+					qz.setUniqueParticipation(tempQusSet.getBoolean("is_unique_participation"));
+					
+					// Get date
+					DateGC tempDate = new DateGC(tempExsSet.getDate("date"));
+					int year = tempDate.getGregCal().get(Calendar.YEAR);
+					int month = tempDate.getGregCal().get(Calendar.MONTH);
+					int day = tempDate.getGregCal().get(Calendar.DATE);
+					// Add result to dateRegistration parameter
+					qz.setDate(new DateQuiz(day, month, year));
+					
+					tempQus.add(qz);
+			}
+			
 			quModel.setQuizCatalogs(tempQus);
 			
-			ps2.close();
+			ps3.close();
 			
-			PreparedStatement ps3 = con.prepareStatement("select * from quiz_exercise");
-			List<QuizExercise> tempQuExs =  (List<QuizExercise>) ps3.executeQuery();
+			// Get QuizExercises
+			PreparedStatement ps4 = con.prepareStatement("select * from quiz_exercise");
+			ResultSet tempQuExsSet = ps4.executeQuery();
+			
+			List<QuizExercise> tempQuExs = new ArrayList();
+			
+			while (tempExsSet.next()) {
+				
+				int tempScore = tempExsSet.getInt("max_score");
+				int tempQuizId = tempExsSet.getInt("quiz_id");
+				int tempExerciseID= tempExsSet.getInt("exercise_id");
+				
+				if (tempQuizId > quModel.getQuizCatalogs().size()){
+					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1 
+							- (tempQuizId - quModel.getQuizCatalogs().size())), exModel.getExercises().get(tempExerciseID - 1));
+					
+					quModel.getQuizCatalogs().get(tempQuizId - 1 
+							- (tempQuizId - quModel.getQuizCatalogs().size())).addQuizExercise(qe);
+					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
+					
+					tempQuExs.add(qe);
+				}
+				else{
+					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1), 
+							exModel.getExercises().get(tempExerciseID - 1));
+					
+					quModel.getQuizCatalogs().get(tempQuizId - 1).addQuizExercise(qe);
+					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
+					
+					tempQuExs.add(qe);
+				}
+			}
 			
 			for (QuizExercise qE : tempQuExs) {
 				for (Exercise ex : exModel.getExercises()) {
@@ -89,7 +219,7 @@ public class MysqlPersistenty implements Persistencable {
 				}
 			}
 			
-			ps3.close();
+			ps4.close();
 			
 		} catch (IllegalArgumentException ex) {
 			System.out.println(ex);

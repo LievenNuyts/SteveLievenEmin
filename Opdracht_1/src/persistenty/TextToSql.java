@@ -6,11 +6,16 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 
+import model.EnumerationExercise;
 import model.Exercise;
 import model.ExerciseCatalog;
+import model.MultipleChoiceExercise;
 import model.Quiz;
 import model.QuizCatalog;
+import model.QuizExercise;
 
 /**
  * 
@@ -44,7 +49,7 @@ public class TextToSql {
 			conn.setAutoCommit(false);
 
 			//mapping input
-			pstmt = conn.prepareStatement("insert into Quiz(quiz_id, subject, teacher, date, is_test, is_unique_participation, grades, state) values (?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into quiz(quiz_id, subject, teacher, date, is_test, is_unique_participation, grades, state) values (?,?,?,?,?,?,?,?)");
 
 			for(Quiz q : quizModel.getQuizCatalogs()){
 
@@ -70,7 +75,9 @@ public class TextToSql {
 			
 			pstmt.close();
 			
-			pstmt = conn.prepareStatement("insert into Exercise(exercise_id, question, author, category, correct_answer, date_registration, descriminator, answer_hints, max_answer_time, max_number_of_attempts) values (?,?,?,?,?,?,?,?,?,?)");
+			pstmt = conn.prepareStatement("insert into exercise(exercise_id, question, author, category, "
+					+ "correct_answer, date_registration, descriminator, answer_hints, "
+					+ "max_answer_time, max_number_of_attempts) values (?,?,?,?,?,?,?,?,?,?)");
 			
 			for(Exercise ex : exerciseModel.getExercises()){
 				
@@ -88,13 +95,61 @@ public class TextToSql {
 				pstmt.setDate(6,finalDate);
 
 				pstmt.setString(7, String.valueOf(ex.getDiscriminator()));
-				pstmt.setString(8, ex.getAnswerHints().toString());
+				
+				String tempHints = Arrays.toString(ex.getAnswerHints()).replaceAll("\\[", "").replaceAll("\\]","");;
+				pstmt.setString(8, tempHints);
+				
 				pstmt.setInt(9, ex.getMaxAnswerTime());
 				pstmt.setInt(10, ex.getMaxNumberOfAttempts());
 				
 				pstmt.executeUpdate();
 				conn.commit();
 				
+				if (ex instanceof EnumerationExercise) {
+					PreparedStatement pstmt2 = conn.prepareStatement("insert into enumeration_exercise"
+							+ "(exercise_id, in_correct_order, number_of_elements) values (?,?,?)");
+					
+					pstmt2.setInt(1, ex.getExerciseId());
+					pstmt2.setBoolean(2, ((EnumerationExercise) ex).getInCorrectOrder());
+					pstmt2.setInt(3, ((EnumerationExercise) ex).getNumberOfElements());
+					
+					pstmt2.executeUpdate();
+					conn.commit();
+					
+					pstmt2.close();
+				}
+				
+				if (ex instanceof MultipleChoiceExercise) {
+					PreparedStatement pstmt2 = conn.prepareStatement("insert into multiple_choice_exercise"
+							+ "(exercise_id, multiple_choice) values (?,?)");
+					
+					pstmt2.setInt(1, ex.getExerciseId());
+					pstmt2.setString(2, ((MultipleChoiceExercise) ex).getMultipleChoice());
+					
+					pstmt2.executeUpdate();
+					conn.commit();
+					
+					pstmt2.close();
+				}
+				
+				if (ex.getQuizExercises() != null) {
+					PreparedStatement pstmt2 = conn.prepareStatement("insert quiz_exercise"
+							+ "(quiz_id, exercise_id, max_score) values (?,?,?)");
+					
+					
+					for (QuizExercise qE : ex.getQuizExercises()) {
+						if (qE != null) {
+							pstmt2.setInt(1, qE.getQuiz().getQuizId());
+							pstmt2.setInt(2, qE.getExercise().getExerciseId());
+							pstmt2.setInt(3, qE.getMaxScore());
+						}
+					}
+					
+					pstmt2.executeUpdate();
+					conn.commit();
+					
+					pstmt2.close();
+				}
 			}
 			
 			pstmt.close();
@@ -103,8 +158,6 @@ public class TextToSql {
 			System.err.println("Error: " + e.getMessage());
 			e.printStackTrace();
 		} finally {
-
-			
 			conn.close();
 		}
 	}
