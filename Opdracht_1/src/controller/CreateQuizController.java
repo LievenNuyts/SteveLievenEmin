@@ -77,61 +77,7 @@ public class CreateQuizController {
 		
 		public void actionPerformed(ActionEvent e) {
 			perFacade.addQuiz(view, exModel, quModel);
-//			try{
-//				if (view.getStatus().equals("Ready")){
-//					if (view.getDataModel().getRowCount() == 0) 
-//						throw new IllegalArgumentException("Voegtoe ten minste één opdracht aan de quiz!");
-//				}
-//				
-//				for (Quiz quizCheck : quModel.getQuizCatalogs()) {
-//					if (quizCheck.getSubject().toLowerCase().equals(view.getSubject().toLowerCase()))
-//						throw new IllegalArgumentException("Quiz bestaat al!");
-//				}
-//				if (view.getSubject() == null) throw new IllegalArgumentException("Onderwerp is null!");
-//				if (view.getSubject().isEmpty()) throw new IllegalArgumentException("Onderwerp is leeg!");
-//				
-//				// Iterate through each row to check maxScore
-//				for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
-//					if(!isNumeric(String.valueOf(view.getDataModel().getValueAt(i, 1)))) throw new NumberFormatException("MaxScore moet een numeriek waarde zijn!");
-//					if(String.valueOf(view.getDataModel().getValueAt(i, 1)).isEmpty()) throw new IllegalArgumentException("MaxScore is leeg!");
-//				}
-//				
-//				Quiz quiz = new Quiz(view.getSubject());
-//				quiz.setLeerJaren(Integer.parseInt(view.getGrade()));
-//				quiz.setTeacher(Teacher.valueOf(view.getAuthor().toUpperCase()));
-//				quiz.setStatus(QuizStatus.valueOf(view.getStatus().toUpperCase().replaceAll("\\s+", "")));
-//				
-//				// Iterate through each row and add QuizExercises to corresponding quizzes and exercises
-//				for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
-//						for (Exercise ex : exModel.getExercises()){
-//							if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
-//								
-//								QuizExercise tempQE = new QuizExercise(
-//										Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
-//										quiz, ex);
-//								
-//								quiz.addQuizExercise(tempQE);
-//								ex.addQuizExercise(tempQE);
-//							}
-//						}
-//				}
-//				quModel.addQuiz(quiz);
-//				
-//				exModel.writeExercisesToFile();
-//				quModel.writeQuizzesToFile();
-//				
-//				view.displayErrorMessage("Quiz is toegevoegd");
-//				
-//				view.reset();
-//			}
-//			catch (NumberFormatException ex) {
-//				view.displayErrorMessage(ex.getMessage());
-//			} catch(IllegalArgumentException ex){
-//				System.out.println(ex);
-//				view.displayErrorMessage(ex.getMessage());
-//			} catch (Exception ex) {
-//				view.displayErrorMessage(ex.getMessage());
-//			}
+			perFacade.load(exModel, quModel);
 		}
 	}
 	

@@ -143,7 +143,7 @@ public class MysqlPersistenty implements Persistencable {
 			
 			List<Quiz> tempQus= new ArrayList();
 			
-			while (tempExsSet.next()) {
+			while (tempQusSet.next()) {
 				
 					int quizId = tempQusSet.getInt("quiz_id");
 					
@@ -159,7 +159,7 @@ public class MysqlPersistenty implements Persistencable {
 					qz.setUniqueParticipation(tempQusSet.getBoolean("is_unique_participation"));
 					
 					// Get date
-					DateGC tempDate = new DateGC(tempExsSet.getDate("date"));
+					DateGC tempDate = new DateGC(tempQusSet.getDate("date"));
 					int year = tempDate.getGregCal().get(Calendar.YEAR);
 					int month = tempDate.getGregCal().get(Calendar.MONTH);
 					int day = tempDate.getGregCal().get(Calendar.DATE);
@@ -177,13 +177,11 @@ public class MysqlPersistenty implements Persistencable {
 			PreparedStatement ps4 = con.prepareStatement("select * from quiz_exercise");
 			ResultSet tempQuExsSet = ps4.executeQuery();
 			
-			List<QuizExercise> tempQuExs = new ArrayList();
-			
-			while (tempExsSet.next()) {
+			while (tempQuExsSet.next()) {
 				
-				int tempScore = tempExsSet.getInt("max_score");
-				int tempQuizId = tempExsSet.getInt("quiz_id");
-				int tempExerciseID= tempExsSet.getInt("exercise_id");
+				int tempScore = tempQuExsSet.getInt("max_score");
+				int tempQuizId = tempQuExsSet.getInt("quiz_id");
+				int tempExerciseID= tempQuExsSet.getInt("exercise_id");
 				
 				if (tempQuizId > quModel.getQuizCatalogs().size()){
 					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1 
@@ -192,8 +190,6 @@ public class MysqlPersistenty implements Persistencable {
 					quModel.getQuizCatalogs().get(tempQuizId - 1 
 							- (tempQuizId - quModel.getQuizCatalogs().size())).addQuizExercise(qe);
 					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
-					
-					tempQuExs.add(qe);
 				}
 				else{
 					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1), 
@@ -201,21 +197,6 @@ public class MysqlPersistenty implements Persistencable {
 					
 					quModel.getQuizCatalogs().get(tempQuizId - 1).addQuizExercise(qe);
 					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
-					
-					tempQuExs.add(qe);
-				}
-			}
-			
-			for (QuizExercise qE : tempQuExs) {
-				for (Exercise ex : exModel.getExercises()) {
-					if (ex.getExerciseId() == qE.getExercise().getExerciseId()) {
-						ex.addQuizExercise(qE);
-					}
-				}
-				for (Quiz qu : quModel.getQuizCatalogs()) {
-					if (qu.getQuizId() == qE.getQuiz().getQuizId()) {
-						qu.addQuizExercise(qE);
-					}
 				}
 			}
 			
@@ -228,8 +209,8 @@ public class MysqlPersistenty implements Persistencable {
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
-	
 	}
+	
 	@Override
 	public void addQuiz(CreateQuizView view, ExerciseCatalog exModel,
 			QuizCatalog quModel) {
@@ -256,35 +237,11 @@ public class MysqlPersistenty implements Persistencable {
 			}
 			
 			Quiz quiz = new Quiz(view.getSubject());
+			quiz.setQuizId(quModel.getQuizCatalogs().size()+1);
 			quiz.setLeerJaren(Integer.parseInt(view.getGrade()));
 			quiz.setTeacher(Teacher.valueOf(view.getAuthor().toUpperCase()));
 			quiz.setStatus(QuizStatus.valueOf(view.getStatus().toUpperCase().replaceAll("\\s+", "")));
 			
-			// Iterate through each row and add QuizExercises to corresponding quizzes and exercises
-			for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
-					for (Exercise ex : exModel.getExercises()){
-						if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
-							
-							QuizExercise tempQE = new QuizExercise(
-									Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
-									quiz, ex);
-							
-							PreparedStatement ps2 = con.prepareStatement("insert into quiz_exericse values(?,?,?)");
-							
-							ps2.setInt(1, tempQE.getQuiz().getQuizId());
-							ps2.setInt(2, tempQE.getExercise().getExerciseId());
-							ps2.setInt(3, tempQE.getMaxScore());
-							
-							ps2.executeUpdate();
-				            con.commit();
-				            ps2.close();
-				            
-							quiz.addQuizExercise(tempQE);
-							ex.addQuizExercise(tempQE);
-						}
-					}
-			}
-        	
         	PreparedStatement ps = con.prepareStatement("insert into quiz values(?,?,?,?,?,?,?,?)");
         	ps.setInt(1, quiz.getQuizId());
 			ps.setString(2, quiz.getSubject());
@@ -301,9 +258,32 @@ public class MysqlPersistenty implements Persistencable {
 		    ps.setBoolean(6, quiz.isUniqueParticipation());
 		    ps.setInt(7, quiz.getLeerJaren());		
 		    ps.setObject(8, quiz.getStatus().toString());
-            int i = ps.executeUpdate();
+            int y = ps.executeUpdate();
             con.commit();
-            if (i != 0){
+            
+         // Iterate through each row and add QuizExercises to corresponding quizzes and exercises
+			for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
+					for (Exercise ex : exModel.getExercises()){
+						if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
+							
+							QuizExercise tempQE = new QuizExercise(
+									Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
+									quiz, ex);
+							
+							PreparedStatement ps2 = con.prepareStatement("insert into quiz_exercise values(?,?,?)");
+							
+							ps2.setInt(1, tempQE.getQuiz().getQuizId());
+							ps2.setInt(2, tempQE.getExercise().getExerciseId());
+							ps2.setInt(3, tempQE.getMaxScore());
+							
+							ps2.executeUpdate();
+				            con.commit();
+				            ps2.close();
+						}
+					}
+			}
+			
+            if (y != 0){
             	view.displayErrorMessage("Quiz is toegevoegd");
             } 
             else {
@@ -323,30 +303,6 @@ public class MysqlPersistenty implements Persistencable {
 		}
 		
 	}
-	
-	public void insertEmp(String code, String name, String city, int sal)
-    {
-        try {
-        	Connection con = getConnection();
-			con.setAutoCommit(false);
-        	
-        	PreparedStatement ps = con.prepareStatement("insert into Emp values(?,?,?,?)");
-            ps.setString(1, code);
-            ps.setString(2, name);
-            ps.setString(3, city);
-            ps.setInt(4, sal);
-            int i = ps.executeUpdate();
-            if (i != 0){
-              System.out.println("Inserted");
-            } 
-            else {
-              System.out.println("not Inserted");
-            }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
 	@Override
 	public void deleteQuiz(DeleteQuizView window,
