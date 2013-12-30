@@ -1,0 +1,8 @@
+/**
+ * 
+ */
+/**
+ * @author java
+ *
+ */
+package patterns;

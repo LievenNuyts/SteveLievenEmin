@@ -428,8 +428,6 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 		result = prime * result + getMaxNumberOfAttempts();
 		result = prime * result
 				+ ((getQuestion() == null) ? 0 : getQuestion().hashCode());
-		result = prime * result
-				+ ((getQuizExercises() == null) ? 0 : getQuizExercises().hashCode());
 		return result;
 	}
 

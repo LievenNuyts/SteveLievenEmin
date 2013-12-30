@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
+import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
@@ -69,28 +71,48 @@ public class CommonQuizzes {
 	public void getCommonQuizzes(Quiz quiz){
 		System.out.println("\nQuizen met gemeenschappelijke opdrachten:\n");
 		
-		// Check or quiz exists in HashSet collection
-		if (this.quizzes.contains(quiz)){
-			for (Quiz q : this.quizzes){
-				String text = q.getSubject();
-				
-				for (QuizExercise qE : q.getQuizExercises()){
-					for (QuizExercise qE2 : quiz.getQuizExercises()){
-						
-						// Compare exercises
-						if (qE.getExercise().equals(qE2.getExercise())){
-							if (!q.equals(quiz)){
-								text += "\n" + qE.getExercise().getQuestion();
-								System.out.println(text);
-							}
-						}
-					}
-				}
+		HashSet<Exercise> qE1 = new HashSet<Exercise>();
+		
+		
+		for (QuizExercise qE : quiz.getQuizExercises()){
+			qE1.add(qE.getExercise());
+		}
+		
+		for (Quiz q : this.quizzes){
+			HashSet<Exercise> qE2 = new HashSet<Exercise>();
+			System.out.println(q.getSubject());
+			
+			for (QuizExercise qE : q.getQuizExercises()){
+				qE2.add(qE.getExercise());
+			}
+			
+			Set<Exercise> union = new HashSet<Exercise>(qE1);
+			union.retainAll(qE2);
+			
+			for (Exercise ex : union){
+				System.out.println("\t" + ex.getQuestion());
 			}
 		}
 	}
 	
 
+//	for (Quiz q : this.quizzes){
+//		String text = q.getSubject();
+//		
+//		for (QuizExercise qE : q.getQuizExercises()){
+//			for (QuizExercise qE2 : quiz.getQuizExercises()){
+//				
+//				// Compare exercises
+//				if (qE.getExercise().equals(qE2.getExercise())){
+//					if (!q.equals(quiz)){
+//						text += "\n" + qE.getExercise().getQuestion();
+//						System.out.println(text);
+//					}
+//				}
+//			}
+//		}
+//	}
+	
 	/**
 	 * Main method
 	 * @param args
