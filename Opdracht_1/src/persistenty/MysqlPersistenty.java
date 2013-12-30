@@ -263,24 +263,24 @@ public class MysqlPersistenty implements Persistencable {
             
          // Iterate through each row and add QuizExercises to corresponding quizzes and exercises
 			for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
-					for (Exercise ex : exModel.getExercises()){
-						if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
-							
-							QuizExercise tempQE = new QuizExercise(
-									Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
-									quiz, ex);
-							
-							PreparedStatement ps2 = con.prepareStatement("insert into quiz_exercise values(?,?,?)");
-							
-							ps2.setInt(1, tempQE.getQuiz().getQuizId());
-							ps2.setInt(2, tempQE.getExercise().getExerciseId());
-							ps2.setInt(3, tempQE.getMaxScore());
-							
-							ps2.executeUpdate();
-				            con.commit();
-				            ps2.close();
-						}
+				for (Exercise ex : exModel.getExercises()){
+					if (ex.getQuestion().equals(String.valueOf(view.getDataModel().getValueAt(i, 0)).substring(6))){
+						
+						QuizExercise tempQE = new QuizExercise(
+								Integer.parseInt(String.valueOf(view.getDataModel().getValueAt(i, 1))), 
+								quiz, ex);
+						
+						PreparedStatement ps2 = con.prepareStatement("insert into quiz_exercise values(?,?,?)");
+						
+						ps2.setInt(1, tempQE.getQuiz().getQuizId());
+						ps2.setInt(2, tempQE.getExercise().getExerciseId());
+						ps2.setInt(3, tempQE.getMaxScore());
+						
+						ps2.executeUpdate();
+			            con.commit();
+			            ps2.close();
 					}
+				}
 			}
 			
             if (y != 0){
@@ -308,7 +308,33 @@ public class MysqlPersistenty implements Persistencable {
 	public void deleteQuiz(DeleteQuizView window,
 			DeleteQuizController controller, ExerciseCatalog exerciseCatalog,
 			QuizCatalog quizCatalog) {
-		// TODO Auto-generated method stub
+		
+		try {
+			Connection con = getConnection();
+			con.setAutoCommit(false);
+			
+			PreparedStatement ps1 = con.prepareStatement("delete from quiz_exercise where quiz_id=?");
+			ps1.setInt(1, Integer.parseInt((String)window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0)));
+			
+			ps1.executeUpdate();
+			con.commit();
+			ps1.close();
+			
+			PreparedStatement ps2 = con.prepareStatement("delete from quiz where quiz_id=?");
+			
+			ps2.setInt(1, Integer.parseInt((String)window.getJTableQuiz().getValueAt(window.getJTableQuiz().getSelectedRow(), 0)));
+			
+			ps2.executeUpdate();
+			con.commit();
+			ps2.close();
+			
+			con.close();
+		} catch (SQLException ex) {
+			System.out.println(ex);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+		
 		
 	}
 	
@@ -325,15 +351,71 @@ public class MysqlPersistenty implements Persistencable {
 	@Override
 	public void deleteFromQuiz(ChangeQuizView view, List<Quiz> tempQuizzes,
 			List<Exercise> tempExercises) {
-		// TODO Auto-generated method stub
+		try {
+			Connection con = getConnection();
+			con.setAutoCommit(false);
+			
+			PreparedStatement ps1 = con.prepareStatement("delete from quiz_exercise where quiz_id=? AND exercise_id=?");
+			ps1.setInt(1, view.getSelectedQuizValueFromList().getQuizId());
+			ps1.setInt(1, view.getSelectedQuizExerciseValueFromList().getExercise().getExerciseId());
+			
+			ps1.executeUpdate();
+			con.commit();
+			ps1.close();
+			
+			con.close();
 		
+		} catch (SQLException ex) {
+			System.out.println(ex);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+	}
+
+	@Override
+	public void saveAndClose(DeleteQuizView window,
+			DeleteQuizController controller, ExerciseCatalog exerciseCatalog,
+			QuizCatalog quizCatalog) {
+		
+		window.dispose();
 	}
 
 	@Override
 	public void addToQuiz(ChangeQuizView view, List<Quiz> tempQuizzes,
 			List<Exercise> tempExercises, ChangeQuizController controller) {
-		// TODO Auto-generated method stub
+		try{
+			//add to quiz
+			int maxScore = 5;   //Integer.parseInt(view.getMaxScore());
+	
+			QuizExercise qe = new QuizExercise(maxScore, view.getSelectedQuizValueFromList(), 
+					view.getSelectedExerciseValueFromList());
+			
+			for (QuizExercise qE : view.getSelectedQuizValueFromList().getQuizExercises()){
+				if (qE.getQuiz().getQuizId() == view.getSelectedQuizValueFromList().getQuizId() &&
+						qE.getExercise().getExerciseId() == view.getSelectedExerciseValueFromList().getExerciseId())
+					throw new IllegalArgumentException("Opdracht bestaat al.");
+			}
+			
+			view.getSelectedQuizValueFromList().addQuizExercise(qe);
 		
+			Connection con = getConnection();
+			con.setAutoCommit(false);
+			
+			PreparedStatement ps1 = con.prepareStatement("insert into quiz_exercise values(?,?,?)");
+			
+			ps1.setInt(1, qe.getQuiz().getQuizId());
+			ps1.setInt(2, qe.getExercise().getExerciseId());
+			ps1.setInt(3, qe.getMaxScore());
+			
+			ps1.executeUpdate();
+            con.commit();
+            ps1.close();
+			
+		} catch (SQLException ex) {
+			System.out.println(ex);
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
 	}
 	
 	/**

@@ -168,6 +168,7 @@ public class TextPersistenty implements Persistencable {
 		}
 	}
 	
+	@Override
 	public void deleteFromQuiz(ChangeQuizView view, List<Quiz> tempQuizzes, List<Exercise> tempExercises){
 		try {
 			int tempQuId = view.getSelectedQuizValueFromList().getQuizId();
@@ -188,7 +189,17 @@ public class TextPersistenty implements Persistencable {
 			view.displayErrorMessage(ex.getMessage());
 		}
 	}
+
+	@Override
+	public void saveAndClose(DeleteQuizView window, DeleteQuizController controller, ExerciseCatalog exerciseCatalog, QuizCatalog quizCatalog) {
+		
+		quizCatalog.writeQuizzesToFile();
+		exerciseCatalog.writeExercisesToFile();
+		window.dispose();	
+		
+	}
 	
+	@Override
 	public void addToQuiz(ChangeQuizView view, List<Quiz> tempQuizzes, List<Exercise> tempExercises, 
 			ChangeQuizController controller){
 		try {
@@ -250,7 +261,4 @@ public class TextPersistenty implements Persistencable {
 	  }  
 	  return true;  
 	}
-	
-	
-
 }

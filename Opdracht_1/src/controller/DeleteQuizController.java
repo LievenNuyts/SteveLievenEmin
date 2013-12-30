@@ -42,10 +42,9 @@ public class DeleteQuizController {
 			this.perFacade = new PersistentyFacade();
 			
 			this.setQuizCatalog(quizCatalog);
-			this.quizCatalog.readQuizzesFromFile();
 			this.setExerciseCatalog(exerciseCatalog);
-			this.exerciseCatalog.readExercisesFromFile();
-			this.exerciseCatalog.createQuizExercises(this.exerciseCatalog.getExercises(), this.quizCatalog.getQuizCatalogs());
+			
+			this.perFacade.load(exerciseCatalog, quizCatalog);
 			
 			this.window = new DeleteQuizView();
 			
@@ -192,7 +191,12 @@ public class DeleteQuizController {
 	class DeleteQuizListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException{
-			perFacade.deleteQuiz(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
+			try {
+				perFacade.deleteQuiz(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
+			}
+			catch (Exception exc) {
+				System.out.println(exc);
+			}
 		}
 	}
 
@@ -201,11 +205,8 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) {
 		
 			try {
-				quizCatalog.writeQuizzesToFile();
-				exerciseCatalog.writeExercisesToFile();
-				window.dispose();	
+				perFacade.saveAndClose(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
 			}
-
 			catch (Exception exc) {
 				System.out.println(exc);
 			}

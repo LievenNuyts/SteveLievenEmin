@@ -44,11 +44,7 @@ public class ChangeQuizController {
 		this.perFacade = new PersistentyFacade();
 		// Load exercises and quizzes
 		
-		this.exerciseModel.readExercisesFromFile();
-		this.quizModel.readQuizzesFromFile();
-		
-		this.exerciseModel.createQuizExercises(exerciseModel.getExercises(),
-				quizModel.getQuizCatalogs());
+		this.perFacade.load(exerciseModel, quizModel);
 
 		// Load exercises & quizzes in exercisesList & quizList (JList)
 				loadExercisesPerCategory(exerciseModel.getExercises());

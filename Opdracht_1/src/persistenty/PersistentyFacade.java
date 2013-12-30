@@ -65,6 +65,10 @@ public class PersistentyFacade {
 		persistencable.deleteFromQuiz(view, tempQuizzes, tempExercises);
 	}
 	
+	public void saveAndClose(DeleteQuizView window, DeleteQuizController controller, ExerciseCatalog exerciseCatalog, QuizCatalog quizCatalog){
+		persistencable.saveAndClose(window, controller, exerciseCatalog, quizCatalog);
+	}
+	
 	public void addToQuiz(ChangeQuizView view, List<Quiz> tempQuizzes, List<Exercise> tempExercises,
 			ChangeQuizController controller){
 		persistencable.addToQuiz(view, tempQuizzes, tempExercises, controller);

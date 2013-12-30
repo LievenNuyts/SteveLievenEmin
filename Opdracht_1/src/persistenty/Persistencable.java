@@ -29,6 +29,7 @@ public interface Persistencable {
 	public void updateQuiz(ChangeQuizView view, ExerciseCatalog exerciseModel, QuizCatalog quizModel,
 			List<Quiz> tempQuizzes, List<Exercise> tempExercises);
 	public void deleteFromQuiz(ChangeQuizView view, List<Quiz> tempQuizzes, List<Exercise> tempExercises);
+	public void saveAndClose(DeleteQuizView window, DeleteQuizController controller, ExerciseCatalog exerciseCatalog, QuizCatalog quizCatalog);
 	public void addToQuiz(ChangeQuizView view, List<Quiz> tempQuizzes, List<Exercise> tempExercises, 
 			ChangeQuizController controller);
 
