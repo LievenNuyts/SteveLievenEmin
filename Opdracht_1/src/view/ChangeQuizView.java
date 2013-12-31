@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
@@ -21,8 +22,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-
-import org.testng.mustache.Value;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
@@ -56,8 +55,8 @@ public class ChangeQuizView extends JFrame {
         private JList <QuizExercise> listExercisesInQuiz;
         
         private JComboBox comboCategory;
-        private JComboBox comboStatus;
-        private JComboBox comboAuthor;
+        private JComboBox <QuizStatus> comboStatus;
+        private JComboBox <Teacher> comboAuthor;
         private JComboBox<Integer> comboLeerjaar;
 		private JComboBox<Integer> comboScore;
         
@@ -65,16 +64,10 @@ public class ChangeQuizView extends JFrame {
 		private DefaultListModel<Quiz> listModelQuiz;	
 		private DefaultListModel<QuizExercise> listModelExercisesInQuiz;
 		
-		private DefaultTableModel tableExercisesModel;
-		
-		private JTable addedToTableExercises;
-		
-		private JScrollPane paneTable;
-		
 		private Integer[] score;
 		
         private final JScrollPane paneExercise;
-        private final JScrollPane paneQuiz;
+        private JScrollPane paneQuiz;
         private final JScrollPane paneExInQuiz;
 
 		public ChangeQuizView() {
@@ -178,7 +171,7 @@ public class ChangeQuizView extends JFrame {
 
 			lb_01 = new JLabel(" Status: ");
 			getContentPane().add(lb_01);
-			comboStatus = new JComboBox(QuizStatus.values());
+			comboStatus = new JComboBox <QuizStatus>(QuizStatus.values());
 			
 			//Grades
 			
@@ -191,7 +184,8 @@ public class ChangeQuizView extends JFrame {
 			
 			lb_02 = new JLabel("  Show category: ");
 			getContentPane().add(lb_02);
-			comboCategory = new JComboBox(ExerciseCategory.values());
+			comboCategory = new JComboBox (ExerciseCategory.values());
+
 			comboCategory.addItem("Alle");
 			comboCategory.setSelectedIndex(comboCategory.getItemCount() - 1);
 			
@@ -201,7 +195,7 @@ public class ChangeQuizView extends JFrame {
 			
 			lb_03 = new JLabel("  Author: ");
 			getContentPane().add(lb_03);
-			comboAuthor = new JComboBox(Teacher.values());
+			comboAuthor = new JComboBox <Teacher>(Teacher.values());
 			
 			//MaxScore
 			
@@ -225,34 +219,33 @@ public class ChangeQuizView extends JFrame {
 			//populate list quiz
 			
 			listModelQuiz = new DefaultListModel<Quiz>(); 
-			paneQuiz = new JScrollPane();
-			listQuiz = new JList<>(listModelQuiz);
 			
+			listQuiz = new JList<>(listModelQuiz);
+			paneQuiz = new JScrollPane(listQuiz);
 			listQuiz.setVisibleRowCount(6);
 			
-			Dimension size_list_quiz = getPreferredSize();
-			size_list_quiz.width = 600;
-			size_list_quiz.height = 100;
-			paneQuiz.setSize(size_list_quiz);
-			listQuiz.setPreferredSize(size_list_quiz);
+			//Dimension size_list_quiz = getPreferredSize();
+			//size_list_quiz.width = 600;
+			//size_list_quiz.height = 100;
+			//paneQuiz.setSize(size_list_quiz);
+			//listQuiz.setPreferredSize(size_list_quiz);
 			listQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-              
-			
+
 			//Panel 05
 			
 			//populate list exercises
 			
 			listModelEx = new DefaultListModel<Exercise>();
-			paneExercise = new JScrollPane();
+
 			listExercise = new JList<>(listModelEx);
+			paneExercise = new JScrollPane(listExercise);
+			listExercise.setVisibleRowCount(10);
 			
-			listExercise.setVisibleRowCount(6);
-			
-			Dimension size_list_ex = getPreferredSize();
-			size_list_ex.width = 360;
-			size_list_ex.height = 200;
-			paneExercise.setSize(size_list_ex);
-			listExercise.setPreferredSize(size_list_ex);
+			//Dimension size_list_ex = getPreferredSize();
+			//size_list_ex.width = 360;
+			//size_list_ex.height = 200;
+			//paneExercise.setSize(size_list_ex);
+			//listExercise.setPreferredSize(size_list_ex);
 			listExercise.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			
@@ -279,16 +272,16 @@ public class ChangeQuizView extends JFrame {
 			});
 			
 			listModelExercisesInQuiz = new DefaultListModel<QuizExercise>();
-			paneExInQuiz = new JScrollPane();
-			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);
 			
-			listExercisesInQuiz.setVisibleRowCount(6);
+			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);
+			paneExInQuiz = new JScrollPane(listExercisesInQuiz);
+			listExercisesInQuiz.setVisibleRowCount(10);
 			
 			Dimension size_list_exInQuiz = getPreferredSize();
-			size_list_exInQuiz.width = 360;
-			size_list_exInQuiz.height = 200;
+			size_list_exInQuiz.width = 400;
+			size_list_exInQuiz.height = 300;
 			paneExInQuiz.setSize(size_list_exInQuiz);
-			listExercisesInQuiz.setPreferredSize(size_list_exInQuiz);
+			//listExercisesInQuiz.setPreferredSize(size_list_exInQuiz);
 			listExercisesInQuiz.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			
 			//get exercise from available ex list
@@ -354,12 +347,12 @@ public class ChangeQuizView extends JFrame {
 			panel_02.add(btn_delete);
 			panel_02.add(btn_update);
 			
-			panel_03.add(paneQuiz.add(listQuiz));
+			panel_03.add(paneQuiz, BorderLayout.CENTER);
 			
-			panel_04.add(paneExercise.add(listExercise));
+			panel_04.add(paneExercise, BorderLayout.CENTER);
 			
-			panel_06.add(paneExInQuiz.add(listExercisesInQuiz));
-			//panel_06.add(paneTable);
+			panel_06.add(paneExInQuiz, BorderLayout.CENTER);
+
 			
 			
 			//sequence panels
