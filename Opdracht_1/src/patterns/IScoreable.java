@@ -3,10 +3,14 @@
  */
 package patterns;
 
+import java.util.List;
+
+import model.Quiz;
+
 /**
  * @author java
  *
  */
 public interface IScoreable {
-	public double calculateScore();
+	public double calculateScore(Quiz quiz, List<String> antwoorden);
 }

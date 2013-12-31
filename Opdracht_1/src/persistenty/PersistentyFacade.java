@@ -82,18 +82,18 @@ public class PersistentyFacade {
 			// Scan through file
 			Scanner scanner = new Scanner(file);
 			
-			List<String> tempExercises = new ArrayList<String>();
+			List<String> tempLine = new ArrayList<String>();
 			
 			// Add each line as String object to tempExercises list
 			while (scanner.hasNextLine()){
-			  tempExercises.add(scanner.nextLine());
+				tempLine.add(scanner.nextLine());
 			}
 			
 			if (scanner!=null){
 				scanner.close();
 			}
 			
-			Scanner scanner2 = new Scanner(tempExercises.get(2));
+			Scanner scanner2 = new Scanner(tempLine.get(2));
 			scanner2.skip("persistentyMethod=");
 			String temp = scanner2.next();
 			if (temp.equals("Text")){

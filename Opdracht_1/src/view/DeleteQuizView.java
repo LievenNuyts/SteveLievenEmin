@@ -239,4 +239,8 @@ public class DeleteQuizView extends JFrame{
 	public void showPopup(String text){
 	       JOptionPane.showMessageDialog(this, text);
 	}
+	
+	public JButton getDeleteButton(){
+		return this.btn_delete;
+	}
 }

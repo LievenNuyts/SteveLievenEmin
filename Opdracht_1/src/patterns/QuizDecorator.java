@@ -2,7 +2,7 @@ package patterns;
 
 import model.Quiz;
 
-public abstract class QuizDecorator extends AbstractQuiz{
+public abstract class QuizDecorator extends Quiz{
 	
 	private Quiz quizToDecorate;
 	

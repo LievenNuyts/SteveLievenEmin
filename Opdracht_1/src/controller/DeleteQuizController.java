@@ -15,6 +15,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import persistenty.PersistentyFacade;
+import state.Context;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -29,6 +30,7 @@ public class DeleteQuizController {
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exerciseCatalog;
 	private PersistentyFacade perFacade;
+	private Context stateContext;
 	
 	//CLASS CONSTRUCTORS
 	
@@ -60,6 +62,13 @@ public class DeleteQuizController {
 			
 			//set column width of JTABLE for quizzes
 			this.window.setColumnWidth();
+			
+			
+			stateContext = new Context();
+			
+			stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(0));
+			stateContext.behavior(DeleteQuizController.this, window);
+			
 		}
 		catch (Exception exc) {
 			System.out.println(exc);
@@ -237,12 +246,16 @@ public class DeleteQuizController {
 				if(rowIndex == 0){	
 					rowIndex = window.getJTableQuiz().getRowCount();
 					System.out.println(rowIndex);
-					window.getJTableQuiz().setRowSelectionInterval(rowIndex-1, rowIndex-1);	
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex-1, rowIndex-1);
 				}			
 				else{
 					rowIndex--;
 					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
+				
+				stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(rowIndex));
+				stateContext.behavior(DeleteQuizController.this, window);
+				
 				resetExTable();
 			}
 
@@ -266,6 +279,10 @@ public class DeleteQuizController {
 				else{
 					window.getJTableQuiz().setRowSelectionInterval(0, 0);
 				}
+				
+				stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(rowIndex));
+				stateContext.behavior(DeleteQuizController.this, window);
+				
 				resetExTable();
 			}
 

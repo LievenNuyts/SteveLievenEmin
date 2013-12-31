@@ -1,6 +1,7 @@
 package patterns;
 
 import model.Quiz;
+import model.QuizExercise;
 
 public class QuizInfoDecorator extends QuizDecorator{
 
@@ -8,9 +9,12 @@ public class QuizInfoDecorator extends QuizDecorator{
 		super(quiz);
 	}
 
-	@Override
 	public String showReport() {
-		// TODO Auto-generated method stub
-		return null;
+		String info = "";
+		
+		info += "Onderwerp: " + this.getSubject()
+				+ "Datum: " + this.getDate();
+		
+		return info;
 	}	
 }
