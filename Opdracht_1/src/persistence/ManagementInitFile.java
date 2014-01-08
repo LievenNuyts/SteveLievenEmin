@@ -1,7 +1,4 @@
-/**
- * 
- */
-package persistenty;
+package persistence;
 
 import java.util.Properties;
 
@@ -24,10 +21,9 @@ public class ManagementInitFile {
 	public ManagementInitFile(){
 		table = new Properties();
 	}
-	
 
 	public void choosePersistetyMethod(){
-		Object[] possiblePersistenties = { "Text persistenty", "MySQL persistenty" };
+		Object[] possiblePersistenties = { "Text Persistence", "Mysql Persistence" };
 		Object selection = null;
 		selection = JOptionPane.showInputDialog(null,"Select persistenty method",
                                        "Persistenty", JOptionPane.INFORMATION_MESSAGE, null, 

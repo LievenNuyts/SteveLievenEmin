@@ -1,7 +1,7 @@
 /**
  * 
  */
-package state;
+package statePattern;
 
 /**
  * @author java

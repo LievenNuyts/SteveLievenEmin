@@ -1,4 +1,4 @@
-package state;
+package statePattern;
 
 import view.CreateQuizView;
 import view.DeleteQuizView;
@@ -7,11 +7,16 @@ import controller.CreateQuizController;
 import controller.DeleteQuizController;
 import model.Quiz;
 
-public class Context  {
+public class StateContext  {
 
 	private QuizBehavior quizState;
 
 	public void setQuizState(Quiz quiz){
+
+		String t = quiz.getStatus().toString();
+		
+		
+		
 		if (quiz.getStatus().toString().equals("Ready")){
 			quizState = new Ready();
 		}

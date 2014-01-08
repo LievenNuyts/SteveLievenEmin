@@ -1,17 +1,12 @@
-/**
- * 
- */
-package persistenty;
+package persistence;
 
 import java.util.List;
-
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
-import sun.security.util.PermissionFactory;
 import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.DeleteQuizView;
@@ -21,7 +16,7 @@ import view.DeleteQuizView;
  * @author Emin
  *
  */
-public interface Persistencable {
+public interface IPersistencable {
 	
 	public void load(ExerciseCatalog exModel, QuizCatalog quModel);
 	public void addQuiz(CreateQuizView view, ExerciseCatalog exModel, QuizCatalog quModel);

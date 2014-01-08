@@ -1,4 +1,4 @@
-package persistenty;
+package persistence;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.List;
 
 import model.EnumerationExercise;
 import model.Exercise;
@@ -29,6 +28,13 @@ public class TextToSql {
 	private QuizCatalog quizModel;
 	private ExerciseCatalog exerciseModel;
 
+	/**
+	 * Method to convert text based data to Sql data
+	 * 
+	 * @param quizModel
+	 * @param exerciseModel
+	 * @throws SQLException
+	 */
 	private void SendToSql(QuizCatalog quizModel, ExerciseCatalog exerciseModel) throws SQLException{
 
 		this.quizModel = quizModel;
@@ -162,6 +168,12 @@ public class TextToSql {
 		}
 	}
 
+	/**
+	 * Method to get a connection
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
 	public static Connection getConnection() throws Exception {
 
 		String driver = "org.gjt.mm.mysql.Driver";

@@ -13,6 +13,7 @@ import java.util.Collections;
 
 import javax.swing.SwingUtilities;
 
+
 //import bsh.This;
 import model.EnumerationExercise;
 import model.Exercise;
@@ -25,7 +26,7 @@ import model.QuizStatus;
 import model.SimpleExercise;
 import model.Teacher;
 import view.CreateQuizView;
-import persistenty.PersistentyFacade;
+import persistence.PersistenceFacade;
 
 /**
  * @author java
@@ -36,7 +37,7 @@ public class CreateQuizController {
 	private CreateQuizView view;
 	private ExerciseCatalog exModel;
 	private QuizCatalog quModel;
-	private PersistentyFacade perFacade;
+	private PersistenceFacade perFacade;
 	
 	/**
 	 * Constructor with 3 params
@@ -51,7 +52,7 @@ public class CreateQuizController {
 		this.view = view;
 		this.exModel = exModel;
 		this.quModel = quModel;
-		this.perFacade = new PersistentyFacade();
+		this.perFacade = new PersistenceFacade();
 		
 		this.perFacade.load(exModel, quModel);
 		

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package state;
+package statePattern;
 
 import view.CreateQuizView;
 import view.DeleteQuizView;
@@ -14,8 +14,9 @@ import controller.DeleteQuizController;
  *
  */
 public abstract class QuizBehavior {
-
+	
 	public void behavior(DeleteQuizController dC, DeleteQuizView dV){};
 	public void behavior(CreateQuizController cC, CreateQuizView cV){};
 	public void behavior(ChangeQuizController uC, CreateQuizView uV){};
+	
 }

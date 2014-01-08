@@ -1,9 +1,9 @@
 /**
- * package for patterns
+ * package for implementation of persistence
  * 
  * @author Emin
  * @author Steve
  * @author Lieven
  *
  */
-package patterns;
+package persistence;

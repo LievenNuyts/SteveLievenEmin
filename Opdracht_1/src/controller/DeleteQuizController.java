@@ -14,8 +14,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import persistenty.PersistentyFacade;
-import state.Context;
+import persistence.PersistenceFacade;
+import statePattern.StateContext;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -29,8 +29,8 @@ public class DeleteQuizController {
 	private DeleteQuizView window;
 	private QuizCatalog quizCatalog;
 	private ExerciseCatalog exerciseCatalog;
-	private PersistentyFacade perFacade;
-	private Context stateContext;
+	private PersistenceFacade perFacade;
+	private StateContext stateContext;
 	
 	//CLASS CONSTRUCTORS
 	
@@ -41,7 +41,7 @@ public class DeleteQuizController {
 	public DeleteQuizController(QuizCatalog quizCatalog, ExerciseCatalog exerciseCatalog){
 	
 		try{
-			this.perFacade = new PersistentyFacade();
+			this.perFacade = new PersistenceFacade();
 			
 			this.setQuizCatalog(quizCatalog);
 			this.setExerciseCatalog(exerciseCatalog);
@@ -64,7 +64,7 @@ public class DeleteQuizController {
 			this.window.setColumnWidth();
 			
 			
-			stateContext = new Context();
+			stateContext = new StateContext();
 			
 			stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(0));
 			stateContext.behavior(DeleteQuizController.this, window);

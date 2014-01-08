@@ -1,7 +1,7 @@
 /**
  * 
  */
-package state;
+package statePattern;
 
 import view.DeleteQuizView;
 import controller.DeleteQuizController;

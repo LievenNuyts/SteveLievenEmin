@@ -2,8 +2,8 @@
  * package for models
  * 
  * @author Emin
- * @author Jo
- * @author Nicolas
+ * @author Steve
+ * @author Lieven
  *
  */
 package model;

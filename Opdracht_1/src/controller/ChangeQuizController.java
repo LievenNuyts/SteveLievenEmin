@@ -8,7 +8,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
-import persistenty.PersistentyFacade;
+import persistence.PersistenceFacade;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
@@ -31,7 +31,7 @@ public class ChangeQuizController {
 	private List<Quiz> resultList;
 	private List<Quiz> tempQuizzes;
 	private List<Exercise> tempExercises;
-	private PersistentyFacade perFacade;
+	private PersistenceFacade perFacade;
 
 	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
 			ExerciseCatalog exerciseModel) {
@@ -41,7 +41,7 @@ public class ChangeQuizController {
 		
 		this.tempQuizzes = quizModel.getQuizCatalogs();
 		this.tempExercises = exerciseModel.getExercises();
-		this.perFacade = new PersistentyFacade();
+		this.perFacade = new PersistenceFacade();
 		// Load exercises and quizzes
 		
 		this.perFacade.load(exerciseModel, quizModel);
