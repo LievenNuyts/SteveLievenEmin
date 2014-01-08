@@ -357,7 +357,7 @@ public class MysqlPersistenty implements Persistencable {
 			
 			PreparedStatement ps1 = con.prepareStatement("delete from quiz_exercise where quiz_id=? AND exercise_id=?");
 			ps1.setInt(1, view.getSelectedQuizValueFromList().getQuizId());
-			ps1.setInt(1, view.getSelectedQuizExerciseValueFromList().getExercise().getExerciseId());
+			ps1.setInt(2, view.getSelectedQuizExerciseValueFromList().getExercise().getExerciseId());
 			
 			ps1.executeUpdate();
 			con.commit();
