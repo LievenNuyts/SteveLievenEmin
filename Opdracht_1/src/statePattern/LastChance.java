@@ -1,17 +1,9 @@
-/**
- * 
- */
 package statePattern;
 
 /**
  * @author java
  *
  */
-public class LastChance extends QuizBehavior {
-
-	@Override
-	public void behavior(){
-		
-	}
-
+public class LastChance extends StateBehavior {
+	// NIET UITGEWERKT
 }

@@ -1,17 +1,10 @@
-/**
- * 
- */
 package statePattern;
 
 /**
+ * 
  * @author java
  *
  */
-public class Closed extends QuizBehavior {
-	
-	@Override
-	public void behavior(){
-		
-	}
-
+public class Closed extends StateBehavior {
+	// NIET UITGEWERKT
 }

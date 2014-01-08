@@ -66,7 +66,7 @@ public class DeleteQuizController {
 			
 			stateContext = new StateContext();
 			
-			stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(0));
+			stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(0));
 			stateContext.behavior(DeleteQuizController.this, window);
 			
 		}
@@ -253,7 +253,7 @@ public class DeleteQuizController {
 					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
 				
-				stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(rowIndex));
+				stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(rowIndex));
 				stateContext.behavior(DeleteQuizController.this, window);
 				
 				resetExTable();
@@ -280,7 +280,7 @@ public class DeleteQuizController {
 					window.getJTableQuiz().setRowSelectionInterval(0, 0);
 				}
 				
-				stateContext.setQuizState(quizCatalog.getQuizCatalogs().get(rowIndex));
+				stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(rowIndex));
 				stateContext.behavior(DeleteQuizController.this, window);
 				
 				resetExTable();

@@ -96,8 +96,7 @@ public class PersistenceFacade {
 			}
 			
 			// Set instance of the chosen persistence
-			iPersistencable = (IPersistencable) Class.forName("persistence." + className).newInstance() ;
-			
+			iPersistencable = (IPersistencable) Class.forName("persistence." + className).newInstance();
 		} catch(FileNotFoundException ex){
 			System.out.println("Bestand niet gevonden!");
 		} catch(ClassNotFoundException ex){

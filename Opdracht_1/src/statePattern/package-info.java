@@ -1,8 +1,9 @@
 /**
+ * package related to state design pattern
  * 
- */
-/**
- * @author java
+ * @author Emin
+ * @author Steve
+ * @author Lieven
  *
  */
 package statePattern;

@@ -7,44 +7,44 @@ import controller.CreateQuizController;
 import controller.DeleteQuizController;
 import model.Quiz;
 
-public class StateContext  {
+/**
+ * 
+ * @author java
+ *
+ */
+public class StateContext {
 
-	private QuizBehavior quizState;
+	private StateBehavior stateBehavior;
 
-	public void setQuizState(Quiz quiz){
-
-		String t = quiz.getStatus().toString();
-		
-		
-		
-		if (quiz.getStatus().toString().equals("Ready")){
-			quizState = new Ready();
-		}
-		else if (quiz.getStatus().toString().equals("Under Construction")){
-			quizState = new UnderConstruction();
-		}
-		else if (quiz.getStatus().toString().equals("Completed")){
-			quizState = new Completed();
-		}
-		else if (quiz.getStatus().toString().equals("Last Chance")){
-			quizState = new LastChance();
-		}
-		else if (quiz.getStatus().toString().equals("Closed")){
-			quizState = new Closed();
-		}
-		
-	}
-
+	// Modifiers
+	
 	public void behavior(DeleteQuizController dC, DeleteQuizView dV) {
-		this.quizState.behavior(dC, dV);
+		this.stateBehavior.behavior(dC, dV);
 	}
 	
 	public void behavior(CreateQuizController cC, CreateQuizView cV){
-		this.quizState.behavior(cC, cV);
-	};
+		this.stateBehavior.behavior(cC, cV);
+	}
 	
 	public void behavior(ChangeQuizController uC, CreateQuizView uV){
-		this.quizState.behavior(uC, uV);
-	};
+		this.stateBehavior.behavior(uC, uV);
+	}
 
+	/**
+	 * Method to set correct state class based on info in initState.txt file
+	 */
+	public void setStateBehavior(Quiz quiz){
+		try {
+			String className = quiz.getStatus().toString().replaceAll("\\s+","");
+		
+			// Set instance of corresponding state
+			stateBehavior = (StateBehavior) Class.forName("statePattern." + className).newInstance();
+		} catch (InstantiationException ex) {
+			System.out.println(ex.getMessage());
+		} catch (IllegalAccessException ex) {
+			System.out.println(ex.getMessage());
+		} catch (ClassNotFoundException ex) {
+			System.out.println(ex.getMessage());
+		}
+	}
 }
