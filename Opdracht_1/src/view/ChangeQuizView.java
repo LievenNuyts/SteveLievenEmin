@@ -66,7 +66,7 @@ public class ChangeQuizView extends JFrame {
 
 		public ChangeQuizView() {
 			super("Quiz wijzigen");
-			setResizable(true); //niet resizable
+			setResizable(false); //niet resizable
 			setLocationRelativeTo(null); //positie zetten
 			
 			Toolkit tk = Toolkit.getDefaultToolkit();
