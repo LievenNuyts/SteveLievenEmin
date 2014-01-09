@@ -2,8 +2,11 @@ package controller;
 
 import javax.swing.JFrame;
 
+import com.sun.org.apache.xml.internal.security.Init;
+
 import model.ExerciseCatalog;
 import model.QuizCatalog;
+import persistence.ManagementInitFile;
 import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.Menu;
@@ -24,6 +27,7 @@ public class StartAppController extends JFrame{
 	private CreateQuizController createQuizController;
 	private ChangeQuizController changeQuizController;
 	private DeleteQuizController deleteQuizController;
+	private ManagementInitFile initFile;
 	
 	CreateQuizView createView;
 	ChangeQuizView changeView;
@@ -33,15 +37,17 @@ public class StartAppController extends JFrame{
 	
 	public StartAppController() {
 		
-		startMenu = new Menu("Add quiz to Database" ,"Add quiz to TextFile", "Update quiz","Delete quiz");
+		startMenu = new Menu("Voeg quiz to", "Update quiz", "Verwijder quiz");
 	}
 	
 	public static void main(String[] args) throws Exception {
+
+		new StartAppController().startPersistency();
         new StartAppController().startApp();	
 	}
 	
 	public void startApp(){
-		
+
 		quizCatalog = new QuizCatalog();
 		exerciseCatalog = new ExerciseCatalog();
 	
@@ -56,29 +62,26 @@ public class StartAppController extends JFrame{
 			break;
 			
 		case 2:
-			//Voeg quiz toe aan textfile
-			createView = new CreateQuizView();
-			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
-			createView.setVisible(true);
-			break;
-		
-		case 3:
 			//Update quiz
 			changeView = new ChangeQuizView();
 			changeQuizController = new ChangeQuizController(changeView, quizCatalog, exerciseCatalog);
 			changeView.setVisible(true);
 			break;
 		
-		case 4:
+		case 3:
 			//Delete quiz
 			deleteQuizController = new DeleteQuizController(quizCatalog, exerciseCatalog);
 			deleteQuizController.makeWindowVisible();
 			break;
 
 		default:
+			
 			break;
 		}
 	}
 	
-
+	public void startPersistency() {
+		initFile = new ManagementInitFile();
+		initFile.choosePersistetyMethod();
+	}
 }
