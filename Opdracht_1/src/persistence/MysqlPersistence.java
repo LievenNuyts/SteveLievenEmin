@@ -229,9 +229,9 @@ public class MysqlPersistence implements IPersistencable {
 			}
 
 			for (Quiz quizCheck : quModel.getQuizCatalogs()) {
-				if (quizCheck.getSubject().toLowerCase().equals(view.getSubject().toLowerCase()))
-					throw new IllegalArgumentException("Quiz bestaat al!");
+				checkSubject(quizCheck.getSubject(), view.getSubject());
 			}
+			
 			if (view.getSubject() == null) throw new IllegalArgumentException("Onderwerp is null!");
 			if (view.getSubject().isEmpty()) throw new IllegalArgumentException("Onderwerp is leeg!");
 
@@ -301,12 +301,10 @@ public class MysqlPersistence implements IPersistencable {
 		catch (NumberFormatException ex) {
 			view.displayErrorMessage(ex.getMessage());
 		} catch(IllegalArgumentException ex){
-			System.out.println(ex);
 			view.displayErrorMessage(ex.getMessage());
 		} catch (Exception ex) {
 			view.displayErrorMessage(ex.getMessage());
 		}
-
 	}
 
 	/**
@@ -448,5 +446,26 @@ public class MysqlPersistence implements IPersistencable {
 			return false;  
 		}  
 		return true;  
+	}
+	
+	/**
+	 * Method to check if subject already exists
+	 * 
+	 * @param str1
+	 * @param str2
+	 */
+	public void checkSubject(String str1, String str2){
+		String tempS1 = str1.toLowerCase();
+		String tempS2 = str2.toLowerCase();
+		
+		// Remove ignored signs from both Strings
+		tempS1 = tempS1.replaceAll("[.]|[,]|[!]|[!?]", "");
+		tempS2 = tempS2.replaceAll("[.]|[,]|[!]|[!?]", "");
+		
+		// Remove ignored words from both Strings
+		tempS1 = tempS1.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
+		tempS2 = tempS2.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
+		
+		if (tempS1.equals(tempS2)) throw new IllegalArgumentException("Quiz bestaat al!");
 	}
 }

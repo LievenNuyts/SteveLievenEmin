@@ -1,30 +1,15 @@
-/**
- * 
- */
 package controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
 
-import javax.swing.SwingUtilities;
-
-
-//import bsh.This;
-import model.EnumerationExercise;
 import model.Exercise;
 import model.ExerciseCatalog;
-import model.MultipleChoiceExercise;
-import model.Quiz;
 import model.QuizCatalog;
-import model.QuizExercise;
-import model.QuizStatus;
-import model.SimpleExercise;
-import model.Teacher;
 import view.CreateQuizView;
 import persistence.PersistenceFacade;
 
@@ -39,8 +24,10 @@ public class CreateQuizController {
 	private QuizCatalog quModel;
 	private PersistenceFacade perFacade;
 	
+	// Constructors
+	
 	/**
-	 * Constructor with 3 params
+	 * Constructor with 3 parameters
 	 * 
 	 * @param view
 	 * @param exModel
@@ -69,6 +56,7 @@ public class CreateQuizController {
 	}
 	
 	// Listeners
+	
 	/**
 	 * 
 	 * addQuizButtonListener
@@ -299,23 +287,6 @@ public class CreateQuizController {
 			return exericseCategory1.compareTo(exericseCategory2);
 		}
 	};
-	
-//	/**
-//	 * Check numeric input
-//	 * 
-//	 * @param str
-//	 * @return
-//	 */
-//	public static boolean isNumeric(String str)  
-//	{  
-//	  try{  
-//	    int i = Integer.parseInt(str);  
-//	  }  
-//	  catch(NumberFormatException ex){  
-//	    return false;  
-//	  }  
-//	  return true;  
-//	}
 
 	public static void main(String[] args) {
         

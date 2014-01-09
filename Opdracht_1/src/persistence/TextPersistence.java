@@ -1,6 +1,9 @@
 package persistence;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
@@ -46,12 +49,11 @@ public class TextPersistence implements IPersistencable {
 					throw new IllegalArgumentException(
 							"Voegtoe ten minste één opdracht aan de quiz!");
 			}
-
+			
 			for (Quiz quizCheck : quModel.getQuizCatalogs()) {
-				if (quizCheck.getSubject().toLowerCase()
-						.equals(view.getSubject().toLowerCase()))
-					throw new IllegalArgumentException("Quiz bestaat al!");
+				checkSubject(quizCheck.getSubject(), view.getSubject());
 			}
+			
 			if (view.getSubject() == null)
 				throw new IllegalArgumentException("Onderwerp is null!");
 			if (view.getSubject().isEmpty())
@@ -74,8 +76,7 @@ public class TextPersistence implements IPersistencable {
 			quiz.setStatus(QuizStatus.valueOf(view.getStatus().toUpperCase()
 					.replaceAll("\\s+", "")));
 
-			// Iterate through each row and add QuizExercises to corresponding
-			// quizzes and exercises
+			// Iterate through each row and add QuizExercises to corresponding quizzes and exercises
 			for (int i = 0; i < view.getDataModel().getRowCount(); i++) {
 				for (Exercise ex : exModel.getExercises()) {
 					if (ex.getQuestion()
@@ -317,5 +318,26 @@ public class TextPersistence implements IPersistencable {
 			return false;
 		}
 		return true;
+	} 
+	
+	/**
+	 * Method to check if subject already exists
+	 * 
+	 * @param str1
+	 * @param str2
+	 */
+	public void checkSubject(String str1, String str2){
+		String tempS1 = str1.toLowerCase();
+		String tempS2 = str2.toLowerCase();
+		
+		// Remove ignored signs from both Strings
+		tempS1 = tempS1.replaceAll("[.]|[,]|[!]|[!?]", "");
+		tempS2 = tempS2.replaceAll("[.]|[,]|[!]|[!?]", "");
+		
+		// Remove ignored words from both Strings
+		tempS1 = tempS1.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
+		tempS2 = tempS2.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
+		
+		if (tempS1.equals(tempS2)) throw new IllegalArgumentException("Quiz bestaat al!");
 	}
 }
