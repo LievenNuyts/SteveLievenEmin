@@ -1,7 +1,4 @@
-/**
- * 
- */
-package patterns;
+package strategyPattern;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,28 +13,28 @@ import model.Quiz;
  *
  */
 public class ScoreFacade {
-	public String persistenty;
+	
 	public IScoreable iScoreable;
 	
+	// Constructors
+	
+	/**
+	 * Default constructor
+	 */
 	public ScoreFacade() {
-		setPersistenty();
-		
-		if (persistenty == "BasicScore") {
-			iScoreable = new BasicScore();
-		}
-		else if (persistenty == "NumberOfAttemptScore"){
-			iScoreable = new NumberOfAttemptScore();
-		}
-		else{
-			iScoreable = new TimeBasedScore();
-		}
+		setIScoreable();
 	}
+	
+	//Modifiers
 	
 	public double calculateScore(Quiz quiz, List<String> antwoorden){
 		return iScoreable.calculateScore(quiz, antwoorden);
 	}
 	
-	public void setPersistenty(){
+	/**
+	 * Method to set correct score class based on info in initScore.txt file
+	 */
+	public void setIScoreable(){
 		// Get initScore.dat file
 		File file = new File("src" + File.separator + "files" + File.separator + "initScore.dat");
 	 
@@ -47,7 +44,7 @@ public class ScoreFacade {
 			
 			List<String> tempLine = new ArrayList<String>();
 			
-			// Add each line as String object to tempExercises list
+			// Add each line as String object to tempLine list
 			while (scanner.hasNextLine()){
 				tempLine.add(scanner.nextLine());
 			}
@@ -56,24 +53,21 @@ public class ScoreFacade {
 				scanner.close();
 			}
 			
+			// Find className
 			Scanner scanner2 = new Scanner(tempLine.get(2));
 			scanner2.skip("persistentyMethod=");
-			String temp = scanner2.next();
-			if (temp.equals("TimeBasedScore")){
-				this.persistenty = "TimeBasedScore";
-			}
-			else if (temp.equals("BasicScore")){
-				this.persistenty = "BasicScore";
-			}
-			else{
-				this.persistenty = "NumberOfAttemptScore";
+			String className = scanner2.next();
+			
+			if (scanner2!=null){
+				scanner2.close();
 			}
 			
+			// Set instance of the chosen persistence
+			iScoreable = (IScoreable) Class.forName("strategyPattern." + className).newInstance();
 		} catch(FileNotFoundException ex){
 			System.out.println("Bestand niet gevonden!");
 		} catch(Exception ex){
 			System.out.println(ex.getMessage());
 		}
 	}
-
 }

@@ -1,17 +1,35 @@
-package patterns;
+package decoratorPattern;
 
 import java.util.List;
 
 import model.Quiz;
 import model.QuizExercise;
 
+/**
+ * 
+ * @author java
+ *
+ */
 public class QuizScoreDecorator extends QuizDecorator{
 
+	// Constructors
+	
+	/**
+	 * Constructor with 1 parameter
+	 * 
+	 * @param quiz
+	 */
 	public QuizScoreDecorator(Quiz quiz){
 		super(quiz);
 	}
 
+	// Selectors
 
+	/**
+	 * Method to show info about quiz score
+	 * 
+	 * @return
+	 */
 	public String showReport(List<Double> scores) {
 		String info = "";
 		double total = 0.0;

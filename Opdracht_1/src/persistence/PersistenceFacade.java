@@ -32,7 +32,7 @@ public class PersistenceFacade {
 	 * Default constructor
 	 */
 	public PersistenceFacade() {
-		setPersistenty();
+		setIPersistencable();
 	}
 	
 	//Modifiers
@@ -64,7 +64,7 @@ public class PersistenceFacade {
 	/**
 	 * Method to set correct persistence based on info in init.txt file
 	 */
-	public void setPersistenty(){
+	public void setIPersistencable(){
 		// Get init.dat file
 		File file = new File("src" + File.separator + "files" + File.separator + "init.dat");
 	 

@@ -31,7 +31,7 @@ public class StateContext {
 	}
 
 	/**
-	 * Method to set correct state class based on info in initState.txt file
+	 * Method to set correct state class based on state of a quiz
 	 */
 	public void setStateBehavior(Quiz quiz){
 		try {

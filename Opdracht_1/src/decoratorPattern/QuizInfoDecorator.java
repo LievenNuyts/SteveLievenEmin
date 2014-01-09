@@ -1,14 +1,32 @@
-package patterns;
+package decoratorPattern;
 
 import model.Quiz;
-import model.QuizExercise;
 
+/**
+ * 
+ * @author java
+ *
+ */
 public class QuizInfoDecorator extends QuizDecorator{
-
+	
+	// Constructors
+	
+	/**
+	 * Constructor with 1 parameter
+	 * 
+	 * @param quiz
+	 */
 	public QuizInfoDecorator(Quiz quiz) {
 		super(quiz);
 	}
+	
+	// Selectors
 
+	/**
+	 * Method to show info about quiz
+	 * 
+	 * @return
+	 */
 	public String showReport() {
 		String info = "";
 		
