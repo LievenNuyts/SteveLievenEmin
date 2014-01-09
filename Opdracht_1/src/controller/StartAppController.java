@@ -1,12 +1,16 @@
 package controller;
 
-import javax.swing.JFrame;
+import java.sql.SQLException;
 
-import com.sun.org.apache.xml.internal.security.Init;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import model.ExerciseCatalog;
 import model.QuizCatalog;
 import persistence.ManagementInitFile;
+import persistence.TextToSql;
 import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.Menu;
@@ -37,7 +41,7 @@ public class StartAppController extends JFrame{
 	
 	public StartAppController() {
 		
-		startMenu = new Menu("Voeg quiz to", "Update quiz", "Verwijder quiz");
+		startMenu = new Menu("Voeg quiz to", "Update quiz", "Verwijder quiz", "Kies persistentie", "Kopieer tekstfile naar SQL");
 	}
 	
 	public static void main(String[] args) throws Exception {
@@ -73,9 +77,31 @@ public class StartAppController extends JFrame{
 			deleteQuizController = new DeleteQuizController(quizCatalog, exerciseCatalog);
 			deleteQuizController.makeWindowVisible();
 			break;
+			
+		case 4:
+			//Kies persistency
+			startPersistency();
+			startApp();
+			break;
+			
+		case 5:
+			//copy text to database
+
+			TextToSql SQL = new TextToSql();
+			try {
+
+				SQL.SendToSql(quizCatalog, exerciseCatalog);
+				startApp();
+				
+			} catch (SQLException ex) {
+				JOptionPane.showMessageDialog(null, "Database error.");
+				ex.printStackTrace();
+				startApp();
+			}
+			break;
 
 		default:
-			
+			System.exit(0);
 			break;
 		}
 	}
