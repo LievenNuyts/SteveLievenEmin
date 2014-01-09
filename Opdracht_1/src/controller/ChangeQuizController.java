@@ -89,8 +89,8 @@ public class ChangeQuizController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			perFacade.deleteFromQuiz(view, tempQuizzes, tempExercises);
-			perFacade.load(exerciseModel, quizModel);
-			view.UpdateExerciseInQuiz();
+			//perFacade.load(exerciseModel, quizModel);
+			//view.UpdateExerciseInQuiz();
 
 		}
 	}

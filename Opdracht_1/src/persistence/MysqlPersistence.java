@@ -425,8 +425,10 @@ public class MysqlPersistence implements IPersistencable {
 
 		} catch (SQLException ex) {
 			System.out.println(ex);
+			view.displayErrorMessage(ex.getMessage());
 		} catch (Exception ex) {
 			System.out.println(ex);
+			view.displayErrorMessage(ex.getMessage());
 		}
 	}
 

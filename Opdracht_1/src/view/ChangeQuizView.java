@@ -476,6 +476,6 @@ public class ChangeQuizView extends JFrame {
 
 		public void displayErrorMessage(String errorMessage) {
 
-			JOptionPane.showMessageDialog(this, errorMessage);
+			JOptionPane.showMessageDialog(null, errorMessage);
 		}
 }
