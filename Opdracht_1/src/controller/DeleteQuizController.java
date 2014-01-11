@@ -202,6 +202,11 @@ public class DeleteQuizController {
 		public void actionPerformed(ActionEvent e) throws IllegalArgumentException{
 			try {
 				perFacade.deleteQuiz(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
+				
+				//set statebehavior after deletion
+				int rowIndex = window.getJTableQuiz().getSelectedRow();
+				stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(rowIndex));
+				stateContext.behavior(DeleteQuizController.this, window);
 			}
 			catch (Exception exc) {
 				System.out.println(exc);
@@ -244,15 +249,16 @@ public class DeleteQuizController {
 				int rowIndex = window.getJTableQuiz().getSelectedRow();
 				
 				if(rowIndex == 0){	
-					rowIndex = window.getJTableQuiz().getRowCount();
-					System.out.println(rowIndex);
+					rowIndex = window.getJTableQuiz().getRowCount();			
 					window.getJTableQuiz().setRowSelectionInterval(rowIndex-1, rowIndex-1);
+					rowIndex = window.getJTableQuiz().getRowCount()-1;
 				}			
 				else{
 					rowIndex--;
 					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);		
 				}
 				
+				//set statebehavior after selection change
 				stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(rowIndex));
 				stateContext.behavior(DeleteQuizController.this, window);
 				
@@ -274,12 +280,14 @@ public class DeleteQuizController {
 				
 				if(rowIndex < window.getJTableQuiz().getRowCount()-1){
 					rowIndex++;
-					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);
+					window.getJTableQuiz().setRowSelectionInterval(rowIndex, rowIndex);			
 				}	
 				else{
 					window.getJTableQuiz().setRowSelectionInterval(0, 0);
+					rowIndex = 0;			
 				}
-				
+
+				//set statebehavior after selection change
 				stateContext.setStateBehavior(quizCatalog.getQuizCatalogs().get(rowIndex));
 				stateContext.behavior(DeleteQuizController.this, window);
 				
