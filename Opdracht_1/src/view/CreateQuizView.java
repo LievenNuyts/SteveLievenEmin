@@ -3,19 +3,13 @@
  */
 package view;
 
-import java.awt.Color;import java.awt.FlowLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale.Category;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,18 +21,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 import model.Exercise;
 import model.Exercise.ExerciseCategory;
 import model.QuizStatus;
 import model.Teacher;
+import controller.StartAppController;
 
 /**
  * @author java
@@ -306,7 +295,14 @@ public class CreateQuizView extends JFrame {
 		setTitle("Aanmaken nieuwe quiz");
 		setSize(800, 600);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);      
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent evt)
+		    {	
+		    	new StartAppController().startApp();
+		    }
+		});      
 	}
 	
 	// Selectors

@@ -8,6 +8,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import javax.swing.JOptionPane;
+
+import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
+
 import model.EnumerationExercise;
 import model.Exercise;
 import model.ExerciseCatalog;
@@ -35,7 +39,7 @@ public class TextToSql {
 	 * @param exerciseModel
 	 * @throws SQLException
 	 */
-	private void SendToSql(QuizCatalog quizModel, ExerciseCatalog exerciseModel) throws SQLException{
+	public void SendToSql(QuizCatalog quizModel, ExerciseCatalog exerciseModel) throws SQLException {
 
 		this.quizModel = quizModel;
 		this.exerciseModel = exerciseModel;
@@ -159,11 +163,14 @@ public class TextToSql {
 			}
 			
 			pstmt.close();
-
+			JOptionPane.showMessageDialog(null, "Import geslaagd.");
+			
+			
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
-			e.printStackTrace();
-		} finally {
+			e.printStackTrace();	
+			JOptionPane.showMessageDialog(null, "Database is niet leeg.");
+		}finally {
 			conn.close();
 		}
 	}

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 import view.ChangeQuizView;
@@ -301,6 +303,7 @@ public class TextPersistence implements IPersistencable {
 		} catch (IllegalArgumentException ex) {
 			System.out.println(ex);
 			view.displayErrorMessage(ex.getMessage());
+			
 		}
 	}
 
