@@ -13,7 +13,6 @@ public class Menu {
 		stopWaarde = i+1;
 		menuTekst += stopWaarde+"."+"Stoppen"+"\n\n";
 		menuTekst += "Maak je keuze (1-"+stopWaarde+")";
-				
 	}
 	
 	public int getMenuKeuze(){

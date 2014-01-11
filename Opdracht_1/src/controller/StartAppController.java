@@ -73,7 +73,7 @@ public class StartAppController extends JFrame{
 		
 		switch (choice) {
 		case 1:
-			//Voeg quiz toe aan DB
+			//Add quiz
 			createView = new CreateQuizView();
 			createQuizController = new CreateQuizController(createView, exerciseCatalog, quizCatalog);
 			createView.setVisible(true);

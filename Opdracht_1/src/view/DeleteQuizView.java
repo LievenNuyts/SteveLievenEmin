@@ -42,12 +42,11 @@ public class DeleteQuizView extends JFrame{
 		super("Delete quiz");
 		
 		this.defineLayout();
-		
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent evt)
 		    {	
+		    	DeleteQuizView.this.dispose();
 		    	new StartAppController().startApp();
 		    }
 		});	

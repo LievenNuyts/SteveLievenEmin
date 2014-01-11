@@ -35,6 +35,8 @@ import controller.StartAppController;
  */
 public class CreateQuizView extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	// Elements of top panel
 	private String[] grades;
 	private JLabel subjectLabel;
@@ -42,9 +44,9 @@ public class CreateQuizView extends JFrame {
 	private JLabel gradeLabel;
 	private JLabel stateLabel;
 	private JTextField subjectTextField;
-	private JComboBox gradesComboBox;
-	private JComboBox authorsComboBox;
-	private JComboBox stateComboBox;
+	private JComboBox<String> gradesComboBox;
+	private JComboBox<Teacher> authorsComboBox;
+	private JComboBox<QuizStatus> stateComboBox;
 	private JButton addQuizButton;
 	
 	// Elements of bottom panel
@@ -53,12 +55,13 @@ public class CreateQuizView extends JFrame {
 	private JLabel sortExerciseLabel;
 	private JLabel addedExerciseLabel;
 	private JLabel amountExercisesLabel;
-	private JComboBox categoriesComboBox;
-	private JComboBox sortExercisesComboBox;
+	private JComboBox<Object> categoriesComboBox;
+	private JComboBox<String> sortExercisesComboBox;
 	private JButton moveUpButton;
 	private JButton addToQuizButton;
 	private JButton removeFromQuizButton;
-	private JList exercisesList;
+	private JList<String> exercisesList;
+	private JScrollPane paneList;
 	
 	private DefaultTableModel dataModel;
 	private JTable addedExercisesTable;
@@ -75,9 +78,9 @@ public class CreateQuizView extends JFrame {
 		this.gradeLabel = new JLabel("Klas: ");
 		this.stateLabel = new JLabel("Status: ");
 		this.subjectTextField = new JTextField(10);
-		this.gradesComboBox = new JComboBox(grades);
-		this.authorsComboBox = new JComboBox(Teacher.values());
-		this.stateComboBox = new JComboBox(QuizStatus.values());
+		this.gradesComboBox = new JComboBox<String>(grades);
+		this.authorsComboBox = new JComboBox<Teacher>(Teacher.values());
+		this.stateComboBox = new JComboBox<QuizStatus>(QuizStatus.values());
 		this.addQuizButton = new JButton("Registreer nieuwe quiz");
 		
 		// Elements of bottom panel
@@ -86,17 +89,21 @@ public class CreateQuizView extends JFrame {
 		this.sortExerciseLabel = new JLabel("Sorteer opdrachten op: ");
 		this.addedExerciseLabel = new JLabel("Aantal toegevoegde opdrachten: ");
 		this.amountExercisesLabel = new JLabel("0");
-		this.categoriesComboBox = new JComboBox(ExerciseCategory.values());
+		this.categoriesComboBox = new JComboBox<Object>(ExerciseCategory.values());
 		this.categoriesComboBox.addItem("Alle");
 		this.categoriesComboBox.setSelectedIndex(categoriesComboBox.getItemCount() - 1);
-		this.sortExercisesComboBox = new JComboBox(sort);
+		this.sortExercisesComboBox = new JComboBox<String>(sort);
 		this.moveUpButton = new JButton("^^^^");
 		this.addToQuizButton = new JButton("--->");
 		this.removeFromQuizButton = new JButton("<---");
-		this.exercisesList = new JList();
+		this.exercisesList = new JList<String>();
+		this.paneList = new JScrollPane(exercisesList);
 		
 		this.dataModel = new DefaultTableModel(col, 0);
 		this.addedExercisesTable = new JTable(dataModel){
+			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public boolean isCellEditable(int row, int col) {
 			     switch (col) {
@@ -134,7 +141,6 @@ public class CreateQuizView extends JFrame {
 		panelTop.setLayout(new GridBagLayout());
 		panelBottom.setLayout(new GridBagLayout());
 		
-		
 		// Layout of the main table
 		GridBagConstraints gcM = new GridBagConstraints();
 		
@@ -151,86 +157,6 @@ public class CreateQuizView extends JFrame {
 		gcM.gridx = 0;
 		gcM.gridy = 1;
 		panelMain.add(panelBottom, gcM);
-		
-		// Layout of the bottom panel
-		GridBagConstraints gcB = new GridBagConstraints();
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 0;
-		gcB.gridy = 0;
-		panelBottom.add(showExerciseLabel, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 1;
-		gcB.gridy = 0;
-		panelBottom.add(categoriesComboBox, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 3;
-		gcB.gridy = 0;
-		panelBottom.add(addedExerciseLabel, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 4;
-		gcB.gridy = 0;
-		panelBottom.add(amountExercisesLabel, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 0;
-		gcB.gridy = 1;
-		panelBottom.add(sortExerciseLabel, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridx = 1;
-		gcB.gridy = 1;
-		panelBottom.add(sortExercisesComboBox, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridwidth = 2;
-		gcB.gridx = 3;
-		gcB.gridy = 1;
-		panelBottom.add(moveUpButton, gcB);//
-		
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-
-		gcB.gridwidth = 1;
-		gcB.gridx = 2;
-		gcB.gridy = 2;
-		panelBottom.add(addToQuizButton, gcB);
-		
-		gcB.fill = GridBagConstraints.HORIZONTAL;
-		gcB.weightx = 0.5;
-		gcB.gridwidth = 1;
-		gcB.gridx = 2;
-		gcB.gridy = 3;
-		panelBottom.add(removeFromQuizButton, gcB);
-		
-		gcB.fill = GridBagConstraints.BOTH;
-		gcB.weightx = 0.0;
-		gcB.weighty = 1;
-		gcB.gridwidth = 2;
-		gcB.gridheight = 4;
-		gcB.gridx = 0;
-		gcB.gridy = 2;
-		panelBottom.add(exercisesList, gcB);
-		
-		gcB.fill = GridBagConstraints.BOTH;
-		gcB.weightx = 0.0;
-		gcB.weighty = 1;
-		gcB.gridwidth = 2;
-		gcB.gridheight = 4;
-		gcB.gridx = 3;
-		gcB.gridy = 2;
-		panelBottom.add(paneTable, gcB);/////////////////////////////
 		
 		// Layout of the top panel
 		GridBagConstraints gcT = new GridBagConstraints();
@@ -291,18 +217,97 @@ public class CreateQuizView extends JFrame {
 		gcT.gridy = 1;
 		panelTop.add(addQuizButton, gcT);
 		
-		
+		// Window options
 		setTitle("Aanmaken nieuwe quiz");
 		setSize(800, 600);
 		setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent evt)
 		    {	
+		    	CreateQuizView.this.dispose();
 		    	new StartAppController().startApp();
 		    }
 		});      
+		
+		// Layout of the bottom panel
+		GridBagConstraints gcB = new GridBagConstraints();
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 0;
+		gcB.gridy = 0;
+		panelBottom.add(showExerciseLabel, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 1;
+		gcB.gridy = 0;
+		panelBottom.add(categoriesComboBox, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 3;
+		gcB.gridy = 0;
+		panelBottom.add(addedExerciseLabel, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 4;
+		gcB.gridy = 0;
+		panelBottom.add(amountExercisesLabel, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 0;
+		gcB.gridy = 1;
+		panelBottom.add(sortExerciseLabel, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridx = 1;
+		gcB.gridy = 1;
+		panelBottom.add(sortExercisesComboBox, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridwidth = 2;
+		gcB.gridx = 3;
+		gcB.gridy = 1;
+		panelBottom.add(moveUpButton, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+
+		gcB.gridwidth = 1;
+		gcB.gridx = 2;
+		gcB.gridy = 2;
+		panelBottom.add(addToQuizButton, gcB);
+		
+		gcB.fill = GridBagConstraints.HORIZONTAL;
+		gcB.weightx = 0.5;
+		gcB.gridwidth = 1;
+		gcB.gridx = 2;
+		gcB.gridy = 3;
+		panelBottom.add(removeFromQuizButton, gcB);
+		
+		gcB.fill = GridBagConstraints.BOTH;
+		gcB.weightx = 0.0;
+		gcB.weighty = 1;
+		gcB.gridwidth = 2;
+		gcB.gridheight = 4;
+		gcB.gridx = 0;
+		gcB.gridy = 2;
+		panelBottom.add(paneList, gcB);
+		
+		gcB.fill = GridBagConstraints.BOTH;
+		gcB.weightx = 0.0;
+		gcB.weighty = 1;
+		gcB.gridwidth = 2;
+		gcB.gridheight = 4;
+		gcB.gridx = 3;
+		gcB.gridy = 2;
+		panelBottom.add(paneTable, gcB);
 	}
 	
 	// Selectors
@@ -385,7 +390,7 @@ public class CreateQuizView extends JFrame {
 	 * @param exerciseList
 	 */
 	public void setExercisesList(List<Exercise> exerciseList){
-		DefaultListModel listModel = new DefaultListModel();
+		DefaultListModel<String> listModel = new DefaultListModel<String>();
 		
 		for (Exercise ex : exerciseList){
 			//String tempCat = ex.getQuestion().s

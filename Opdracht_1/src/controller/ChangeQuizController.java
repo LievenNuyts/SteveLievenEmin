@@ -3,19 +3,14 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 import persistence.PersistenceFacade;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
-import model.QuizExercise;
 import model.QuizCatalog;
 import view.ChangeQuizView;
 

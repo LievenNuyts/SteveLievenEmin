@@ -81,11 +81,11 @@ public class ChangeQuizView extends JFrame {
 			this.setSize(800,600);
 
 			this.setVisible(true); 
-			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			this.addWindowListener(new java.awt.event.WindowAdapter() {
 			    @Override
 			    public void windowClosing(java.awt.event.WindowEvent evt)
 			    {	
+			    	ChangeQuizView.this.dispose();
 			    	new StartAppController().startApp();
 			    }
 			});
@@ -253,36 +253,6 @@ public class ChangeQuizView extends JFrame {
 			gbc.gridwidth = 1;
 
 			add(mainPanel);
-
-//			//get exercise from available ex list
-//
-//			listExercise.addListSelectionListener(new ListSelectionListener() {
-//				public void valueChanged(ListSelectionEvent event) {
-//					if (!event.getValueIsAdjusting()){
-//						JList<Exercise> source = (JList)event.getSource();
-//
-//						Exercise selected = (Exercise)source.getSelectedValue();	
-//
-//						getExercise(selected);
-//					}
-//				}
-//			});
-//
-//			//get exercise from  ex in quiz list
-//
-//			listExercisesInQuiz.addListSelectionListener(new ListSelectionListener() {
-//				public void valueChanged(ListSelectionEvent event) {
-//					if (!event.getValueIsAdjusting()){
-//						JList<QuizExercise> source = (JList)event.getSource();
-//
-//						if(source.getSelectedValue() != null){
-//							QuizExercise selected = (QuizExercise)source.getSelectedValue();
-//							getExercise(selected.getExercise());
-//						}
-//					}
-//				}
-//			});
-						
 		}
 		
 		//Selectors
@@ -432,22 +402,12 @@ public class ChangeQuizView extends JFrame {
 			
 		}
 		
-//		/**
-//		 * @return
-//		 */
-//		public void getExercise(Exercise ex){
-//			System.out.println(ex.getQuestion());
-//			
-//		}
-		
 		public void UpdateExerciseInQuiz(){
 			int index = listQuiz.getSelectedIndex();
 			listQuiz.setSelectedIndex(0);
 			listQuiz.setSelectedIndex(index);
 			JOptionPane.showMessageDialog(null, "De quiz werd geüpdatet.");
 		}
-		
-		
 
 		// events
 		
@@ -470,7 +430,6 @@ public class ChangeQuizView extends JFrame {
 	
 			btn_search_quiz.addActionListener(listenForSearchButton);
 		}
-	
 
 		// Open a popup that contains the error message passed
 

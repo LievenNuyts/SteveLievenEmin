@@ -21,6 +21,7 @@ import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
 import model.QuizExercise;
+import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.DeleteQuizView;
 
@@ -220,6 +221,8 @@ public class DeleteQuizController {
 		
 			try {
 				perFacade.saveAndClose(window, DeleteQuizController.this, exerciseCatalog, quizCatalog);
+				
+		    	new StartAppController().startApp();
 			}
 			catch (Exception exc) {
 				System.out.println(exc);
@@ -233,6 +236,7 @@ public class DeleteQuizController {
 		
 			try {
 				window.dispose();
+		    	new StartAppController().startApp();
 			}
 
 			catch (Exception exc) {
