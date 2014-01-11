@@ -80,8 +80,7 @@ public class ChangeQuizView extends JFrame {
 			
 			this.setSize(800,600);
 
-			this.setVisible(true);
-						
+			this.setVisible(true); 
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			this.addWindowListener(new java.awt.event.WindowAdapter() {
 			    @Override

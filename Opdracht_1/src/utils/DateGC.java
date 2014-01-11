@@ -240,8 +240,7 @@ public class DateGC implements Cloneable{
 		if (gregCal == null) {
 			if (other.gregCal != null)
 				return false;
-		} else if (!gregCal.equals(other.gregCal))
-			return false;
+		}
 		return true;
 	}
 }

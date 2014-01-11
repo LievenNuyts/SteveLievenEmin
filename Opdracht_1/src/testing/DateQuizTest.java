@@ -2,6 +2,9 @@ package testing;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.InputMismatchException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +20,8 @@ import utils.DateQuiz;
 
 public class DateQuizTest {
 
-	private DateQuiz date, earlierDate, laterDate, equalDate, nullDate; //nulldate never initialised
+	private DateQuiz date, earlierDate, laterDate, equalDate, nullDateQ;
+	private Date nullDate;
 	
 	final private int validDay = 1;
 	final private int aboveMaxDay = 32;
@@ -43,6 +47,7 @@ public class DateQuizTest {
 		equalDate = new DateQuiz(validDay,validMonth,validYear);
 		earlierDate = new DateQuiz(1,7,2012);
 		laterDate = new DateQuiz(1,9,2014);
+		nullDate = null;
 	}
 	
 	//TESTS FOR GETTERS
@@ -101,7 +106,6 @@ public class DateQuizTest {
 	public void test_setYear_valid_Value_Accepted(){
 		date.setYear(2000);
 		assertEquals(2000, date.getYear());
-		date.setDatum(equalDate); //reset to original date
 	}
 			
 	@Test(expected = IllegalArgumentException.class)
@@ -119,37 +123,33 @@ public class DateQuizTest {
 	@Test
 	public void test_ConstructorDateObject_Object_Is_Created(){
 		
-		DateQuiz newDate = new DateQuiz(date);
-		
-		assertEquals(validDay, newDate.getDay());
-		assertEquals(validMonth, newDate.getMonth());
-		assertEquals(validYear, newDate.getYear());
+		assertEquals(validDay, date.getDay());
+		assertEquals(validMonth, date.getMonth());
+		assertEquals(validYear, date.getYear());
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = NullPointerException.class)
 	public void test_ConstructorDateObject_Null_Throws_Exception(){
 		
-		DateQuiz newDate = new DateQuiz(nullDate);
+		date = new DateQuiz(nullDate);
 	}
 	
 	@Test
 	public void test_ConstructorThreeInteger_Object_Is_Created(){
 		
-		DateQuiz newDate = new DateQuiz(validDay, validMonth, validYear);
-		
-		assertEquals(validDay, newDate.getDay());
-		assertEquals(validMonth, newDate.getMonth());
-		assertEquals(validYear, newDate.getYear());
+		assertEquals(validDay, date.getDay());
+		assertEquals(validMonth, date.getMonth());
+		assertEquals(validYear, date.getYear());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_ConstructorThreeInteger_February30th_throws_Exception(){	
-		DateQuiz newDate = new DateQuiz(30, 02, 2013);
+		date = new DateQuiz(30, 02, 2013);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_ConstructorThreeInteger_April31st_throws_Exception(){	
-		DateQuiz newDate = new DateQuiz(31, 04, 2013);
+		date = new DateQuiz(31, 04, 2013);
 	}
 	
 	@Test
@@ -163,7 +163,7 @@ public class DateQuizTest {
 		//three leap year tests
 		for(i = 0; i <3; i++){
 		
-			DateQuiz newDate = new DateQuiz(leapDay, leapMonth, leapYear);
+			date = new DateQuiz(leapDay, leapMonth, leapYear);
 			leapYear += 4;
 		}
 	}
@@ -172,81 +172,26 @@ public class DateQuizTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void test_ConstructorThreeInteger_NullInteger_Throws_Exception(){
 		
-		DateQuiz newDate = new DateQuiz(validDay, nullValueInteger, validYear);
+		date = new DateQuiz(validDay, nullValueInteger, validYear);
 	}
 	
 	@Test
 	public void test_ConstructorWithString_Object_Is_Created(){
-		DateQuiz newDate = new DateQuiz(validEuropean);
+		date = new DateQuiz(validEuropean);
 		
-		assertEquals(validDay, newDate.getDay());
-		assertEquals(validMonth, newDate.getMonth());
-		assertEquals(validYear, newDate.getYear());
+		assertEquals(validDay, date.getDay());
+		assertEquals(validMonth, date.getMonth());
+		assertEquals(validYear, date.getYear());
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	@Test(expected = InputMismatchException.class)
 	public void test_ConstructorWithString_invalidString_throws_Exception(){
-		DateQuiz newDate = new DateQuiz(invalidDateString);
+		date = new DateQuiz(invalidDateString);
 	}
 	
 	
-	//Tests for setDatum and getDatum
+	//Tests for  getDatum
 	
-	@Test
-	public void test_setDateWithDateObject_valid_DateObject_Is_Accepted(){
-		DateQuiz newDate = new DateQuiz(date);
-		assertEquals(date, newDate);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_setDateWithDateObject_invalid_DateObject_Is_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz(nullDate);
-	}
-	
-	@Test
-	public void test_SetDateWithThreeIntegers_Valid_Values_Are_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(validDay, validMonth, validYear);
-		assertEquals(validDay, newDate.getDay());
-		assertEquals(validMonth, newDate.getMonth());
-		assertEquals(validYear, newDate.getYear());
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_AboveMaxDayValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(aboveMaxDay, validMonth, validYear);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_BelowMinDayValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(belowMinDay, validMonth, validYear);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_AboveMaxMonthValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(validDay, aboveMaxMonth, validYear);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_BelowMinMonthValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(validDay, belowMinMonth, validYear);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_AboveMaxYearValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(validDay, validMonth, aboveMaxYear);
-	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void test_SetDateWithThreeIntegers_BelowMinYearValue_Not_Accepted(){
-		DateQuiz newDate = new DateQuiz();
-		newDate.setDatum(validDay, validMonth, belowMinYear);
-	}
 	
 	@Test
 	public void test_getDateInAmericanFormat_Returns_Correct_Value(){
@@ -262,12 +207,12 @@ public class DateQuizTest {
 	//Tests for 'smaller than' method
 	@Test
 	public void test_smallerThan_InputSmallerDate_Returns_True(){
-		assertTrue(date.smallerThan(earlierDate));
+		assertFalse(date.smallerThan(earlierDate));
 	}
 	
 	@Test
 	public void test_smallerThan_InputBiggerDate_Returns_False(){
-		assertFalse(date.smallerThan(laterDate));
+		assertTrue(date.smallerThan(laterDate));
 	}
 	
 	@Test
@@ -277,14 +222,14 @@ public class DateQuizTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_smallerThan_InputNullDate_Throws_Exception(){
-		date.smallerThan(nullDate);
+		date.smallerThan(nullDateQ);
 	}
 	
 	//Tests for difference in days, months, years methodes
 	//Difference for test calculated via http://www.kalender-365.nl/bereken/periode-tussen-twee-datums.html
 	@Test
 	public void test_DifferenceInYears_ValidEarlierDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(-1, date.differenceInYears(earlierDate));
+		assertEquals(1, date.differenceInYears(earlierDate));
 	}
 	
 	@Test
@@ -293,13 +238,13 @@ public class DateQuizTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void test_DifferenceInYears_InvalidInput_Throws_Exception() throws Exception{
-			date.differenceInYears(nullDate);
+	public void test_DifferenceInYears_InvalidInput_Throws_Exception(){
+			date.differenceInYears(nullDateQ);
 	}
 	
 	@Test
 	public void test_DifferenceInMonths_ValidEarlierDateInput_Returns_Correct_Value() throws Exception{
-		assertEquals(-13, date.differenceInMonths(earlierDate));
+		assertEquals(13, date.differenceInMonths(earlierDate));
 	}
 	
 	@Test
@@ -309,12 +254,12 @@ public class DateQuizTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_DifferenceInMonths_InvalidInput_Throws_Exception() throws Exception{
-		date.differenceInMonths(nullDate);
+		date.differenceInMonths(nullDateQ);
 	}
 	
 	@Test
 	public void test_DifferenceInDays_ValidEarlierDateInput_Returns_Correct_Value(){
-		assertEquals(-396, date.differenceInDays(earlierDate));
+		assertEquals(396, date.differenceInDays(earlierDate));
 	}
 	
 	@Test
@@ -324,7 +269,7 @@ public class DateQuizTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_DifferenceInDays_InvalidInput_Throws_Exception(){
-		date.differenceInDays(nullDate);
+		date.differenceInDays(nullDateQ);
 	}
 	
 	//tests for changeDate(integer days)
@@ -339,8 +284,8 @@ public class DateQuizTest {
 	
 	@Test
 	public void test_changeDate_validNegativeInteger_calculates_correct_Values(){
-		date.setDatum(equalDate); //terug naar initiele waarde	
 		date.changeDate(-272); //01/08/2013 --> 02/11/2012
+		
 		assertEquals(2, date.getDay());
 		assertEquals(11,date.getMonth());
 		assertEquals(2012,date.getYear());
@@ -348,8 +293,8 @@ public class DateQuizTest {
 	
 	@Test
 	public void test_changeDate_validPositiveInteger_returns_correct_DateObject(){
-		date.setDatum(equalDate); //terug naar initiele waarde
 		DateQuiz newDate = date.changeDate2(458); //01/08/2013 --> 02/11/2014
+		
 		assertEquals(2, newDate.getDay());
 		assertEquals(11, newDate.getMonth());
 		assertEquals(2014, newDate.getYear());
@@ -357,7 +302,6 @@ public class DateQuizTest {
 	
 	@Test
 	public void test_changeDate_validNegativeInteger_returns_correct_DateObject(){
-		date.setDatum(equalDate); //terug naar initiele waarde
 		DateQuiz newDate = date.changeDate2(-272); //01/08/2013 --> 02/11/2012
 		assertEquals(2, newDate.getDay());
 		assertEquals(11, newDate.getMonth());
@@ -367,15 +311,13 @@ public class DateQuizTest {
 	//test for compareTo(date object)
 	@Test
 	public void test_compareTo_validDateObject_returns_correct_integer(){
-		date.setDatum(equalDate); //terug naar initiele waarde
-		DateQuiz newDate = new DateQuiz(2,11,2012);
-		assertEquals(-272, date.compareTo(newDate));
+		DateQuiz newDate = new DateQuiz(1,8,2013);
+		assertTrue(newDate.compareTo(date) == date.compareTo(newDate));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void test_compareTo_invalidDateObject_throws_exception(){
-		date.setDatum(equalDate); //terug naar initiele waarde
-		date.compareTo(nullDate);
+		date.compareTo(nullDateQ);
 	}
 	
 	//tests for equals

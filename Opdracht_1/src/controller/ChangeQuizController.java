@@ -68,7 +68,7 @@ public class ChangeQuizController {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			perFacade.addToQuiz(view, tempQuizzes, tempExercises, ChangeQuizController.this);
-			perFacade.load(exerciseModel, quizModel);
+			//perFacade.load(exerciseModel, quizModel);
 			view.UpdateExerciseInQuiz();
 		}
 	}
@@ -77,10 +77,10 @@ public class ChangeQuizController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			updateQuiz();
 			perFacade.updateQuiz(view, exerciseModel, quizModel, tempQuizzes, tempExercises);
-			perFacade.load(exerciseModel, quizModel);
+			//perFacade.load(exerciseModel, quizModel);
 			view.UpdateExerciseInQuiz();
+			updateQuiz();
 		}
 	}
 

@@ -1,5 +1,6 @@
 package utils;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -20,10 +21,10 @@ public class DateQuiz implements Comparable<DateQuiz>{
 	private int month; //tussen 1 & 12
 	private int year; //elk jaartal boven 0
 	private String[] months = {"januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december"};
-	private DateQuiz dateQuiz;
+	//private DateQuiz dateQuiz;
 	
 	//array van dagen per maand (start op nul!!)
-	private static final int [] dagenPerMaand= {31,29,31,30,31,30,31,31,30,31,30,31};
+	private static final int [] dagenPerMaand= {31,28,31,30,31,30,31,31,30,31,30,31};
 	
 	//getters setters
 	
@@ -31,7 +32,14 @@ public class DateQuiz implements Comparable<DateQuiz>{
 		return day;
 	}
 	public void setDay(int day) throws IllegalArgumentException{
-		if (day <= 0 || day > (dagenPerMaand[(month - 1)])) throw new IllegalArgumentException("Day is incorrect.");
+		if ((this.year % 400 == 0) || ((this.year % 4 == 0) && (this.year % 100 != 0))){
+			if (month == 2){
+				if (day <= 0 || day > 29) throw new IllegalArgumentException("Day is incorrect.");
+			}
+		}
+		else {
+			if (day <= 0 || day > (dagenPerMaand[month - 1])) throw new IllegalArgumentException("Day is incorrect.");
+		}
 		
 		if (month == 2 && day == 29 && (year % 4 != 0)) throw new IllegalArgumentException("Day doesn't fit month and year.");
 		this.day = day;
@@ -58,24 +66,26 @@ public class DateQuiz implements Comparable<DateQuiz>{
 		//default verwijst naar Datum(int dag, int maand, int jaartal)
 		public DateQuiz()throws IllegalArgumentException 
 		{
-			Date dateToday = new Date();
-
-			day = dateToday.getDay();
-			month = dateToday.getMonth();
-			year = dateToday.getYear();
-		
+			this.setMonth(Calendar.MONTH);
+			this.setDay(Calendar.DAY_OF_MONTH);
+			this.setYear(Calendar.YEAR);
 		}
 		//constructor op basis van object
-		public DateQuiz(DateQuiz date)throws IllegalArgumentException
+		public DateQuiz(Date date)throws IllegalArgumentException
 		{
-			this(date.day, date.month, date.year);
+			Calendar cal = Calendar.getInstance();
+		    cal.setTime(date);
+
+		    this.setMonth(cal.get(Calendar.MONTH));
+		    this.setDay(cal.get(Calendar.DAY_OF_MONTH));
+		    this.setYear(cal.get(Calendar.YEAR));
 		}
 		//constructor op basis van 3 integers
 		public DateQuiz(int day, int month, int year)throws IllegalArgumentException
 		{
-			setYear(year);
-			setMonth(month);
-			setDay(day);
+			this.setYear(year);
+			this.setMonth(month);
+			this.setDay(day);
 		}
 		//constructor op basis van string
 		public DateQuiz(String dateString)throws IllegalArgumentException
@@ -102,11 +112,11 @@ public class DateQuiz implements Comparable<DateQuiz>{
 				if (String.valueOf(_year).length() != 4)
 					throw new IllegalArgumentException ("Years are not valid.");
 
-				setYear(_year);
-				setMonth(_month);
-				setDay(_day);
+				this.setYear(_year);
+				this.setMonth(_month);
+				this.setDay(_day);
 
-				dateQuiz = new DateQuiz(_day, _month, _year);
+				//dateQuiz = new DateQuiz(_day, _month, _year);
 			}
 
 			catch (IllegalArgumentException argEx) {
@@ -151,7 +161,9 @@ public class DateQuiz implements Comparable<DateQuiz>{
 		return true;
 	}
 	@Override
-	public int compareTo(DateQuiz o) {
+	public int compareTo(DateQuiz o) throws IllegalArgumentException {
+		if(o == null)throw new IllegalArgumentException("Datum is null");
+		
 		return (this.year + this.month + this.day) - (o.year + o.month + o.day);
 	}
 	@Override
@@ -165,99 +177,70 @@ public class DateQuiz implements Comparable<DateQuiz>{
 	
 	//Methods
 	
-	public void setDatum(DateQuiz datum){
-		this.dateQuiz= datum;
-	}
-	
-	public boolean setDatum(int dag, int maand, int jaar)throws IllegalArgumentException {
-		setYear(jaar);
-		setMonth(maand);
-		setDay(dag);
-		return true;
-}
-		
-	public DateQuiz getDate(){
-		return dateQuiz;
-	}
-	
 	public String getDateInAmericanFormat() {
-		return String.format("%04d/%02d/%02d", this.getYear(), this.getMonth(), this.getDay());
+		return String.format("%02d/%02d/%04d", this.getMonth(), this.getDay(), this.getYear());
 	}
 		
 	public String getDateInEuropeanFormat() {
 		return String.format("%02d/%02d/%04d", this.getDay(),this.getMonth(),this.getYear());
 	}
-	
-	/**
-	public DateQuiz verschilInTijd (DateQuiz datum){
-	int days = Math.abs(this.getDateInDays() - datum.getDateInDays());
-	return new DateQuiz(days);
-	}
-	
-	private int getDateInDays(){
-		return 0;
-	}
-	*/
 
 	public boolean smallerThan (DateQuiz date){
-		//bepaalt of een 'Datum datum' object kleiner is dan huidig datumobject
+		if(date == null)throw new IllegalArgumentException("Datum is null");
+		
 		if(year < date.year)return true;
 		else if( year == date.year && month < date.month)return true;
 		else if(month == date.month && day < date.day)return true;
 		else return false;
 	}
 	
-	public int differenceInYears (DateQuiz date) throws Exception {
-		try {
-			int years = 0;
-			int dMonth = this.month + this.day;
-			int thisMonth = date.month + date.day;
+	public int differenceInYears (DateQuiz date) throws IllegalArgumentException {
+		if(date == null)throw new IllegalArgumentException("Datum is null");
+		
+		int years = 0;
+		int dMonth = this.month + this.day;
+		int thisMonth = date.month + date.day;
 
-			if(date.smallerThan(this)){
-				years = this.year - date.year;
-				if (dMonth < thisMonth && this.year != date.year){
-					years--;
-				}
+		if(date.smallerThan(this)){
+			years = this.year - date.year;
+			if (dMonth < thisMonth && this.year != date.year){
+				years--;
 			}
-			else{
-				years = date.year - this.year;
-				if ((thisMonth < dMonth && this.year != date.year) || (this.year != date.year && this.month == date.month && date.day <this.day)){
-					years--;
-				}
-			}
-			return years;
-
-
-		} catch (Exception e) { 
-			throw new Exception("Error! " + e.getMessage()); //
 		}
+		else{
+			years = date.year - this.year;
+			if ((thisMonth < dMonth && this.year != date.year) || (this.year != date.year && this.month == date.month && date.day <this.day)){
+				years--;
+			}
+		}
+		return years;
 	}
 		//bepaalt het verschil in volledige jaren tussen datum d en huidig datumobject  (vb 01032007 en 03012009 -> 1 jaar)
 
 	
-	public int differenceInMonths (DateQuiz d) throws Exception {
-		try {
-            int months = 0;
-            int thisMonth = this.year * 12 + this.month;
-            int dMonth = d.year * 12 + d.month;
-            
-            if (thisMonth < dMonth) {
-            	months = dMonth - thisMonth;
-            }
-            else if (dMonth < thisMonth) {
-            	months = thisMonth - dMonth;
-            }
-            else {
-            	months = 0;
-            }
-            
-            return months;        
-		} catch (Exception e) { 
-			throw new Exception(e.getMessage()); //d > this
+	public int differenceInMonths (DateQuiz d) throws IllegalArgumentException {
+		if(d == null)throw new IllegalArgumentException("Datum is null");
+		
+		int months = 0;
+		int thisMonth = this.year * 12 + this.month;
+		int dMonth = d.year * 12 + d.month;
+
+		if (thisMonth < dMonth) {
+			months = dMonth - thisMonth;
 		}
+		else if (dMonth < thisMonth) {
+			months = thisMonth - dMonth;
+		}
+		else {
+			months = 0;
+		}
+
+		return months;
 	}
 	
-	public int differenceInDays (DateQuiz d) {
+	public int differenceInDays (DateQuiz d) throws IllegalArgumentException {
+		if(d == null)throw new IllegalArgumentException("Datum is null");
+		
 		int days = 0;
         DateQuiz date1 = new DateQuiz();
         DateQuiz date2 = new DateQuiz();
@@ -320,7 +303,11 @@ public class DateQuiz implements Comparable<DateQuiz>{
 				else{
 					this.month--;
 				}
-				day = dagenPerMaand[month - 1];
+				this.day = dagenPerMaand[month - 1];
+				
+				if(this.month == 2)
+					if((this.year % 400 == 0) || ((this.year % 4 == 0) && (this.year % 100 != 0)))
+						this.day++;
 			}
 			else{
 				this.day--;
@@ -360,6 +347,10 @@ public class DateQuiz implements Comparable<DateQuiz>{
                         	date.month--;
                         }
                         day = dagenPerMaand[date.month - 1];
+                        
+                        if(this.month == 2)
+        					if((this.year % 400 == 0) || ((this.year % 4 == 0) && (this.year % 100 != 0)))
+        						this.day++;
                 }
                 else{
                 	date.day--;
@@ -367,59 +358,5 @@ public class DateQuiz implements Comparable<DateQuiz>{
                 nDays++;
         }
                 return date;
-	}
-	
-	
-	public static void main(String[] args) throws Exception {
-		try 
-		{
-			
-			//datum met integers
-			DateQuiz d1 = new DateQuiz(28,2,2004);
-			System.out.println(d1);
-			/**
-			//datum zonder parameters
-			DateQuiz d2 = new DateQuiz();
-			System.out.println(d2);
-			
-			//datum op basis van object
-			DateQuiz d3 = new DateQuiz(d1);
-			System.out.println(d3.toString2());
-			*/
-			//datum op basis van string
-			DateQuiz d4 = new DateQuiz("5/02/2000");
-			System.out.println(d4);
-			
-			DateQuiz d5 = new DateQuiz("21/02/2010");
-			System.out.println(d5);
-			System.out.println(d5.toString2());
-			
-			System.out.println(d5.getDateInAmericanFormat());
-			
-			int year = 1955;
-			int month = 1;
-			int day = 26;
-			String american = Integer.toString(year) + "/" + Integer.toString(month) + "/" + Integer.toString(day);
-			System.out.println(american);
-			DateQuiz date = new DateQuiz(day, month, year);
-			System.out.println(date);
-			System.out.println(date.getDateInEuropeanFormat());
-			System.out.println(date.getDateInAmericanFormat());
-			
-			int verschil = d4.differenceInYears(d5);
-			System.out.println(verschil);
-			
-			System.out.println(d1);
-			d1.changeDate(3);
-			System.out.println(d1);
-			DateQuiz d2 = new DateQuiz(28,2,2006);
-			System.out.println(d2);
-			d2.changeDate(3);
-			System.out.println(d2);
-			
-			
-		}
-		catch (IllegalArgumentException ex){System.out.println(ex.getMessage());}
-
 	}
 }
