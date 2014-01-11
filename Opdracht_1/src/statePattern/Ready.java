@@ -10,9 +10,9 @@ import controller.DeleteQuizController;
  */
 public class Ready extends StateBehavior {
 	
+	//disable delete button in DeleteQuizView
 	@Override
-	public void behavior(DeleteQuizController dC, DeleteQuizView dV){
-		
+	public void behavior(DeleteQuizController dC, DeleteQuizView dV){		
 		dV.getDeleteButton().setEnabled(false);;
 	}
 }
