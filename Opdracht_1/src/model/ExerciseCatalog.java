@@ -1,6 +1,3 @@
-/**
- * 
- */
 package model;
 
 import java.io.File;
@@ -373,52 +370,6 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 		catch(IllegalArgumentException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	
-	@SuppressWarnings("resource")
-	public static void main(String[] args) throws Exception {
-//		File file = new File("src" + File.separator + "files" + File.separator + "exercises.txt");
-		try {
-//			
-//			Quiz quiz1 = new Quiz();
-//			Quiz quiz2 = new Quiz("testsubject");
-//			
-//			Exercise exercise1 = new SimpleExercise("Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-//					new DateGC(2013,10,1), 'S');
-//			Exercise exercise2 = new SimpleExercise("Wat is mijn Naam","Iandyrhanov",new String[]{"kort","4"},2,30,
-//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-//					new DateGC(2013,10,1), 'S');
-//			Exercise exercise3 = new SimpleExercise("Hoofdstad van België?","Brussel",new String[]{"kort","4"},2,30,
-//					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,
-//					new DateGC(2013,10,1), 'S');
-//			
-//			QuizExercise qe = new QuizExercise(1, quiz1, exercise1);
-//			QuizExercise qe2 = new QuizExercise(2, quiz2, exercise1);
-//			
-//			exercise1.addExercise(qe);
-//			exercise1.addExercise(qe2);
-//			
-//			
-			ExerciseCatalog ez = new ExerciseCatalog();
-			ez.addExercise(new SimpleExercise());
-			ez.addExercise(new SimpleExercise(1, "Wat is mijn Voornaam","Emin",new String[]{"kort","4"},2,30,
-					Exercise.ExerciseCategory.AARDRIJKSKUNDE,Teacher.BAKKER,new ArrayList<QuizExercise>(),
-					new DateGC(2013,10,1), 'S'));
-			
-			for (Exercise e : ez.getExercises()){
-				System.out.println(e.getExerciseId());
-			}
-			
-			
-			
-			//System.out.println(ec.exercises.get(2));
-			
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	// Comparisons

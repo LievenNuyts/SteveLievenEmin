@@ -1,6 +1,3 @@
-/**
- * 
- */
 package model;
 
 
@@ -9,8 +6,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import com.sun.org.apache.bcel.internal.generic.GETSTATIC;
 
 import utils.DateGC;
 
@@ -394,20 +389,13 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	
 	@Override
 	public String toString() {
-		/*return "Exercise [getExerciseId()=" + getExerciseId()
-				+ ", getQuestion()=" + getQuestion() + ", getCorrectAnswer()="
-				+ getCorrectAnswer() + ", getAnswerHints()="
-				+ Arrays.toString(getAnswerHints())
-				+ ", getMaxNumberOfAttempts()=" + getMaxNumberOfAttempts()
-				+ ", getMaxAnswerTime()=" + getMaxAnswerTime()
-				+ ", getCategory()=" + getCategory() + ", getAuthor()="
-				+ getAuthor() + ", getQuizExercises()=" + getQuizExercises()
-				+ ", getDateRegistration()=" + getDateRegistration()
-				+ ", getDiscriminator()=" + getDiscriminator()
-				+ ", hashCode()=" + hashCode() + "]";*/
-		return getQuestion();
+		return "OPDRACHT " + getExerciseId() 
+				+ " | Vraag:" + getQuestion()
+				+ " | Antwoord: " + getCorrectAnswer()
+				+ " | Categorie: " + getCategory()
+				+ " | Author: " + getAuthor()
+				+ " | Datum: " + getDateRegistration();
 	}
-	
 
 	@Override
 	public int hashCode() {

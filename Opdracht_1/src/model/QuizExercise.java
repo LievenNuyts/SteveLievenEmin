@@ -1,6 +1,3 @@
-/**
- * 
- */
 package model;
 
 /**
@@ -126,9 +123,10 @@ public class QuizExercise implements Comparable<QuizExercise>, Cloneable{
 
 	@Override
 	public String toString() {
-		/*return "QuizExercise [maxScore=" + maxScore + ", quiz=" + quiz
-				+ ", exercise=" + exercise + "]";*/ 
-		return exercise.getQuestion();
+		return "QUIZOPDRACHT "
+				+ " | QuizID:" + getQuiz().getQuizId()
+				+ " | ExerciseID: " + getExercise().getExerciseId()
+				+ " | MaxScore: " + getMaxScore();
 	}
 
 	@Override

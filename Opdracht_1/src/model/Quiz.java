@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 
-import utils.DateGC;
 import utils.DateQuiz;
 
 /**
@@ -16,14 +15,14 @@ import utils.DateQuiz;
 public class Quiz implements Comparable<Quiz>{
 	
 	private int quizId;
-	private String subject; // subject = ""
-	private int grades; // leerJaren = 0
+	private String subject;
+	private int grades;
 	private QuizStatus status;
 	private Teacher teacher;
 	private DateQuiz date;
 	private boolean isUniqueParticipation;
 	private boolean isTest;
-	private ArrayList<QuizExercise> quizExercises; // ArrayList<QuizExercise> quizExercises = new ArrayList<QuizExercise>()
+	private ArrayList<QuizExercise> quizExercises;
 	
 	
 	//default constructor
@@ -117,33 +116,12 @@ public class Quiz implements Comparable<Quiz>{
 
 	@Override
     public String toString() {
-            /*String quizText = "";
-            if (isTest) {
-            	quizText = "\n This is a test.";
-            } 
-            else {
-            	quizText = "\n This is not a test.";
-            }
-            
-            if (isUniqueParticipation) {
-            	quizText += "\n Unique participation.";
-            } 
-            else {
-                quizText += "\n No unique participation.";
-            }
-            
-            quizText += "\nStatus: ";
-            
-            String quizSummary = "";
-            quizSummary += "\nQuiz : " + subject
-            				+ "\nYears: " + grades
-                            + "\nDate: " + date.getDateInEuropeanFormat()
-                            + "\nCreated by: " + teacher 
-                            + "\n" + quizText 
-                            + "\nStatus: " + status;
-            
-            return quizSummary;*/
-			return getSubject();
+		return "QUIZ " + getQuizId() 
+				+ " | Onderwerp:" + getSubject()
+				+ " | Leerjaar: " + getLeerJaren()
+				+ " | Status: " + getStatus()
+				+ " | Author: " + getTeacher()
+				+ " | Datum: " + getDate();
     }
 	
 	//get & set

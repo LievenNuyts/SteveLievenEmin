@@ -183,27 +183,6 @@ public class EnumerationExercise extends Exercise implements Validatable{
 				correctOrderOrNot, this.numberOfElements, element);
 	}
 	
-	
-	@Override
-	public String toString() {
-		/*return "Exercise [getExerciseId()=" + getExerciseId()
-				+ ", getQuestion()=" + getQuestion() 
-				+ ", getCorrectAnswer()=" + getCorrectAnswer() 
-				+ ", getAnswerHints()=" + Arrays.toString(getAnswerHints())
-				+ ", getMaxNumberOfAttempts()=" + getMaxNumberOfAttempts()
-				+ ", getMaxAnswerTime()=" + getMaxAnswerTime()
-				+ ", getCategory()=" + getCategory() 
-				+ ", getAuthor()=" + getAuthor() 
-				+ ", getQuizExercises()=" + getQuizExercises()
-				+ ", getDateRegistration()=" + getDateRegistration()
-				+ ", getDiscriminator()=" + getDiscriminator()
-				+ ", hashCode()=" + hashCode() 
-				+ ", inCorrectOrder()=" + getInCorrectOrder()
-				+ "]";*/
-		return getQuestion();
-	}
-
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -220,7 +199,6 @@ public class EnumerationExercise extends Exercise implements Validatable{
 						.hashCode());
 		return result;
 	}
-
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -247,7 +225,6 @@ public class EnumerationExercise extends Exercise implements Validatable{
 			return false;
 		return true;
 	}
-	
 	
 	@Override
 	public EnumerationExercise clone() throws CloneNotSupportedException{
