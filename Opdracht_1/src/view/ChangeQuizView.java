@@ -255,33 +255,34 @@ public class ChangeQuizView extends JFrame {
 
 			add(mainPanel);
 
-			//get exercise from available ex list
-
-			listExercise.addListSelectionListener(new ListSelectionListener() {
-				public void valueChanged(ListSelectionEvent event) {
-					if (!event.getValueIsAdjusting()){
-						JList<Exercise> source = (JList)event.getSource();
-
-						Exercise selected = (Exercise)source.getSelectedValue();	
-
-						getExercise(selected);
-					}
-				}
-			});
-
-			//get exercise from  ex in quiz list
-
-			listExercisesInQuiz.addListSelectionListener(new ListSelectionListener() {
-				public void valueChanged(ListSelectionEvent event) {
-					if (!event.getValueIsAdjusting()){
-						JList<QuizExercise> source = (JList)event.getSource();
-
-						QuizExercise selected = (QuizExercise)source.getSelectedValue();
-
-						getExercise(selected.getExercise());
-					}
-				}
-			});
+//			//get exercise from available ex list
+//
+//			listExercise.addListSelectionListener(new ListSelectionListener() {
+//				public void valueChanged(ListSelectionEvent event) {
+//					if (!event.getValueIsAdjusting()){
+//						JList<Exercise> source = (JList)event.getSource();
+//
+//						Exercise selected = (Exercise)source.getSelectedValue();	
+//
+//						getExercise(selected);
+//					}
+//				}
+//			});
+//
+//			//get exercise from  ex in quiz list
+//
+//			listExercisesInQuiz.addListSelectionListener(new ListSelectionListener() {
+//				public void valueChanged(ListSelectionEvent event) {
+//					if (!event.getValueIsAdjusting()){
+//						JList<QuizExercise> source = (JList)event.getSource();
+//
+//						if(source.getSelectedValue() != null){
+//							QuizExercise selected = (QuizExercise)source.getSelectedValue();
+//							getExercise(selected.getExercise());
+//						}
+//					}
+//				}
+//			});
 						
 		}
 		
@@ -432,13 +433,13 @@ public class ChangeQuizView extends JFrame {
 			
 		}
 		
-		/**
-		 * @return
-		 */
-		public void getExercise(Exercise ex){
-			System.out.println(ex.getQuestion());
-			
-		}
+//		/**
+//		 * @return
+//		 */
+//		public void getExercise(Exercise ex){
+//			System.out.println(ex.getQuestion());
+//			
+//		}
 		
 		public void UpdateExerciseInQuiz(){
 			int index = listQuiz.getSelectedIndex();

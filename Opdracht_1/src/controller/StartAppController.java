@@ -1,16 +1,16 @@
 package controller;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
-
 import model.ExerciseCatalog;
 import model.QuizCatalog;
 import persistence.ManagementInitFile;
 import persistence.TextToSql;
+import strategyPattern.QuizScoreRulesFactory;
 import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.Menu;
@@ -32,6 +32,7 @@ public class StartAppController extends JFrame{
 	private ChangeQuizController changeQuizController;
 	private DeleteQuizController deleteQuizController;
 	private ManagementInitFile initFile;
+	private QuizScoreRulesFactory initScoreFile;
 	
 	CreateQuizView createView;
 	ChangeQuizView changeView;
@@ -45,8 +46,21 @@ public class StartAppController extends JFrame{
 	}
 	
 	public static void main(String[] args) throws Exception {
-
-		new StartAppController().startPersistency();
+		
+		File file = new File("src" + File.separator + "files" + File.separator + "init.dat");
+		if (!file.exists()){
+			new StartAppController().startPersistency();
+		}
+		
+		file = new File("src" + File.separator + "files" + File.separator + "initScore.dat");
+		if (!file.exists()){
+			new StartAppController().startScoreChoice();
+		}
+		
+		if (file != null){
+			file = null;
+		}
+		
         new StartAppController().startApp();	
 	}
 	
@@ -109,5 +123,10 @@ public class StartAppController extends JFrame{
 	public void startPersistency() {
 		initFile = new ManagementInitFile();
 		initFile.choosePersistetyMethod();
+	}
+	
+	public void startScoreChoice() {
+		initScoreFile = QuizScoreRulesFactory.getInstance();
+		initScoreFile.chooseScoreMethod();
 	}
 }

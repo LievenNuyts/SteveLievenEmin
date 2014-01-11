@@ -184,21 +184,26 @@ public class MysqlPersistence implements IPersistencable {
 				int tempScore = tempQuExsSet.getInt("max_score");
 				int tempQuizId = tempQuExsSet.getInt("quiz_id");
 				int tempExerciseID= tempQuExsSet.getInt("exercise_id");
-
-				if (tempQuizId > quModel.getQuizCatalogs().size()){
-					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1 
-							- (tempQuizId - quModel.getQuizCatalogs().size())), exModel.getExercises().get(tempExerciseID - 1));
-
-					quModel.getQuizCatalogs().get(tempQuizId - 1 
-							- (tempQuizId - quModel.getQuizCatalogs().size())).addQuizExercise(qe);
-					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
+				System.out.println(tempQuizId + " - " + quModel.getQuizCatalogs().size());
+				
+				Quiz tempQuiz = null;
+				Exercise tempExercise = null;
+				 
+				for (Quiz q : quModel.getQuizCatalogs()) {
+					if (q.getQuizId() == tempQuizId){
+						tempQuiz = q;
+					}
 				}
-				else{
-					QuizExercise qe = new QuizExercise(tempScore, quModel.getQuizCatalogs().get(tempQuizId - 1), 
-							exModel.getExercises().get(tempExerciseID - 1));
-
-					quModel.getQuizCatalogs().get(tempQuizId - 1).addQuizExercise(qe);
-					exModel.getExercises().get(tempExerciseID - 1).addQuizExercise(qe);
+				for (Exercise e : exModel.getExercises()) {
+					if (e.getExerciseId() == tempExerciseID) {
+						tempExercise = e;
+					}
+				}
+				if (tempQuiz != null && tempExercise != null) {
+					QuizExercise qe = new QuizExercise(tempScore, tempQuiz, tempExercise);
+					
+					tempQuiz.addQuizExercise(qe);
+					tempExercise.addQuizExercise(qe);
 				}
 			}
 
@@ -365,7 +370,8 @@ public class MysqlPersistence implements IPersistencable {
 			PreparedStatement ps1 = con.prepareStatement("delete from quiz_exercise where quiz_id=? AND exercise_id=?");
 			ps1.setInt(1, view.getSelectedQuizValueFromList().getQuizId());
 			ps1.setInt(2, view.getSelectedQuizExerciseValueFromList().getExercise().getExerciseId());
-
+			
+			
 			ps1.executeUpdate();
 			con.commit();
 			ps1.close();

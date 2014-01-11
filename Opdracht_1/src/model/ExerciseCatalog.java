@@ -337,19 +337,25 @@ public class ExerciseCatalog implements Comparable<ExerciseCatalog>, Cloneable{
 					int tempScore = scanner3.nextInt();
 					int tempQuizId = scanner3.nextInt();
 					int tempExerciseID= scanner3.nextInt();
-					//System.out.println(tempQuizId + " " + quizzes.get(4).getQuizId());
 					
-					if (tempQuizId > quizzes.size()){
-						QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1 - (tempQuizId - quizzes.size())), exercises.get(tempExerciseID - 1));
-						
-						quizzes.get(tempQuizId - 1 - (tempQuizId - quizzes.size())).addQuizExercise(qe);
-						exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+					Quiz tempQuiz = null;
+					Exercise tempExercise = null;
+					 
+					for (Quiz q : quizzes) {
+						if (q.getQuizId() == tempQuizId){
+							tempQuiz = q;
+						}
 					}
-					else{
-						QuizExercise qe = new QuizExercise(tempScore, quizzes.get(tempQuizId - 1), exercises.get(tempExerciseID - 1));
+					for (Exercise e : exercises) {
+						if (e.getExerciseId() == tempExerciseID) {
+							tempExercise = e;
+						}
+					}
+					if (tempQuiz != null && tempExercise != null) {
+						QuizExercise qe = new QuizExercise(tempScore, tempQuiz, tempExercise);
 						
-						quizzes.get(tempQuizId - 1).addQuizExercise(qe);
-						exercises.get(tempExerciseID - 1).addQuizExercise(qe);
+						tempQuiz.addQuizExercise(qe);
+						tempExercise.addQuizExercise(qe);
 					}
 					
 					if (scanner2!=null){

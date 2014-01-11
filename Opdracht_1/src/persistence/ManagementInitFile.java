@@ -55,9 +55,4 @@ public class ManagementInitFile {
 		catch (IOException ex){ex.printStackTrace();}
 		return null;
 	}
-	
-	public static void main(String[] args) {
-		ManagementInitFile mi = new ManagementInitFile();
-		mi.choosePersistetyMethod();
-	}
 }
