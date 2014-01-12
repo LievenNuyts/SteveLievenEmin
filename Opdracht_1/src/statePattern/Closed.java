@@ -7,7 +7,9 @@ import controller.DeleteQuizController;
 
 /**
  * 
- * @author java
+ * @author Lieven
+ * @author Steve
+ * @author Emin
  *
  */
 public class Closed extends StateBehavior {
@@ -20,5 +22,6 @@ public class Closed extends StateBehavior {
 	
 	public void behavior(ChangeQuizController uC, ChangeQuizView uV){		
 		uV.getUpdateButton().setEnabled(false);
+		System.out.println("Closed reached");
 	}
 }

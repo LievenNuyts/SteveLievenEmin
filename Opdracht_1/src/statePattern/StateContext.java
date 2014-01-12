@@ -10,7 +10,9 @@ import controller.DeleteQuizController;
 
 /**
  * 
- * @author java
+ * @author Lieven
+ * @author Steve
+ * @author Emin
  *
  */
 public class StateContext {

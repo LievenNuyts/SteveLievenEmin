@@ -23,12 +23,13 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import statePattern.StateContext;
 import model.Exercise;
-import model.Exercise.ExerciseCategory;
 import model.Quiz;
 import model.QuizExercise;
 import model.QuizStatus;
 import model.Teacher;
+import controller.ChangeQuizController;
 import controller.StartAppController;
 
 
@@ -44,7 +45,7 @@ public class ChangeQuizView extends JFrame {
 		private static final long serialVersionUID = 1L;
 
 		private JTextField txt_01, txt_02;
-		private JLabel lb_01, lb_02, lb_03, lb_04, lb_05, lb_Quiz, lb_exInQuiz, lb_Ex;
+		private JLabel lb_01, lb_03, lb_04, lb_05, lb_Quiz, lb_exInQuiz, lb_Ex;
 
 		private JButton btn_add, btn_update, btn_delete, btn_search_quiz;
 
@@ -64,10 +65,10 @@ public class ChangeQuizView extends JFrame {
         private JScrollPane paneQuiz;
         private final JScrollPane paneExInQuiz;
 
+
 		public ChangeQuizView() {
 			super("Quiz wijzigen");
 			setResizable(false); //niet resizable
-			setLocationRelativeTo(null); //positie zetten
 			
 			Toolkit tk = Toolkit.getDefaultToolkit();
 			
@@ -93,7 +94,9 @@ public class ChangeQuizView extends JFrame {
 			final JPanel mainPanel = new JPanel();
 
 			mainPanel.setBorder(BorderFactory.createTitledBorder("Quiz Control"));
-					
+			
+			setLocationRelativeTo(null); //positie zetten
+								
 			//Components
 			
 			//Zoekfunctie
@@ -128,8 +131,6 @@ public class ChangeQuizView extends JFrame {
 			lb_03 = new JLabel("Leraar: ");
 			comboAuthor = new JComboBox <Teacher>(Teacher.values());
 
-			
-			
 			//populate list quiz
 			
 			lb_Quiz = new JLabel("Beschikbare quizzes:");			
@@ -142,22 +143,6 @@ public class ChangeQuizView extends JFrame {
 			//populate ex & parameters in selected Quiz
 			
 			lb_exInQuiz = new JLabel("Vragen in quiz:");
-			
-			listQuiz.addListSelectionListener(new ListSelectionListener() {
-			    public void valueChanged(ListSelectionEvent event) {
-			        if (!event.getValueIsAdjusting()){
-			            JList<Quiz> source = (JList)event.getSource();
-			            
-			            Quiz selected = (Quiz)source.getSelectedValue();	            
-			            
-			            getExercisesInQuiz(selected.getQuizExercises());
-			            comboAuthor.setSelectedItem(selected.getTeacher());
-			            comboStatus.setSelectedItem(selected.getStatus());
-			            comboLeerjaar.setSelectedItem(selected.getLeerJaren());	
-			            txt_02.setText(selected.getSubject());
-			        }
-			    }
-			});
 			
 			listModelExercisesInQuiz = new DefaultListModel<QuizExercise>();			
 			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);			
@@ -253,6 +238,7 @@ public class ChangeQuizView extends JFrame {
 			gbc.gridwidth = 1;
 
 			add(mainPanel);
+
 		}
 		
 		//Selectors
@@ -331,14 +317,14 @@ public class ChangeQuizView extends JFrame {
 		/**
 		 * @return
 		 */
-		public DefaultListModel<Quiz> getListQuizModel(){
+		public DefaultListModel <Quiz> getListQuizModel(){
 			return listModelQuiz;
 		}
 		
 		/**
 		 * @return
 		 */
-		public DefaultListModel<Exercise> getListExModel(){
+		public DefaultListModel <Exercise> getListExModel(){
 			return listModelEx;
 		}
 		
@@ -349,7 +335,7 @@ public class ChangeQuizView extends JFrame {
 		 * @return
 		 */
 		public void setExercisesList(List<Exercise> exerciseList){
-			DefaultListModel listModel = new DefaultListModel();
+			DefaultListModel <Exercise> listModel = new DefaultListModel<Exercise>();
 			
 			for (Exercise ex : exerciseList){
 
@@ -372,7 +358,7 @@ public class ChangeQuizView extends JFrame {
 		 * @return
 		 */
 		public void setQuizList(List<Quiz> quizList){
-			DefaultListModel listModel = new DefaultListModel();
+			DefaultListModel<Quiz> listModel = new DefaultListModel<Quiz>();
 			
 			for (Quiz q : quizList){
 				listModel.addElement(q);
@@ -386,7 +372,7 @@ public class ChangeQuizView extends JFrame {
 		 * @return
 		 */
 		public void getExercisesInQuiz(List<QuizExercise> exInQuizList){
-			DefaultListModel listModel = new DefaultListModel<>();
+			DefaultListModel<QuizExercise>listModel = new DefaultListModel<QuizExercise>();
 			
 			for (QuizExercise ex : exInQuizList){
 
@@ -413,6 +399,25 @@ public class ChangeQuizView extends JFrame {
 			listQuiz.setSelectedIndex(index);
 			JOptionPane.showMessageDialog(null, "De quiz werd geüpdatet.");
 		}
+		
+		public JComboBox <Teacher> getComboAuthor(){
+			 return this.comboAuthor;
+		}
+			 
+		public JComboBox <Integer> getComboGrade(){
+			return this.comboLeerjaar;
+		}
+		
+		public JComboBox <QuizStatus> getComboStatus(){
+			 return this.comboStatus;
+		}
+			 
+		public JTextField getTitleTextField(){
+			return this.txt_02;
+		}
+			
+		
+			 
 
 		// events
 		
@@ -434,6 +439,11 @@ public class ChangeQuizView extends JFrame {
 		public void addSearchListener(ActionListener listenForSearchButton) {
 	
 			btn_search_quiz.addActionListener(listenForSearchButton);
+		}
+		
+		public void addSelectListener(ListSelectionListener listenForSelectAction) {
+			
+			listQuiz.addListSelectionListener(listenForSelectAction);
 		}
 
 		// Open a popup that contains the error message passed

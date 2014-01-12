@@ -5,13 +5,17 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
-import persistence.PersistenceFacade;
 import model.Exercise;
 import model.ExerciseCatalog;
 import model.Quiz;
 import model.QuizCatalog;
+import persistence.PersistenceFacade;
+import statePattern.StateContext;
 import view.ChangeQuizView;
 
 /**
@@ -30,6 +34,8 @@ public class ChangeQuizController {
 	private List<Quiz> tempQuizzes;
 	private List<Exercise> tempExercises;
 	private PersistenceFacade perFacade;
+	
+	private StateContext stateContext;
 
 	public ChangeQuizController(ChangeQuizView view, QuizCatalog quizModel,
 			ExerciseCatalog exerciseModel) {
@@ -41,7 +47,7 @@ public class ChangeQuizController {
 		this.tempExercises = exerciseModel.getExercises();
 		this.perFacade = new PersistenceFacade();
 		this.resultList = quizModel.getQuizCatalogs();
-		
+
 		// Load exercises and quizzes
 		
 		this.perFacade.load(exerciseModel, quizModel);
@@ -49,13 +55,19 @@ public class ChangeQuizController {
 		// Load exercises & quizzes in exercisesList & quizList (JList)
 		loadExercisesPerCategory(exerciseModel.getExercises());
 		loadQuizzes(quizModel.getQuizCatalogs());
-
+		
 		// Add listeners
 		
 		this.view.addAddListener(new QuizListener());
 		this.view.addUpdateListener(new UpdateListener());
 		this.view.addDeleteListener(new DeleteListener());
 		this.view.addSearchListener(new SearchListener());
+		this.view.addSelectListener(new SelectListener());
+		
+		stateContext = new StateContext();
+		
+		stateContext.setStateBehavior(quizModel.getQuizCatalogs().get(0));
+		stateContext.behavior(ChangeQuizController.this, view);
 	}
 
 	class QuizListener implements ActionListener {
@@ -104,6 +116,31 @@ public class ChangeQuizController {
 				System.out.println(ex);
 
 				view.displayErrorMessage("Zoekterm is NULL.");
+			}
+		}
+	}
+	
+	class SelectListener implements ListSelectionListener {
+
+		@Override
+		public void valueChanged(ListSelectionEvent event) {
+
+			if (!event.getValueIsAdjusting()){
+				JList<Quiz> source = (JList)event.getSource();
+
+				Quiz selected = (Quiz)source.getSelectedValue();	            
+
+				view.getExercisesInQuiz(selected.getQuizExercises());
+				
+				//update Quiz properties
+				
+				view.getComboAuthor().setSelectedItem(selected.getTeacher());
+				view.getComboStatus().setSelectedItem(selected.getStatus());
+				view.getComboGrade().setSelectedItem(selected.getLeerJaren());
+				view.getTitleTextField().setText(selected.getSubject());
+				
+				stateContext.setStateBehavior(quizModel.getQuizCatalogs().get(getIndexPosition(selected)));
+				stateContext.behavior(ChangeQuizController.this, view);
 			}
 		}
 	}
