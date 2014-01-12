@@ -149,7 +149,7 @@ public class Student implements Comparable<Student>, Cloneable, IObserver{
 		//  the student will be excited to start the new quiz
 		if(quiz.getLeerJaren() == grade && quiz.getStatus().toString() == "Ready"){
 			String text = studentName.toUpperCase() + " (" + "klas " + grade + ")" + " : \"Tof, een nieuwe quiz voor onze klas!! \"";
-			JOptionPane.showMessageDialog(null,text);
+			JOptionPane.showMessageDialog(null,text,"OBSERVER",JOptionPane.PLAIN_MESSAGE);
 		}
 	}	
 }
