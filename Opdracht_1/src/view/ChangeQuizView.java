@@ -142,8 +142,7 @@ public class ChangeQuizView extends JFrame {
 			
 			//populate ex & parameters in selected Quiz
 			
-			lb_exInQuiz = new JLabel("Vragen in quiz:");
-			
+			lb_exInQuiz = new JLabel("Vragen in quiz:");			
 			listModelExercisesInQuiz = new DefaultListModel<QuizExercise>();			
 			listExercisesInQuiz = new JList<>(listModelExercisesInQuiz);			
 			listExercisesInQuiz.setVisibleRowCount(10);
@@ -165,6 +164,7 @@ public class ChangeQuizView extends JFrame {
 			
 			GridBagConstraints gbc = new GridBagConstraints();
 
+			//Default values
 			gbc.gridx = 1;
 			gbc.gridy = 1;
 			gbc.gridwidth = 4;
@@ -175,7 +175,7 @@ public class ChangeQuizView extends JFrame {
 			gbc.anchor = GridBagConstraints.CENTER;
 			gbc.fill = GridBagConstraints.BOTH;
 			
-			
+			//update constraints
 			
 			mainPanel.add(txt_01, gbc);
 			gbc.gridx = 5;
