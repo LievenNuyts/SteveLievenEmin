@@ -398,13 +398,18 @@ public class ChangeQuizView extends JFrame {
 		/**
 		 * @return
 		 */
-		public void setListExercisesInQuiz(){
-			
+		public JButton getUpdateButton(){
+			return this.btn_update;
 		}
 		
 		public void UpdateExerciseInQuiz(){
 			int index = listQuiz.getSelectedIndex();
-			listQuiz.setSelectedIndex(0);
+			if(index == 0){
+				listQuiz.setSelectedIndex(1);
+			}
+			else{
+				listQuiz.setSelectedIndex(0);
+			}
 			listQuiz.setSelectedIndex(index);
 			JOptionPane.showMessageDialog(null, "De quiz werd geüpdatet.");
 		}

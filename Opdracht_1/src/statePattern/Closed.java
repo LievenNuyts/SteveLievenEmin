@@ -1,6 +1,8 @@
 package statePattern;
 
+import view.ChangeQuizView;
 import view.DeleteQuizView;
+import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 
 /**
@@ -14,5 +16,9 @@ public class Closed extends StateBehavior {
 	@Override
 	public void behavior(DeleteQuizController dC, DeleteQuizView dV){		
 		dV.getDeleteButton().setEnabled(false);;
+	}
+	
+	public void behavior(ChangeQuizController uC, ChangeQuizView uV){		
+		uV.getUpdateButton().setEnabled(false);
 	}
 }

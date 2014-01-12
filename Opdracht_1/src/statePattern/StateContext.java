@@ -1,11 +1,12 @@
 package statePattern;
 
+import model.Quiz;
+import view.ChangeQuizView;
 import view.CreateQuizView;
 import view.DeleteQuizView;
 import controller.ChangeQuizController;
 import controller.CreateQuizController;
 import controller.DeleteQuizController;
-import model.Quiz;
 
 /**
  * 
@@ -26,7 +27,7 @@ public class StateContext {
 		this.stateBehavior.behavior(cC, cV);
 	}
 	
-	public void behavior(ChangeQuizController uC, CreateQuizView uV){
+	public void behavior(ChangeQuizController uC, ChangeQuizView uV){
 		this.stateBehavior.behavior(uC, uV);
 	}
 
