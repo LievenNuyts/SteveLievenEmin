@@ -9,9 +9,12 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+import observer.IObserver;
+import observer.ISubject;
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 import model.EnumerationExercise;
@@ -36,8 +39,14 @@ import view.DeleteQuizView;
  * @author Emin
  *
  */
-public class MysqlPersistence implements IPersistencable {
+public class MysqlPersistence implements IPersistencable, ISubject {
 
+	private ArrayList<IObserver> observers;
+
+	public MysqlPersistence(){
+		observers = new ArrayList<IObserver>();
+	}
+	
 	/**
 	 * Method to get a connection
 	 * 
@@ -302,6 +311,8 @@ public class MysqlPersistence implements IPersistencable {
 			ps.close();
 
 			view.reset();
+			
+			notifyObservers(quiz);
 		}
 		catch (NumberFormatException ex) {
 			view.displayErrorMessage(ex.getMessage());
@@ -355,6 +366,8 @@ public class MysqlPersistence implements IPersistencable {
 			QuizCatalog quizModel, List<Quiz> tempQuizzes,
 			List<Exercise> tempExercises) {
 		// TODO Auto-generated method stub
+		
+		notifyObservers(view.getSelectedQuizValueFromList()); //observer pattern
 	}
 
 	/**
@@ -475,5 +488,28 @@ public class MysqlPersistence implements IPersistencable {
 		tempS2 = tempS2.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
 		
 		if (tempS1.equals(tempS2)) throw new IllegalArgumentException("Quiz bestaat al!");
+	}
+
+	
+	//METHODS NEEDED FOR OBSERVER PATTERN
+	
+	@Override
+	public void addObserver(IObserver observer) {
+		observers.add(observer);	
+	}
+
+	@Override
+	public void removeObserver(IObserver observer) {
+		observers.remove(observer);	
+	}
+
+	@Override
+	public void notifyObservers(Quiz quiz) {
+		
+		Iterator<IObserver> i = observers.iterator();
+		while (i.hasNext()){
+			IObserver o = (IObserver) i.next();
+			o.update(this, quiz);
+		}		
 	}
 }
