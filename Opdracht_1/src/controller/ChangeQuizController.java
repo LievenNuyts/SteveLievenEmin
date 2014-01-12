@@ -85,7 +85,7 @@ public class ChangeQuizController {
 		public void actionPerformed(ActionEvent e) {
 			perFacade.deleteFromQuiz(view, tempQuizzes, tempExercises);
 			//perFacade.load(exerciseModel, quizModel);
-			//view.UpdateExerciseInQuiz();
+			view.UpdateExerciseInQuiz();
 
 		}
 	}
