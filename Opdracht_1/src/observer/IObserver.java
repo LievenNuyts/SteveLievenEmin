@@ -3,6 +3,8 @@
  */
 package observer;
 
+import model.Quiz;
+
 /**
  * @author Emin
  * @author Steve
@@ -11,6 +13,6 @@ package observer;
  */
 public interface IObserver {
 
-	public void update(ISubject subject);
+	public void update(ISubject subject, Quiz quiz);
 	
 }

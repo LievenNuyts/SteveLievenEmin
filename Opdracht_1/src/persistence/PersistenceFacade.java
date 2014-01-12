@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import observer.School;
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 import model.Exercise;
@@ -26,6 +27,7 @@ public class PersistenceFacade {
 	
 	public IPersistencable iPersistencable;
 	
+	private School school;
 	// Constructors
 	
 	/**
@@ -33,6 +35,10 @@ public class PersistenceFacade {
 	 */
 	public PersistenceFacade() {
 		setIPersistencable();
+		
+		//needed to test observer pattern
+		school = new School();	
+		school.studentsToObservers(iPersistencable);
 	}
 	
 	//Modifiers

@@ -2,11 +2,14 @@ package persistence;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
+import observer.IObserver;
+import observer.ISubject;
 import controller.ChangeQuizController;
 import controller.DeleteQuizController;
 import view.ChangeQuizView;
@@ -25,8 +28,14 @@ import model.Teacher;
  * @author Emin
  * 
  */
-public class TextPersistence implements IPersistencable {
+public class TextPersistence implements IPersistencable, ISubject {
 
+	private ArrayList<IObserver> observers;
+	
+	public TextPersistence(){	
+		observers = new ArrayList<IObserver>();
+	}
+	
 	/**
 	 * Method to load exercises and quizzes
 	 */
@@ -97,13 +106,16 @@ public class TextPersistence implements IPersistencable {
 				}
 			}
 			quModel.addQuiz(quiz);
-
+			
 			exModel.writeExercisesToFile();
 			quModel.writeQuizzesToFile();
 
 			view.displayErrorMessage("Quiz is toegevoegd");
-
+		
 			view.reset();
+			
+			notifyObservers(quiz);
+			
 		} catch (NumberFormatException ex) {
 			view.displayErrorMessage(ex.getMessage());
 		} catch (IllegalArgumentException ex) {
@@ -198,7 +210,7 @@ public class TextPersistence implements IPersistencable {
 			List<Exercise> tempExercises) {
 		try {
 			System.out.println("Updatebutton");
-
+			
 			quizModel.setQuizCatalogs(tempQuizzes);
 			exerciseModel.setExercises(tempExercises);
 
@@ -206,6 +218,9 @@ public class TextPersistence implements IPersistencable {
 			exerciseModel.writeExercisesToFile();
 
 			view.displayErrorMessage("Quiz is geüpdatet");
+			
+			notifyObservers(view.getSelectedQuizValueFromList());
+					
 		} catch (IllegalArgumentException ex) {
 			System.out.println(ex);
 			view.displayErrorMessage(ex.getMessage());
@@ -342,5 +357,27 @@ public class TextPersistence implements IPersistencable {
 		tempS2 = tempS2.replaceAll("de\\s+|een\\s+|het\\s+|met\\s+|van\\s+|in\\s+", "");
 		
 		if (tempS1.equals(tempS2)) throw new IllegalArgumentException("Quiz bestaat al!");
+	}
+	
+	
+	//METHODS NEEDED FOR OBSERVER PATTERN
+	@Override
+	public void addObserver(IObserver observer) {
+		observers.add(observer);		
+	}
+
+	@Override
+	public void removeObserver(IObserver observer) {
+		observers.remove(observer);	
+	}
+
+	@Override
+	public void notifyObservers(Quiz quiz) {
+		
+		Iterator<IObserver> i = observers.iterator();
+		while (i.hasNext()){
+			IObserver o = (IObserver) i.next();
+			o.update(this, quiz);
+		}	
 	}
 }

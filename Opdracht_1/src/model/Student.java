@@ -3,13 +3,18 @@
  */
 package model;
 
+import javax.swing.JOptionPane;
+
+import observer.IObserver;
+import observer.ISubject;
+
 /**
  * 
  * @author Emin
  * @version 20/10/2013
  *
  */
-public class Student implements Comparable<Student>, Cloneable{
+public class Student implements Comparable<Student>, Cloneable, IObserver{
 	
 	private String studentName;
 	private int grade;
@@ -136,4 +141,15 @@ public class Student implements Comparable<Student>, Cloneable{
 			return false;
 		return true;
 	}
+
+	@Override
+	public void update(ISubject subject, Quiz quiz) {
+		
+		//When new quiz is assigned to grade of the student and has the status 'ready',
+		//  the student will be excited to start the new quiz
+		if(quiz.getLeerJaren() == grade && quiz.getStatus().toString() == "Ready"){
+			String text = studentName.toUpperCase() + " (" + "klas " + grade + ")" + " : \"Tof, een nieuwe quiz voor onze klas!! \"";
+			JOptionPane.showMessageDialog(null,text,"OBSERVER",JOptionPane.PLAIN_MESSAGE);
+		}
+	}	
 }

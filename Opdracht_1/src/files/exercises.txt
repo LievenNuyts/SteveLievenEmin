@@ -1,11 +1,11 @@
 1 > S > Wat is de voornaam van de Belgische koning > Filip > [niet Albert] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 
 2 > S > Wat is familienaam van de koning > Van Saksen Coburg > [kort, 4] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 3 , 2 , 2 > 
-3 > S > Hoofdstad van België? > Brussel > [manneke pis] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 3 , 2 , 3 > 
+3 > S > Hoofdstad van België? > Brussel > [manneke pis] > Bakker > Aardrijkskunde > 30 > 2 > 1 oktober 2013 > 3 , 2 , 3 > 8 , 8 , 3 > 
 4 > S > Hoofdstad van Europa? > Brussel > [België] > Bakker > Aardrijkskunde > 30 > 2 > 1 december 2013 > 
 5 > S > Som van 2 en 3? > 5 > [optellen] > Mulder > Wiskunde > 30 > 2 > 1 december 2013 > 3 , 3 , 5 > 1 , 5 , 5 > 
 6 > S > Kwadraat van 13? > 169 > [maal zichzelf] > Mulder > Wiskunde > 30 > 2 > 1 december 2013 > 2 , 5 , 6 > 
-7 > S > Hoe heet een legering van koper en tin? > brons > [roodachtige tot gelige kleur] > Smit > Wetenschappen > 30 > 2 > 1 december 2013 > 
-8 > E > Geef de dagen van de week in de juiste volgorde. > maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag > [7] > Leeuwen > Nederlands > 60 > 1 > 1 november 2013 > 1 , 5 , 8 > false
+7 > S > Hoe heet een legering van koper en tin? > brons > [roodachtige tot gelige kleur] > Smit > Wetenschappen > 30 > 2 > 1 december 2013 > 2 , 7 , 7 > 
+8 > E > Geef de dagen van de week in de juiste volgorde. > maandag;dinsdag;woensdag;donderdag;vrijdag;zaterdag;zondag > [7] > Leeuwen > Nederlands > 60 > 1 > 1 november 2013 > 1 , 5 , 8 > 2 , 6 , 8 > false
 9 > E > Geef de maanden in een jaar in de correcte volgorde. > januari;februari;maart;april;mei;juni;juli;augustus;september;oktober;november;december > [12] > Leeuwen > Nederlands > 90 > 1 > 1 november 2013 > 1 , 5 , 9 > false
 10 > E > Wat zijn de delers van het getal 20? > 20;10;5;4;2;1 > [6] > Mulder > Wiskunde > 60 > 1 > 12 november 2013 > 3 , 3 , 10 > false
 11 > E > Wat zijn de hoofdkleuren? > geel;rood;blauw > [3, vlag van Roemenië] > Smit > Wetenschappen > 30 > 2 > 1 november 2013 > false
