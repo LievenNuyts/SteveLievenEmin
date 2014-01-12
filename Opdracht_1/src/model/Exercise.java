@@ -390,11 +390,11 @@ public abstract class Exercise implements Comparable<Exercise>, Cloneable{
 	@Override
 	public String toString() {
 		return "OPDRACHT " + getExerciseId() 
-				+ " | Vraag:" + getQuestion()
+				+ " | Vraag:" + getQuestion()/*
 				+ " | Antwoord: " + getCorrectAnswer()
 				+ " | Categorie: " + getCategory()
 				+ " | Author: " + getAuthor()
-				+ " | Datum: " + getDateRegistration();
+				+ " | Datum: " + getDateRegistration();*/;
 	}
 
 	@Override

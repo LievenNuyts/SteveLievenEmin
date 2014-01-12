@@ -72,10 +72,10 @@ public class ChangeQuizController {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			updateQuiz();
 			perFacade.updateQuiz(view, exerciseModel, quizModel, tempQuizzes, tempExercises);
 			//perFacade.load(exerciseModel, quizModel);
 			view.UpdateExerciseInQuiz();
-			updateQuiz();
 		}
 	}
 

@@ -117,11 +117,11 @@ public class Quiz implements Comparable<Quiz>{
 	@Override
     public String toString() {
 		return "QUIZ " + getQuizId() 
-				+ " | Onderwerp:" + getSubject()
+				+ " | Onderwerp:" + getSubject()/*
 				+ " | Leerjaar: " + getLeerJaren()
 				+ " | Status: " + getStatus()
 				+ " | Author: " + getTeacher()
-				+ " | Datum: " + getDate();
+				+ " | Datum: " + getDate();*/;
     }
 	
 	//get & set
