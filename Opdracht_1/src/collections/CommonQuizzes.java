@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 import model.Exercise;
 import model.ExerciseCatalog;
@@ -21,8 +20,8 @@ import model.QuizExercise;
  *
  */
 public class CommonQuizzes {
-	
-	private HashSet<Quiz> quizzes;
+	public List<Quiz> tempQuizzesList;
+	private HashSet<Exercise> e1, e2;
 	
 	// Constructors
 	
@@ -30,38 +29,25 @@ public class CommonQuizzes {
 	 * Default constructor
 	 */
 	public CommonQuizzes(){
+		tempQuizzesList = new ArrayList<>();
+		e1 = new HashSet<Exercise>();
+		e2 = new HashSet<Exercise>();
+		
 		QuizCatalog qC = new QuizCatalog();
 		ExerciseCatalog eC = new ExerciseCatalog();
 		
 		eC.readExercisesFromFile();
 		qC.readQuizzesFromFile();
 		eC.createQuizExercises(eC.getExercises(), qC.getQuizCatalogs());
-		
-		HashSet<Quiz> tempQ = new HashSet<Quiz>(); 
+		 
 		for (Quiz q : qC.getQuizCatalogs()) {
-			tempQ.add(q);
+			tempQuizzesList.add(q);
+			for (QuizExercise qE : q.getQuizExercises()){
+				e2.add(qE.getExercise());
+			}
 		}
-		this.setQuizzes(tempQ);
 	}
 	
-	// Selectors
-	
-	/**
-	 * @return
-	 */
-	public HashSet<Quiz> getQuizzes() {
-		return quizzes;
-	}
-	
-	// Modifiers
-	
-	/**
-	 * Set quizzes
-	 * @param quizzes
-	 */
-	public void setQuizzes(HashSet<Quiz> quizzes) {
-		this.quizzes = quizzes;
-	}
 	
 	/**
 	 * Get quizzes with common exercises
@@ -69,49 +55,12 @@ public class CommonQuizzes {
 	 * @param quiz
 	 */
 	public void getCommonQuizzes(Quiz quiz){
-		System.out.println("\nQuizen met gemeenschappelijke opdrachten:\n");
-		
-		HashSet<Exercise> qE1 = new HashSet<Exercise>();
-		
-		
 		for (QuizExercise qE : quiz.getQuizExercises()){
-			qE1.add(qE.getExercise());
+			e1.add(qE.getExercise());
 		}
 		
-		for (Quiz q : this.quizzes){
-			HashSet<Exercise> qE2 = new HashSet<Exercise>();
-			System.out.println(q.getSubject());
-			
-			for (QuizExercise qE : q.getQuizExercises()){
-				qE2.add(qE.getExercise());
-			}
-			
-			Set<Exercise> union = new HashSet<Exercise>(qE1);
-			union.retainAll(qE2);
-			
-			for (Exercise ex : union){
-				System.out.println("\t" + ex.getQuestion());
-			}
-		}
+		e1.retainAll(e2);
 	}
-	
-
-//	for (Quiz q : this.quizzes){
-//		String text = q.getSubject();
-//		
-//		for (QuizExercise qE : q.getQuizExercises()){
-//			for (QuizExercise qE2 : quiz.getQuizExercises()){
-//				
-//				// Compare exercises
-//				if (qE.getExercise().equals(qE2.getExercise())){
-//					if (!q.equals(quiz)){
-//						text += "\n" + qE.getExercise().getQuestion();
-//						System.out.println(text);
-//					}
-//				}
-//			}
-//		}
-//	}
 	
 	/**
 	 * Main method
@@ -119,21 +68,36 @@ public class CommonQuizzes {
 	 */
 	public static void main(String[] args) {
 		CommonQuizzes cQ = new CommonQuizzes();
-		
 		int row = 1;
 		
-		List<Quiz> tempQuizzesList = new ArrayList<Quiz>();
-		
-		for (Quiz quiz : cQ.getQuizzes()){
+		// Display quizzes in console
+		for (Quiz quiz : cQ.tempQuizzesList){
 			System.out.println(row++ + ": " + quiz.getSubject());
-			tempQuizzesList.add(quiz);
 		}
-		
-		System.out.println("\nSelect quiz: ");
+		System.out.print("\nSelect quiz: ");
 		Scanner scan = new Scanner(System.in);
 		int selectedRow = scan.nextInt();
 		scan.close();
-		cQ.getCommonQuizzes(tempQuizzesList.get(selectedRow - 1));
+		
+		// Pass selected number to getCommonQuizzes method
+		cQ.getCommonQuizzes(cQ.tempQuizzesList.get(selectedRow - 1));
+		
+		
+		// Display layout in console
+		System.out.println("\nGeselecteerde quiz: " + cQ.tempQuizzesList.get(selectedRow - 1).getSubject());
+		System.out.println("Quizen met gemeenschappelijke opdrachten:");
+		for (Exercise ex : cQ.e1){
+			for (Quiz q : cQ.tempQuizzesList){
+				for (QuizExercise qE : q.getQuizExercises()){
+					if (qE.getExercise().getQuestion().equals(ex.getQuestion())){
+						if (!cQ.tempQuizzesList.get(selectedRow - 1).getSubject().equals(qE.getQuiz().getSubject())){
+							System.out.println("\t" +qE.getQuiz().getSubject());
+							System.out.println("\t\t" + ex.getQuestion());
+						}
+					}
+				}
+			}
+		}
 	}
 
 }
